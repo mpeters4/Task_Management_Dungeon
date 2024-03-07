@@ -9,6 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import cafe.adriel.voyager.navigator.Navigator
+import screen.Homescreen
 
 @Composable
 @Preview
@@ -26,7 +28,9 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
-        App()
+    Window(onCloseRequest = ::exitApplication,
+        resizable = true,
+    ) {
+        Navigator(Homescreen())
     }
 }
