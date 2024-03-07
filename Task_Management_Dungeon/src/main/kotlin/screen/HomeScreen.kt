@@ -18,6 +18,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import composable.ClickableIconCardNavigate
 import composable.clickableIconCardExit
+import icon.SquarePlus
+import icon.Walking
+import icon.Exit
+import icon.RectangleList
 
 class Homescreen : Screen {
     @Composable
@@ -33,11 +37,11 @@ class Homescreen : Screen {
             Box(Modifier.align(Alignment.Center)) {
                 Row {
                     Column {
-                        ClickableIconCardNavigate(SquarePlus(), navigator, Add_Question(), "Neue Aufgabe")
-                        ClickableIconCardNavigate(Walking(), navigator, SecondScreen(), "Simulieren")
+                        ClickableIconCardNavigate(SquarePlus(), navigator, Homescreen(), "Neue Aufgabe")
+                        ClickableIconCardNavigate(Walking(), navigator, Homescreen(), "Simulieren")
                     }
                     Column {
-                        ClickableIconCardNavigate(RectangleList(), navigator, Single_Choice_Screen(), "Fragenliste")
+                        ClickableIconCardNavigate(RectangleList(), navigator, Homescreen(), "Fragenliste")
                         clickableIconCardExit(Exit(), "Beenden")
                     }
                 }
