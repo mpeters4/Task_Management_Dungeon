@@ -26,7 +26,7 @@ import cafe.adriel.voyager.navigator.Navigator
  * @param location Screen to navigate to
  */
 @Composable
-fun ClickableIconCardNavigate(icon : ImageVector, navigator: Navigator, location: Screen, text : String) {
+fun clickableIconCardNavigate(icon : ImageVector, navigator: Navigator, location: Screen, text : String) {
     Card(elevation = 15.dp,modifier = Modifier.padding(10.dp).size(width = 120.dp, height = 120.dp).clickable {
         navigator.push(location)
     }, backgroundColor = Color.DarkGray, border = BorderStroke(1.dp, color = Color.Black))

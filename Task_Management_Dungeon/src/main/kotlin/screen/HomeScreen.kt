@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import composable.ClickableIconCardNavigate
+import composable.clickableIconCardNavigate
 import composable.clickableIconCardExit
 import icon.SquarePlus
 import icon.Walking
@@ -37,11 +37,11 @@ class Homescreen : Screen {
             Box(Modifier.align(Alignment.Center)) {
                 Row {
                     Column {
-                        ClickableIconCardNavigate(SquarePlus(), navigator, Homescreen(), "Neue Aufgabe")
-                        ClickableIconCardNavigate(Walking(), navigator, Homescreen(), "Simulieren")
+                        clickableIconCardNavigate(SquarePlus(), navigator, Homescreen(), "Neue Aufgabe")
+                        clickableIconCardNavigate(Walking(), navigator, Homescreen(), "Simulieren")
                     }
                     Column {
-                        ClickableIconCardNavigate(RectangleList(), navigator, Homescreen(), "Fragenliste")
+                        clickableIconCardNavigate(RectangleList(), navigator, Homescreen(), "Fragenliste")
                         clickableIconCardExit(Exit(), "Beenden")
                     }
                 }
