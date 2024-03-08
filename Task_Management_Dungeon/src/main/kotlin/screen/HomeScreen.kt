@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import composable.clickableIconCardNavigate
 import composable.clickableIconCardExit
-import icon.SquarePlus
-import icon.Walking
+import composable.clickableIconCardNavigate
 import icon.Exit
 import icon.RectangleList
+import icon.SquarePlus
+import icon.Walking
 
-class Homescreen : Screen {
+class HomeScreen: Screen {
     @Composable
     @Preview
     override fun Content() {
@@ -37,11 +37,15 @@ class Homescreen : Screen {
             Box(Modifier.align(Alignment.Center)) {
                 Row {
                     Column {
-                        clickableIconCardNavigate(SquarePlus(), navigator, Homescreen(), "Neue Aufgabe")
-                        clickableIconCardNavigate(Walking(), navigator, Homescreen(), "Simulieren")
+                        clickableIconCardNavigate(SquarePlus(), navigator, EditProjectScreen(), "Projekte")
+                        clickableIconCardNavigate(Walking(), navigator, CreateTaskFileScreen(), "Aufgabendatei generieren")
                     }
                     Column {
-                        clickableIconCardNavigate(RectangleList(), navigator, Homescreen(), "Fragenliste")
+                        clickableIconCardNavigate(SquarePlus(), navigator, CreateQuestionScreen(), "Neue Aufgabe")
+                        clickableIconCardNavigate(Walking(), navigator, HomeScreen(), "Simulieren")
+                    }
+                    Column {
+                        clickableIconCardNavigate(RectangleList(), navigator, QuestionOverviewScreen(), "Fragenliste")
                         clickableIconCardExit(Exit(), "Beenden")
                     }
                 }
