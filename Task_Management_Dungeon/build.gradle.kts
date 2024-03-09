@@ -47,7 +47,7 @@ dependencies {
     implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
 
     //Material 3
-    implementation("org.jetbrains.compose.material3:material3-desktop:1.2.1")
+    implementation("org.jetbrains.compose.material3:material3-desktop:1.6.0")
     //SQLdelight
    // implementation("app.cash.sqldelight:native-driver:2.0.1")
 
