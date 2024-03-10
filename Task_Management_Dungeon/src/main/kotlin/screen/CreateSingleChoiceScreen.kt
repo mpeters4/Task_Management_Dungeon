@@ -3,6 +3,7 @@ package screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -12,6 +13,7 @@ import composable.createAnswers
 import composable.inputTextField
 
 class CreateSingleChoiceScreen : Screen {
+    @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         AppTheme {

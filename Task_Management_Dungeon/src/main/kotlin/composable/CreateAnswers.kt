@@ -25,6 +25,12 @@ fun createAnswers(
     var text by rememberSaveable { mutableStateOf("") }
     var answers = remember { mutableStateListOf<String>()}
     Column {
+
+        Text(
+            text = "Bitte geben Sie die möglichen Antworten ein:",
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row {
             OutlinedTextField(
                 modifier = modifier.padding(8.dp),
@@ -38,7 +44,7 @@ fun createAnswers(
             })
         }
         Text(
-            text = "Bitte geben Sie die möglichen Antworten ein:",
+            text = "Antworten:",
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant)

@@ -62,35 +62,35 @@ class HomeScreen : Screen {
                                 EditProjectScreen()
                             )
                             clickableIconCardNavigate(
-                                walkingIcon(MaterialTheme.colorScheme.onBackground),
+                                walkingIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Aufgabendatei\ngenerieren",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateTaskFileScreen()
                             )
                             clickableIconCardNavigate(
-                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
+                                squarePlusIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Neue Aufgabe",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 QuestionChoiceScreen()
                             )
                             clickableIconCardNavigate(
-                                walkingIcon(MaterialTheme.colorScheme.onBackground),
+                                walkingIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Simulieren",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 HomeScreen()
                             )
                             clickableIconCardNavigate(
-                                rectangleListIcon(MaterialTheme.colorScheme.onBackground),
+                                rectangleListIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Fragenliste",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 QuestionOverviewScreen()
                             )
                             clickableIconCardExit(
-                                exitIcon(MaterialTheme.colorScheme.onBackground),
+                                exitIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Beenden",
                                 Modifier.padding(8.dp)
                             )
