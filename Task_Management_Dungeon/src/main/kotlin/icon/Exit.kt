@@ -12,12 +12,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Exit(): ImageVector {
+fun Exit(c: Color): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "Exit",
-            defaultWidth = 64.dp,
-            defaultHeight = 64.dp,
+            defaultWidth =128.dp,
+            defaultHeight = 128.dp,
             viewportWidth = 512f,
             viewportHeight = 512f
         ).apply {
@@ -51,7 +51,7 @@ fun Exit(): ImageVector {
                     close()
                 }
                 path(
-                    fill = SolidColor(Color.LightGray),
+                    fill = SolidColor(c),
                     fillAlpha = 1.0f,
                     stroke = null,
                     strokeAlpha = 1.0f,

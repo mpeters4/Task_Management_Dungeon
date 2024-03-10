@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Walking(): ImageVector {
+fun Walking(c: Color): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "Walking",
-            defaultWidth = 64.dp,
-            defaultHeight = 64.dp,
+            defaultWidth = 128.dp,
+            defaultHeight = 128.dp,
             viewportWidth = 24f,
             viewportHeight = 24f
         ).apply {
