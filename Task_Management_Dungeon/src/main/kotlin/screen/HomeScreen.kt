@@ -73,7 +73,7 @@ class HomeScreen : Screen {
                                 "Neue Aufgabe",
                                 Modifier.padding(8.dp),
                                 navigator,
-                                CreateQuestionScreen()
+                                QuestionChoiceScreen()
                             )
                             clickableIconCardNavigate(
                                 walkingIcon(MaterialTheme.colorScheme.onBackground),
