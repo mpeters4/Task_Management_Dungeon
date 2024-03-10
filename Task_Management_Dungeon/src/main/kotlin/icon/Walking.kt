@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Walking(c: Color): ImageVector {
+fun walkingIcon(c: Color): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "Walking",

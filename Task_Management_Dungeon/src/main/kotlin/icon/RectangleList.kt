@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RectangleList(c: Color): ImageVector {
+fun rectangleListIcon(c: Color): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "RectangleList",

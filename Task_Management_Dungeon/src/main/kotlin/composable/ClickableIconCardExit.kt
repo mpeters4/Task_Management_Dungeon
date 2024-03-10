@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import kotlin.system.exitProcess
 
 /**
- * Card to exit the Programm
+ * Card to exitIcon the Programm
  * @param icon ImageVector of the Icon that is shown in the card
  * @param text Text that is shown in the Card
  */

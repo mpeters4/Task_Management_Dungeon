@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Exit(c: Color): ImageVector {
+fun exitIcon(c: Color): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "Exit",

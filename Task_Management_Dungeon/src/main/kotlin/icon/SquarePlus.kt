@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @Preview
-fun SquarePlus(c: Color): ImageVector {
+fun squarePlusIcon(c: Color): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "SquarePlus",

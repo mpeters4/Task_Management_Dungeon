@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,10 +22,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.compose.AppTheme
 import composable.clickableIconCardExit
 import composable.clickableIconCardNavigate
-import icon.Exit
-import icon.RectangleList
-import icon.SquarePlus
-import icon.Walking
+import icon.*
 
 class HomeScreen : Screen {
     @Composable
@@ -44,9 +40,10 @@ class HomeScreen : Screen {
                 ) {
                     Text(
                         text = "Willkommen!",
-                        textAlign = TextAlign.Left,
                         fontSize = 50.sp,
-                        color = MaterialTheme.colorScheme.onBackground
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Box(
                         Modifier.fillMaxSize().padding(top = 30.dp)
@@ -58,42 +55,42 @@ class HomeScreen : Screen {
                             maxItemsInEachRow = 3
                         ) {
                             clickableIconCardNavigate(
-                                SquarePlus(MaterialTheme.colorScheme.onBackground),
+                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
                                 "Projekte",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 EditProjectScreen()
                             )
                             clickableIconCardNavigate(
-                                Walking(MaterialTheme.colorScheme.onBackground),
+                                walkingIcon(MaterialTheme.colorScheme.onBackground),
                                 "Aufgabendatei\ngenerieren",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateTaskFileScreen()
                             )
                             clickableIconCardNavigate(
-                                SquarePlus(MaterialTheme.colorScheme.onBackground),
+                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
                                 "Neue Aufgabe",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateQuestionScreen()
                             )
                             clickableIconCardNavigate(
-                                Walking(MaterialTheme.colorScheme.onBackground),
+                                walkingIcon(MaterialTheme.colorScheme.onBackground),
                                 "Simulieren",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 HomeScreen()
                             )
                             clickableIconCardNavigate(
-                                RectangleList(MaterialTheme.colorScheme.onBackground),
+                                rectangleListIcon(MaterialTheme.colorScheme.onBackground),
                                 "Fragenliste",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 QuestionOverviewScreen()
                             )
                             clickableIconCardExit(
-                                Exit(MaterialTheme.colorScheme.onBackground),
+                                exitIcon(MaterialTheme.colorScheme.onBackground),
                                 "Beenden",
                                 Modifier.padding(8.dp)
                             )
