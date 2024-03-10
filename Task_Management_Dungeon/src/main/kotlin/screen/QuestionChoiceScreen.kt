@@ -57,21 +57,21 @@ class QuestionChoiceScreen : Screen {
                         ) {
                             clickableIconCardNavigate(
                                 squarePlusIcon(MaterialTheme.colorScheme.onBackground),
-                                "Projekte",
+                                "Single-Choice",
+                                Modifier.padding(8.dp),
+                                navigator,
+                                CreateSingleChoiceScreen()
+                            )
+                            clickableIconCardNavigate(
+                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
+                                "Multiple-Choice",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateQuestionScreen()
                             )
                             clickableIconCardNavigate(
                                 walkingIcon(MaterialTheme.colorScheme.onBackground),
-                                "Aufgabendatei\ngenerieren",
-                                Modifier.padding(8.dp),
-                                navigator,
-                                CreateQuestionScreen()
-                            )
-                            clickableIconCardNavigate(
-                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
-                                "Neue Aufgabe",
+                                "Zuordnungs-\naufgabe",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateQuestionScreen()
@@ -79,7 +79,6 @@ class QuestionChoiceScreen : Screen {
                         }
                     }
                 }
-
             }
         }
     }
