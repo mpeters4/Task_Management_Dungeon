@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import screen.HomeScreen
 import java.awt.Dimension
 
@@ -37,7 +38,9 @@ fun main() = application {
     Window(onCloseRequest = ::exitApplication,
         resizable = true
     ) {
-        window.minimumSize = Dimension(330, 300)
-        Navigator(HomeScreen())
+        window.minimumSize = Dimension(500, 500)
+        Navigator(HomeScreen()) { navigator ->
+            SlideTransition(navigator)
+        }
     }
 }
