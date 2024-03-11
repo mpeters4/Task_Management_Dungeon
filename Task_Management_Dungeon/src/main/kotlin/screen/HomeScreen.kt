@@ -55,7 +55,7 @@ class HomeScreen : Screen {
                             maxItemsInEachRow = 3
                         ) {
                             clickableIconCardNavigate(
-                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
+                                squarePlusIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Projekte",
                                 Modifier.padding(8.dp),
                                 navigator,
