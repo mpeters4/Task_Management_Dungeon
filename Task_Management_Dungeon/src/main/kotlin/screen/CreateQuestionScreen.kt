@@ -28,10 +28,17 @@ class CreateQuestionScreen : Screen {
                 Column(/*Modifier.verticalScroll(rememberScrollState())*/) {
                     inputTextField(Modifier)
                     createAnswers(Modifier)
+
+
                     Button(colors = ButtonDefaults.buttonColors(), onClick = {
                         navigator.pop()
                     }) {
-                        Text("Zurück!")
+                        Text("Zurück")
+                    }
+                    Button(colors = ButtonDefaults.buttonColors(), onClick = {
+                        navigator.pop()
+                    }) {
+                        Text("Speichern")
                     }
                 }
             }
