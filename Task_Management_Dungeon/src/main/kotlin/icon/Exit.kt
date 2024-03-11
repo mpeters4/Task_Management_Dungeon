@@ -23,7 +23,7 @@ fun exitIcon(c: Color): ImageVector {
         ).apply {
             group {
                 path(
-                    fill = SolidColor(Color.LightGray),
+                    fill = SolidColor(c),
                     fillAlpha = 1.0f,
                     stroke = null,
                     strokeAlpha = 1.0f,

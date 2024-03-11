@@ -20,7 +20,7 @@ fun squarePlusIcon(c: Color): ImageVector {
             viewportHeight = 24f
         ).apply {
             path(
-                fill = SolidColor(Color.LightGray),
+                fill = SolidColor(c),
                 fillAlpha = 1.0f,
                 stroke = null,
                 strokeAlpha = 1.0f,
