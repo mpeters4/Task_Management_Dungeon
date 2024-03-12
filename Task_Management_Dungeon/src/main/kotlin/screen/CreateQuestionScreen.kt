@@ -25,8 +25,8 @@ class CreateQuestionScreen : Screen {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Column(/*Modifier.verticalScroll(rememberScrollState())*/) {
-                    inputTextField(Modifier)
+                Column(Modifier.verticalScroll(rememberScrollState())) {
+                    //inputTextField(Modifier)
                     createAnswers(Modifier)
 
 
