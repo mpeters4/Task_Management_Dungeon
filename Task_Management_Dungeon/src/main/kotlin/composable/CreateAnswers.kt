@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -46,28 +48,41 @@ fun createAnswers(
             )
 
         })
-        Text(
-            text = "Antworten:",
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        LazyColumn() {
+        LazyColumn(Modifier.fillMaxWidth().size(200.dp)) {
+            item{Text(
+                text = "Antworten:",
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )}
+
             items(items = answers) { answer ->
                 Card(
-                    modifier= modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.onSecondary
-                )){
-                    Box(){
-                        Row(modifier.align(Alignment.Center),
-                            verticalAlignment = Alignment.CenterVertically) {
-                            Image(addIcon(MaterialTheme.colorScheme.onSurfaceVariant), "Remove Item", Modifier.padding(10.dp).clickable { answers.remove(answer)})
-                            Text("Antwort: " + answer,style = MaterialTheme.typography.bodyMedium, fontSize = 24.sp, lineHeight = 25.sp, modifier = modifier.clickable {})
+                        containerColor = MaterialTheme.colorScheme.onSecondary
+                    )
+                ) {
+                    Box() {
+                        Row(
+                            modifier.align(Alignment.Center),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                addIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                                "Remove Item",
+                                Modifier.padding(10.dp).clickable { answers.remove(answer) })
+                            Text(
+                                "Antwort: " + answer,
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontSize = 24.sp,
+                                lineHeight = 25.sp,
+                                modifier = modifier.clickable {})
                         }
                     }
                 }
             }
+
         }
     }
 }
