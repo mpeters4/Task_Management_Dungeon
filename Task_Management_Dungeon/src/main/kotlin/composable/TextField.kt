@@ -13,14 +13,19 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun inputTextField(
-    modifier: Modifier
+    modifier: Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label : String
 ) {
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(value) }
 
     OutlinedTextField(
         modifier = modifier.fillMaxWidth().padding(8.dp),
         value = text,
-        onValueChange = { text = it },
-        label = { Text("Frage eingeben") }
+        onValueChange = { text = it
+            onValueChange(it)},
+        label = { Text(label) }
     )
 }
+
