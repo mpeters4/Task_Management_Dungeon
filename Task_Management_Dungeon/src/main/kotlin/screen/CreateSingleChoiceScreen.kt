@@ -108,7 +108,8 @@ class CreateSingleChoiceScreen : Screen {
                                                 points.toInt(),
                                                 pointsToPass.toInt(),
                                                 explanation,
-                                                answers
+                                                answers,
+                                                tags
                                             )
                                         )
                                     )

@@ -7,10 +7,11 @@ class SingleTaskQuestion(
     var points: Int = 0,
     var pointsToPass: Int = 0,
     var explanation: String = "",
-    val answers: List<String> = mutableStateListOf()
+    val answers: List<String> = mutableStateListOf(),
+    val tags: List<String> = mutableStateListOf()
 ) {
 
-    var tags: List<String> = mutableStateListOf<String>()
+
     var correctAnswerIndex : Int = -1
 
 }
