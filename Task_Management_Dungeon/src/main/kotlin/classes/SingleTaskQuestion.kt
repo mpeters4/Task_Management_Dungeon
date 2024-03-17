@@ -7,7 +7,7 @@ class SingleTaskQuestion(
     var points: Int = 0,
     var pointsToPass: Int = 0,
     var explanation: String = "",
-    val answers: List<String> = mutableStateListOf<String>()
+    val answers: List<String> = mutableStateListOf()
 ) {
 
     var tags: List<String> = mutableStateListOf<String>()
