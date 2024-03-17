@@ -26,10 +26,6 @@ class CreateQuestionScreen : Screen {
                 color = MaterialTheme.colorScheme.background
             ) {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
-                    //inputTextField(Modifier)
-                    createAnswers(Modifier)
-
-
                     Button(colors = ButtonDefaults.buttonColors(), onClick = {
                         navigator.pop()
                     }) {

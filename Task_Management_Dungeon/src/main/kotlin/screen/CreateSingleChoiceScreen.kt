@@ -31,7 +31,7 @@ class CreateSingleChoiceScreen : Screen {
         var questionText by rememberSaveable { mutableStateOf("") }
         var answers = remember { mutableStateListOf<String>() }
         var points by rememberSaveable { mutableStateOf("") }
-        var pointsToPass by rememberSaveable { mutableStateOf(1) }
+        var pointsToPass by rememberSaveable { mutableStateOf("") }
         var explanation by rememberSaveable { mutableStateOf("") }
         var tags = remember { mutableStateListOf<String>() }
         var text by rememberSaveable { mutableStateOf("knopp") }
@@ -49,14 +49,14 @@ class CreateSingleChoiceScreen : Screen {
                         fontSize = 50.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 16.dp))}
+                    //Single_Choice_Frage erstellen
                     item {  inputTextField(Modifier, questionText, onValueChange = {questionText = it}, "Frage eingeben")}
-                    item { createAnswers(Modifier)}
-                    item { inputTextField(Modifier,explanation, onValueChange = {explanation = it}, "TEST")}
-                    item {  inputTextField(Modifier,questionText, onValueChange = {questionText = it}, "Rissa")}
+                    item { createAnswers(Modifier,answers, onValueChange = {answers = it})}
+                    item { inputTextField(Modifier,explanation, onValueChange = {explanation = it}, "Erklärung angeben")}
                     item {
                         Row() {
-                            inputNumberField(Modifier.width(200.dp), points,onValueChange = {points = it}, "PUNKTE")
-                            inputNumberField(Modifier.width(200.dp), points,onValueChange = {points = it}, "PUNKTE")
+                            inputNumberField(Modifier.width(300.dp), points,onValueChange = {points = it}, "Punkte")
+                            inputNumberField(Modifier.width(300.dp), points,onValueChange = {pointsToPass = it}, "Punkte zum bestehen")
                         }
                         }
 
@@ -70,7 +70,7 @@ class CreateSingleChoiceScreen : Screen {
                                 Text("Zurück")
                             }
                             Button(modifier = Modifier.padding(16.dp), colors = ButtonDefaults.buttonColors(), onClick = {
-                                navigator.pop()
+                                navigator.push(SingleChoiceChooseAnswerIndexScreen(SingleTaskQuestion(questionText,points.toInt(),pointsToPass.toInt(),explanation,answers)))
                             }) {
                                 Text("Weiter")
                             }
