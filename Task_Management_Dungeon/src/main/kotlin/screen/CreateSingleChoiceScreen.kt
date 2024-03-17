@@ -17,10 +17,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.SingleTaskQuestion
 import com.example.compose.AppTheme
-import composable.createAnswers
-import composable.inputNumberField
-import composable.inputTextField
-import composable.inputTextFieldValueTest
+import composable.*
 
 class CreateSingleChoiceScreen : Screen {
     @Composable
@@ -34,8 +31,6 @@ class CreateSingleChoiceScreen : Screen {
         var pointsToPass by rememberSaveable { mutableStateOf("") }
         var explanation by rememberSaveable { mutableStateOf("") }
         var tags = remember { mutableStateListOf<String>() }
-        var text by rememberSaveable { mutableStateOf("knopp") }
-        var task = SingleTaskQuestion()
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -68,7 +63,7 @@ class CreateSingleChoiceScreen : Screen {
                         )
                     }
                     item { createAnswers(Modifier, answers, onValueChange = { answers = it }) }
-                    item { createAnswers(Modifier, tags, onValueChange = { tags = it }) }
+                    item { createStringList(Modifier, tags, onValueChange = { tags = it }, taskLabel = "Bitte Tags angeben", outputLabel = "Tags:", textFieldLabel = "Tag angeben") }
                     item {
                         inputTextField(
                             Modifier,
@@ -123,26 +118,7 @@ class CreateSingleChoiceScreen : Screen {
                         }
                     }
                     //item {  }
-                    //USELESS Buttons
-                    item {
-                        Button(colors = ButtonDefaults.buttonColors(), onClick = {
-                            text = explanation
-                        }) {
-                            Text(text)
-                        }
-                    }
-                    item {
-                        Button(colors = ButtonDefaults.buttonColors(), onClick = {
-                            text = task.points.toString()
-                        }) {
-                            task.points += 5
 
-                            Text(text)
-                        }
-                    }
-                    item {
-
-                    }
                 }
             }
         }
