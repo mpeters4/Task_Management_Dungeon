@@ -1,15 +1,15 @@
 package composable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -17,15 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import icon.addIcon
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun createAnswers(
-    modifier: Modifier
+    modifier: Modifier,
+    value: List<String>,
+    onValueChange: (SnapshotStateList<String>) -> Unit,
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var answers = remember { mutableStateListOf<String>() }
-    Column() {
 
+    Column(){
         Text(
             text = "Bitte geben Sie die möglichen Antworten ein:",
             style = MaterialTheme.typography.titleLarge,
@@ -46,21 +47,21 @@ fun createAnswers(
                 onValueChange = { text = it },
                 label = { Text("Antwort eingeben") }
             )
-
         })
-        LazyColumn(Modifier.fillMaxWidth().size(200.dp)) {
+        LazyColumn(Modifier.fillMaxWidth().size(200.dp).background(MaterialTheme.colorScheme.onSecondary)) {
             item{Text(
                 text = "Antworten:",
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = modifier.padding(bottom = 10.dp, start = 8.dp, top = 8.dp)
             )}
 
             items(items = answers) { answer ->
                 Card(
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth().padding(20.dp, end = 16.dp, bottom = 10.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.onSecondary
+                        containerColor = MaterialTheme.colorScheme.background
                     )
                 ) {
                     Box() {
@@ -82,6 +83,7 @@ fun createAnswers(
                     }
                 }
             }
+            onValueChange(answers)
 
         }
     }
