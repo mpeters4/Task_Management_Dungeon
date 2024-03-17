@@ -35,63 +35,114 @@ class CreateSingleChoiceScreen : Screen {
         var explanation by rememberSaveable { mutableStateOf("") }
         var tags = remember { mutableStateListOf<String>() }
         var text by rememberSaveable { mutableStateOf("knopp") }
-        var correctAnswerIndex by rememberSaveable{ mutableStateOf(0) }
         var task = SingleTaskQuestion()
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                LazyColumn(Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp)/*Modifier.verticalScroll(rememberScrollState())*/) {
-                    item {  Text("Single-Choice Frage erstellen:",
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        fontSize = 50.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 16.dp))}
+                LazyColumn(
+                    Modifier.padding(
+                        start = 24.dp,
+                        top = 24.dp,
+                        end = 24.dp
+                    )/*Modifier.verticalScroll(rememberScrollState())*/
+                ) {
+                    item {
+                        Text(
+                            "Single-Choice Frage erstellen:",
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                            fontSize = 50.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                    }
                     //Single_Choice_Frage erstellen
-                    item {  inputTextField(Modifier, questionText, onValueChange = {questionText = it}, "Frage eingeben")}
-                    item { createAnswers(Modifier,answers, onValueChange = {answers = it})}
-                    item { inputTextField(Modifier,explanation, onValueChange = {explanation = it}, "Erklärung angeben")}
+                    item {
+                        inputTextField(
+                            Modifier,
+                            questionText,
+                            onValueChange = { questionText = it },
+                            "Frage eingeben"
+                        )
+                    }
+                    item { createAnswers(Modifier, answers, onValueChange = { answers = it }) }
+                    item { createAnswers(Modifier, tags, onValueChange = { tags = it }) }
+                    item {
+                        inputTextField(
+                            Modifier,
+                            explanation,
+                            onValueChange = { explanation = it },
+                            "Erklärung angeben"
+                        )
+                    }
                     item {
                         Row() {
-                            inputNumberField(Modifier.width(300.dp), points,onValueChange = {points = it}, "Punkte")
-                            inputNumberField(Modifier.width(300.dp), points,onValueChange = {pointsToPass = it}, "Punkte zum bestehen")
+                            inputNumberField(Modifier.width(300.dp), points, onValueChange = { points = it }, "Punkte")
+                            inputNumberField(
+                                Modifier.width(300.dp),
+                                points,
+                                onValueChange = { pointsToPass = it },
+                                "Punkte zum bestehen"
+                            )
                         }
-                        }
+                    }
 
                     item {
-                        Row (//verticalAlignment = Alignment.Bottom,
+                        Row(//verticalAlignment = Alignment.Bottom,
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End){
-                            Button(modifier = Modifier.padding(16.dp), colors = ButtonDefaults.buttonColors(), onClick = {
-                                navigator.pop()
-                            }) {
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Button(
+                                modifier = Modifier.padding(16.dp),
+                                colors = ButtonDefaults.buttonColors(),
+                                onClick = {
+                                    navigator.pop()
+                                }) {
                                 Text("Zurück")
                             }
-                            Button(modifier = Modifier.padding(16.dp), colors = ButtonDefaults.buttonColors(), onClick = {
-                                navigator.push(SingleChoiceChooseAnswerIndexScreen(SingleTaskQuestion(questionText,points.toInt(),pointsToPass.toInt(),explanation,answers)))
-                            }) {
+                            Button(
+                                modifier = Modifier.padding(16.dp),
+                                colors = ButtonDefaults.buttonColors(),
+                                onClick = {
+                                    navigator.push(
+                                        SingleChoiceChooseAnswerIndexScreen(
+                                            SingleTaskQuestion(
+                                                questionText,
+                                                points.toInt(),
+                                                pointsToPass.toInt(),
+                                                explanation,
+                                                answers
+                                            )
+                                        )
+                                    )
+                                }) {
                                 Text("Weiter")
                             }
-                        } }
+                        }
+                    }
                     //item {  }
                     //USELESS Buttons
-                    item { Button(colors = ButtonDefaults.buttonColors(), onClick = {
-                        text = explanation
-                    }) {
-                        Text(text)
-                    }}
-                    item { Button(colors = ButtonDefaults.buttonColors(), onClick = {
-                        text = task.points.toString()
-                    }) {
-                        task.points += 5
+                    item {
+                        Button(colors = ButtonDefaults.buttonColors(), onClick = {
+                            text = explanation
+                        }) {
+                            Text(text)
+                        }
+                    }
+                    item {
+                        Button(colors = ButtonDefaults.buttonColors(), onClick = {
+                            text = task.points.toString()
+                        }) {
+                            task.points += 5
 
-                        Text(text)
-                    }}
+                            Text(text)
+                        }
+                    }
                     item {
 
-                        }
+                    }
                 }
             }
         }
