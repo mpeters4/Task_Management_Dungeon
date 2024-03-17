@@ -2,12 +2,9 @@ package screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -17,7 +14,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.SingleTaskQuestion
 import com.example.compose.AppTheme
-import composable.*
+import composable.createAnswers
+import composable.createStringList
+import composable.inputNumberField
+import composable.inputTextField
 
 class CreateSingleChoiceScreen : Screen {
     @Composable
@@ -73,7 +73,7 @@ class CreateSingleChoiceScreen : Screen {
                         )
                     }
                     item {
-                        Row() {
+                        Row{
                             inputNumberField(Modifier.width(300.dp), points, onValueChange = { points = it }, "Punkte")
                             inputNumberField(
                                 Modifier.width(300.dp),
