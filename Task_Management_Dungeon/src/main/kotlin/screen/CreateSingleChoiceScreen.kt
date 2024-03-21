@@ -2,6 +2,7 @@ package screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -14,16 +15,17 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.SingleTaskQuestion
 import com.example.compose.AppTheme
-import composable.createAnswers
-import composable.createStringList
-import composable.inputNumberField
-import composable.inputTextField
+import composable.*
+import kotlinx.coroutines.launch
 
 class CreateSingleChoiceScreen : Screen {
+
     @Composable
     override fun Content() {
 
         val navigator = LocalNavigator.currentOrThrow
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
         //Variablen für Single Choice Frage
         var questionText by rememberSaveable { mutableStateOf("") }
         var answers = remember { mutableStateListOf<String>() }
@@ -101,18 +103,25 @@ class CreateSingleChoiceScreen : Screen {
                                 modifier = Modifier.padding(16.dp),
                                 colors = ButtonDefaults.buttonColors(),
                                 onClick = {
-                                    navigator.push(
-                                        SingleChoiceChooseAnswerIndexScreen(
-                                            SingleTaskQuestion(
-                                                questionText,
-                                                points.toInt(),
-                                                pointsToPass.toInt(),
-                                                explanation,
-                                                answers,
-                                                tags
+                                    if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()){
+                                        navigator.push(
+                                            SingleChoiceChooseAnswerIndexScreen(
+                                                SingleTaskQuestion(
+                                                    questionText,
+                                                    points.toInt(),
+                                                    pointsToPass.toInt(),
+                                                    explanation,
+                                                    answers,
+                                                    tags
+                                                )
                                             )
                                         )
-                                    )
+                                    }else{
+
+
+
+                                    }
+
                                 }) {
                                 Text("Weiter")
                             }
