@@ -25,7 +25,13 @@ fun inputTextField(
         value = text,
         onValueChange = { text = it
             onValueChange(it)},
-        label = { Text(label) }
+        label = { Text(label) },
+        isError = text.isEmpty()
     )
+}
+
+fun isValidText(text: String): Boolean {
+    // Add your custom validation rules here
+    return text.isNotEmpty()
 }
 
