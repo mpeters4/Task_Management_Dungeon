@@ -1,8 +1,10 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,98 +40,104 @@ class CreateSingleChoiceScreen : Screen {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                LazyColumn(
-                    Modifier.padding(
-                        start = 24.dp,
-                        top = 24.dp,
-                        end = 24.dp
-                    )/*Modifier.verticalScroll(rememberScrollState())*/
-                ) {
-                    item {
-                        Text(
-                            "Single-Choice Frage erstellen:",
-                            style = MaterialTheme.typography.titleLarge,
-                            textAlign = TextAlign.Center,
-                            fontSize = 50.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                    }
-                    //Single_Choice_Frage erstellen
-                    item {
-                        inputTextField(
-                            Modifier,
-                            questionText,
-                            onValueChange = { questionText = it },
-                            "Frage eingeben"
-                        )
-                    }
-                    item { createAnswers(Modifier, answers, onValueChange = { answers = it }) }
-                    item { createStringList(Modifier, tags, onValueChange = { tags = it }, taskLabel = "Bitte Tags angeben", outputLabel = "Tags:", textFieldLabel = "Tag angeben") }
-                    item {
-                        inputTextField(
-                            Modifier,
-                            explanation,
-                            onValueChange = { explanation = it },
-                            "Erklärung angeben"
-                        )
-                    }
-                    item {
-                        Row{
-                            inputNumberField(Modifier.width(300.dp), points, onValueChange = { points = it }, "Punkte")
-                            inputNumberField(
-                                Modifier.width(300.dp),
-                                points,
-                                onValueChange = { pointsToPass = it },
-                                "Punkte zum bestehen"
+                Scaffold(
+                    snackbarHost = {SnackbarHost(hostState = snackbarHostState)}
+                ){
+                    LazyColumn(
+                        Modifier.padding(
+                            start = 24.dp,
+                            top = 24.dp,
+                            end = 24.dp
+                        )/*Modifier.verticalScroll(rememberScrollState())*/
+                    ) {
+                        item {
+                            Text(
+                                "Single-Choice Frage erstellen:",
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center,
+                                fontSize = 50.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(bottom = 16.dp)
                             )
                         }
-                    }
-
-                    item {
-                        Row(//verticalAlignment = Alignment.Bottom,
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            Button(
-                                modifier = Modifier.padding(16.dp),
-                                colors = ButtonDefaults.buttonColors(),
-                                onClick = {
-                                    navigator.pop()
-                                }) {
-                                Text("Zurück")
-                            }
-                            Button(
-                                modifier = Modifier.padding(16.dp),
-                                colors = ButtonDefaults.buttonColors(),
-                                onClick = {
-                                    if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()){
-                                        navigator.push(
-                                            SingleChoiceChooseAnswerIndexScreen(
-                                                SingleTaskQuestion(
-                                                    questionText,
-                                                    points.toInt(),
-                                                    pointsToPass.toInt(),
-                                                    explanation,
-                                                    answers,
-                                                    tags
-                                                )
-                                            )
-                                        )
-                                    }else{
-
-
-
-                                    }
-
-                                }) {
-                                Text("Weiter")
+                        //Single_Choice_Frage erstellen
+                        item {
+                            inputTextField(
+                                Modifier,
+                                questionText,
+                                onValueChange = { questionText = it },
+                                "Frage eingeben"
+                            )
+                        }
+                        item { createAnswers(Modifier, answers, onValueChange = { answers = it }) }
+                        item { createStringList(Modifier, tags, onValueChange = { tags = it }, taskLabel = "Bitte Tags angeben", outputLabel = "Tags:", textFieldLabel = "Tag angeben") }
+                        item {
+                            inputTextField(
+                                Modifier,
+                                explanation,
+                                onValueChange = { explanation = it },
+                                "Erklärung angeben"
+                            )
+                        }
+                        item {
+                            Row{
+                                inputNumberField(Modifier.width(300.dp), points, onValueChange = { points = it }, "Punkte")
+                                inputNumberField(
+                                    Modifier.width(300.dp),
+                                    points,
+                                    onValueChange = { pointsToPass = it },
+                                    "Punkte zum bestehen"
+                                )
                             }
                         }
-                    }
-                    //item {  }
 
+                        item {
+                            Row(//verticalAlignment = Alignment.Bottom,
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Button(
+                                    modifier = Modifier.padding(16.dp),
+                                    colors = ButtonDefaults.buttonColors(),
+                                    onClick = {
+                                        navigator.pop()
+                                    }) {
+                                    Text("Zurück")
+                                }
+                                Button(
+                                    modifier = Modifier.padding(16.dp),
+                                    colors = ButtonDefaults.buttonColors(),
+                                    onClick = {
+                                        if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()){
+                                            navigator.push(
+                                                SingleChoiceChooseAnswerIndexScreen(
+                                                    SingleTaskQuestion(
+                                                        questionText,
+                                                        points.toInt(),
+                                                        pointsToPass.toInt(),
+                                                        explanation,
+                                                        answers,
+                                                        tags
+                                                    )
+                                                )
+                                            )
+                                        }else{
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "Bitte füllen Sie alle Felder aus"
+                                                )
+                                            }
+                                        }
+                                    }) {
+                                    Text("Weiter")
+                                }
+                            }
+                        }
+                        //item {  }
+
+                    }
                 }
+
             }
         }
 
