@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -17,7 +14,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.SingleTaskQuestion
 import com.example.compose.AppTheme
-import composable.*
+import composable.createAnswers
+import composable.createStringList
+import composable.inputNumberField
+import composable.inputTextField
 import kotlinx.coroutines.launch
 
 class CreateSingleChoiceScreen : Screen {
@@ -41,8 +41,8 @@ class CreateSingleChoiceScreen : Screen {
                 color = MaterialTheme.colorScheme.background,
             ) {
                 Scaffold(
-                    snackbarHost = {SnackbarHost(hostState = snackbarHostState)}
-                ){
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+                ) {
                     LazyColumn(
                         Modifier.padding(
                             start = 24.dp,
@@ -70,7 +70,16 @@ class CreateSingleChoiceScreen : Screen {
                             )
                         }
                         item { createAnswers(Modifier, answers, onValueChange = { answers = it }) }
-                        item { createStringList(Modifier, tags, onValueChange = { tags = it }, taskLabel = "Bitte Tags angeben", outputLabel = "Tags:", textFieldLabel = "Tag angeben") }
+                        item {
+                            createStringList(
+                                Modifier,
+                                tags,
+                                onValueChange = { tags = it },
+                                taskLabel = "Bitte Tags angeben",
+                                outputLabel = "Tags:",
+                                textFieldLabel = "Tag angeben"
+                            )
+                        }
                         item {
                             inputTextField(
                                 Modifier,
@@ -80,8 +89,13 @@ class CreateSingleChoiceScreen : Screen {
                             )
                         }
                         item {
-                            Row{
-                                inputNumberField(Modifier.width(300.dp), points, onValueChange = { points = it }, "Punkte")
+                            Row {
+                                inputNumberField(
+                                    Modifier.width(300.dp),
+                                    points,
+                                    onValueChange = { points = it },
+                                    "Punkte"
+                                )
                                 inputNumberField(
                                     Modifier.width(300.dp),
                                     points,
@@ -108,7 +122,7 @@ class CreateSingleChoiceScreen : Screen {
                                     modifier = Modifier.padding(16.dp),
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
-                                        if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()){
+                                        if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()) {
                                             navigator.push(
                                                 SingleChoiceChooseAnswerIndexScreen(
                                                     SingleTaskQuestion(
@@ -121,13 +135,13 @@ class CreateSingleChoiceScreen : Screen {
                                                     )
                                                 )
                                             )
-                                        }else if (answers.size < 2){
+                                        } else if (answers.size < 2) {
                                             scope.launch {
                                                 snackbarHostState.showSnackbar(
                                                     message = "Bitte geben Sie mindestens 2 Antwortmöglichkeiten an"
                                                 )
                                             }
-                                        } else{
+                                        } else {
                                             scope.launch {
                                                 snackbarHostState.showSnackbar(
                                                     message = "Bitte füllen Sie alle Felder aus"
