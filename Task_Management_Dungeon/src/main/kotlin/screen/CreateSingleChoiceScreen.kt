@@ -121,7 +121,13 @@ class CreateSingleChoiceScreen : Screen {
                                                     )
                                                 )
                                             )
-                                        }else{
+                                        }else if (answers.size < 2){
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "Bitte geben Sie mindestens 2 Antwortmöglichkeiten an"
+                                                )
+                                            }
+                                        } else{
                                             scope.launch {
                                                 snackbarHostState.showSnackbar(
                                                     message = "Bitte füllen Sie alle Felder aus"
