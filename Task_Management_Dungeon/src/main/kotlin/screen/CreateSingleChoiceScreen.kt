@@ -45,9 +45,9 @@ class CreateSingleChoiceScreen : Screen {
                 ) {
                     LazyColumn(
                         Modifier.padding(
-                            start = 24.dp,
-                            top = 24.dp,
-                            end = 24.dp
+                            start = 48.dp,
+                            top = 20.dp,
+                            end = 48.dp
                         )/*Modifier.verticalScroll(rememberScrollState())*/
                     ) {
                         item {
@@ -55,7 +55,8 @@ class CreateSingleChoiceScreen : Screen {
                                 "Single-Choice Frage erstellen:",
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Center,
-                                fontSize = 50.sp,
+                                fontSize = 40.sp,
+                                lineHeight = 40.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 16.dp)
                             )
@@ -155,13 +156,9 @@ class CreateSingleChoiceScreen : Screen {
                                 }
                             }
                         }
-                        //item {  }
-
                     }
                 }
-
             }
         }
-
     }
 }
