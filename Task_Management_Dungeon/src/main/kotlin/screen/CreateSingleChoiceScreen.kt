@@ -6,18 +6,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.SingleTaskQuestion
 import com.example.compose.AppTheme
-import composable.createAnswers
 import composable.createStringList
 import composable.inputNumberField
 import composable.inputTextField
+import composable.title
 import kotlinx.coroutines.launch
 
 class CreateSingleChoiceScreen : Screen {
@@ -48,18 +46,10 @@ class CreateSingleChoiceScreen : Screen {
                             start = 48.dp,
                             top = 20.dp,
                             end = 48.dp
-                        )/*Modifier.verticalScroll(rememberScrollState())*/
+                        )
                     ) {
                         item {
-                            Text(
-                                "Single-Choice Frage erstellen:",
-                                style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center,
-                                fontSize = 40.sp,
-                                lineHeight = 40.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = 16.dp)
-                            )
+                            title("Single Choice Frage erstellen")
                         }
                         //Single_Choice_Frage erstellen
                         item {
