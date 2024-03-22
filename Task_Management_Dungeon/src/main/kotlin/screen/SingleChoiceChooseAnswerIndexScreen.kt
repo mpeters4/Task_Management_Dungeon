@@ -27,29 +27,33 @@ class SingleChoiceChooseAnswerIndexScreen(val question: SingleTaskQuestion) : Sc
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                LazyColumn(
-                    Modifier.padding(
-                        start = 24.dp,
-                        top = 24.dp,
-                        end = 24.dp
-                    )
-                ) {
-
+                Scaffold() {
+                    LazyColumn(
+                        Modifier.padding(
+                            start = 24.dp,
+                            top = 24.dp,
+                            end = 24.dp
+                        )
+                    ) {
+                        item {
+                            Text(
+                                "Bitte kontrollieren Sie die Angaben und wählen Sie die korrekte Antwort aus der Antwortliste an:",
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center,
+                                fontSize = 50.sp,
+                                lineHeight = 50.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(bottom = 16.dp)
+                            )
+                        }
+                        item {  }
+                    }
                 }
+
             }
         }
         LazyColumn {
-            item {
-                Text(
-                    "Bitte kontrollieren Sie die Angaben und wählen Sie die korrekte Antwort aus der Antwortliste an:",
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    fontSize = 50.sp,
-                    lineHeight = 50.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-            }
+
             item {
                 Text(
                     question.description,
