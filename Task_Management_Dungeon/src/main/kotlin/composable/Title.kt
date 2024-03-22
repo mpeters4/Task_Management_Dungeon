@@ -14,7 +14,7 @@ fun title(title : String){
     Text(
         text = title,
         style = MaterialTheme.typography.titleLarge,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.Start,
         fontSize = 40.sp,
         lineHeight = 40.sp,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
