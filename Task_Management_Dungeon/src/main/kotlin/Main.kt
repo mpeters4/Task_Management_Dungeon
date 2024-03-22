@@ -36,7 +36,9 @@ fun App() {
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication,
-        resizable = true
+        resizable = true,
+        title = "Dungeon Task Manager",
+
     ) {
         window.minimumSize = Dimension(500, 500)
         Navigator(HomeScreen()) { navigator ->
