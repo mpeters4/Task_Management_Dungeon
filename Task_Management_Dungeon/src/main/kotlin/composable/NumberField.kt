@@ -30,7 +30,8 @@ fun inputNumberField(
             }
             onValueChange(it)},
         label = { Text(label) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        isError = text.isEmpty()
     )
 }
 
