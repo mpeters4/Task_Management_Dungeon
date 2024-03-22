@@ -22,6 +22,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.compose.AppTheme
 import composable.clickableIconCardExit
 import composable.clickableIconCardNavigate
+import composable.title
 import icon.*
 
 class HomeScreen : Screen {
@@ -38,13 +39,7 @@ class HomeScreen : Screen {
                     Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(8.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Text(
-                        text = "Willkommen!",
-                        fontSize = 50.sp,
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    title("Willkommen im Dungeon Task Manager")
                     Box(
                         Modifier.fillMaxSize().padding(top = 30.dp)
                     ) {
