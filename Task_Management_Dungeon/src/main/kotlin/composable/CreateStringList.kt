@@ -25,7 +25,7 @@ fun createStringList(
     taskLabel: String,
     textFieldLabel: String,
     outputLabel: String,
-    minAmount : Int
+    minAmount: Int
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     val strings = remember { mutableStateListOf<String>() }
@@ -42,7 +42,7 @@ fun createStringList(
                 addIcon(MaterialTheme.colorScheme.onBackground),
                 "Add",
                 Modifier.padding(4.dp, top = 26.dp).clickable {
-                    if(text.isNotEmpty()){
+                    if (text.isNotEmpty()) {
                         strings.add(text)
                     }
                     text = ""
@@ -73,7 +73,7 @@ fun createStringList(
                         containerColor = MaterialTheme.colorScheme.background
                     )
                 ) {
-                    Box{
+                    Box {
                         Row(
                             modifier.align(Alignment.Center),
                             verticalAlignment = Alignment.CenterVertically
@@ -93,7 +93,6 @@ fun createStringList(
                 }
             }
             onValueChange(strings)
-
         }
     }
 }
