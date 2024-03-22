@@ -1,13 +1,12 @@
 package screen
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -17,11 +16,14 @@ import classes.SingleTaskQuestion
 import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
+import kotlinx.coroutines.launch
 
 class CheckSingleTaskQuestionScreen(val question: SingleTaskQuestion) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -40,6 +42,31 @@ class CheckSingleTaskQuestionScreen(val question: SingleTaskQuestion) : Screen {
                         }
                         item {
                             QuestionDisplay(question, Modifier.fillMaxWidth())
+                        }
+                        item{
+                            Row(//verticalAlignment = Alignment.Bottom,
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Button(
+                                    modifier = Modifier.padding(16.dp),
+                                    colors = ButtonDefaults.buttonColors(),
+                                    onClick = {
+                                        navigator.pop()
+                                    }) {
+                                    Text("Zurück")
+                                }
+                                Button(
+                                    modifier = Modifier.padding(16.dp),
+                                    colors = ButtonDefaults.buttonColors(),
+                                    onClick = {
+                                        if (true) {
+                                            navigator.popUntilRoot()
+                                        }
+                                    }) {
+                                    Text("Speichern")
+                                }
+                            }
                         }
                     }
                 }
