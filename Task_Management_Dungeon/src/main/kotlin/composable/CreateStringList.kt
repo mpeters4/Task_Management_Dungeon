@@ -21,16 +21,16 @@ import icon.deleteIcon
 @Composable
 fun createStringList(
     modifier: Modifier,
-    value: List<String>,
     onValueChange: (SnapshotStateList<String>) -> Unit,
     taskLabel: String,
     textFieldLabel: String,
-    outputLabel: String
+    outputLabel: String,
+    minAmount : Int
 ) {
     var text by rememberSaveable { mutableStateOf("") }
-    var answers = remember { mutableStateListOf<String>() }
+    val strings = remember { mutableStateListOf<String>() }
 
-    Column() {
+    Column {
         Text(
             text = taskLabel,
             style = MaterialTheme.typography.titleLarge,
@@ -42,14 +42,17 @@ fun createStringList(
                 addIcon(MaterialTheme.colorScheme.onBackground),
                 "Add",
                 Modifier.padding(4.dp, top = 26.dp).clickable {
-                    answers.add(text)
+                    if(text.isNotEmpty()){
+                        strings.add(text)
+                    }
                     text = ""
                 })
             OutlinedTextField(
                 modifier = modifier.padding(8.dp).fillMaxWidth(),
                 value = text,
                 onValueChange = { text = it },
-                label = { Text(textFieldLabel) }
+                label = { Text(textFieldLabel) },
+                isError = strings.size < minAmount
             )
         })
         LazyColumn(Modifier.fillMaxWidth().size(200.dp).background(MaterialTheme.colorScheme.onSecondary)) {
@@ -63,14 +66,14 @@ fun createStringList(
                 )
             }
 
-            items(items = answers) { answer ->
+            items(items = strings) { answer ->
                 Card(
                     modifier = modifier.fillMaxWidth().padding(20.dp, end = 16.dp, bottom = 10.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.background
                     )
                 ) {
-                    Box() {
+                    Box{
                         Row(
                             modifier.align(Alignment.Center),
                             verticalAlignment = Alignment.CenterVertically
@@ -78,9 +81,9 @@ fun createStringList(
                             Image(
                                 deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Remove Item",
-                                Modifier.padding(10.dp).clickable { answers.remove(answer) })
+                                Modifier.padding(10.dp).clickable { strings.remove(answer) })
                             Text(
-                                "Antwort: " + answer,
+                                "Antwort: $answer",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontSize = 24.sp,
                                 lineHeight = 25.sp,
@@ -89,7 +92,7 @@ fun createStringList(
                     }
                 }
             }
-            onValueChange(answers)
+            onValueChange(strings)
 
         }
     }
