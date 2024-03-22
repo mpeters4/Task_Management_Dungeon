@@ -70,15 +70,24 @@ class CreateSingleChoiceScreen : Screen {
                                 "Frage eingeben"
                             )
                         }
-                        item { createAnswers(Modifier, answers, onValueChange = { answers = it }) }
                         item {
                             createStringList(
                                 Modifier,
-                                tags,
+                                onValueChange = { answers = it },
+                                taskLabel = "Bitte mindestens 2 Antworten angeben",
+                                outputLabel = "Antworten:",
+                                textFieldLabel = "Antwort angeben",
+                                minAmount = 2
+                            )
+                        }
+                        item {
+                            createStringList(
+                                Modifier,
                                 onValueChange = { tags = it },
                                 taskLabel = "Bitte Tags angeben",
                                 outputLabel = "Tags:",
-                                textFieldLabel = "Tag angeben"
+                                textFieldLabel = "Tag angeben",
+                                minAmount = 0
                             )
                         }
                         item {
