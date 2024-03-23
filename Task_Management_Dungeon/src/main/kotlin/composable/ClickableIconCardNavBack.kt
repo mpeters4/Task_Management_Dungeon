@@ -18,11 +18,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 
 /**
- * Clickable Card to novigate to a Screen
+ * Clickable Card to novigate to the previous Screen
  * @param icon ImageVector of the Icon that is shown in the card
  * @param text Text that is shown in the Card
  * @param navigator Navigator that is used to navigate to another screen
- * @param location Screen to navigate to
  */
 @Composable
 fun clickableIconCardNavBack(
