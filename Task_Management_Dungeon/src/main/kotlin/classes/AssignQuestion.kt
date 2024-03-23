@@ -7,7 +7,6 @@ data class AssignQuestion(
     var points: Int = 0,
     var pointsToPass: Int = 0,
     var explanation: String = "",
-    val answers: List<String> = mutableStateListOf(),
     val tags: List<String> = mutableStateListOf(),
     val assignments: List<Assignment> = mutableStateListOf()
 )

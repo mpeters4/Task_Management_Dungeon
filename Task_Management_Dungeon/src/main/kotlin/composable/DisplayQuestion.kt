@@ -121,6 +121,48 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
     }
 }
 @Composable
-fun QuestionDisplay(question: AssignQuestion){
-
+fun QuestionDisplay(question: AssignQuestion, modifier: Modifier){
+    Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
+        Column(modifier = modifier.fillMaxWidth().padding(16.dp)) {
+            Row {
+                bodyText("Frage: ", modifier =  Modifier.weight(1f))
+                bodyText(question.description, modifier = Modifier.weight(4f))
+            }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
+            Row {
+                bodyText("Antworten:", modifier = Modifier.weight(1f))
+                Column(modifier = Modifier.weight(4f)) {
+                    question.assignments.forEachIndexed { index, assignment ->
+                        Row {
+                            bodyText("Lösung ${index+1}: ")
+                            bodyText("A: ${assignment.termA}, B: ${assignment.termB}")
+                        }
+                    }
+                }
+            }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
+            Row {
+                bodyText("Erklärung:", modifier =  Modifier.weight(1f))
+                bodyText(question.explanation, modifier = Modifier.weight(4f))
+            }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
+            Row {
+                bodyText("Punkte:", modifier = Modifier.weight(1f))
+                bodyText("$${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
+            }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
+            Row {
+                bodyText("Tags:", 20, Modifier.weight(1f))
+                if(question.tags.isNotEmpty()){
+                    Column(Modifier.weight(4f)) {
+                        question.tags.forEach { tag ->
+                            bodyText(tag)
+                        }
+                    }
+                }else{
+                    bodyText("Keine Tags vorhanden", modifier = Modifier.weight(4f))
+                }
+            }
+        }
+    }
 }

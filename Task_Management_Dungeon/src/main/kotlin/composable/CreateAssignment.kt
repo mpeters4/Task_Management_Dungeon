@@ -98,13 +98,13 @@ fun createAssignment(
                                 "Remove Item",
                                 Modifier.padding(10.dp).clickable { assignments.remove(assignment) })
                             Text(
-                                "Term A: ${assignment.termA}",
+                                "Term A: ${assignment.termA}  ",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontSize = 24.sp,
                                 lineHeight = 25.sp,
                                 modifier = modifier.clickable {})
                             Text(
-                                "Term B: ${assignment.termB}",
+                                "  Term B: ${assignment.termB}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontSize = 24.sp,
                                 lineHeight = 25.sp,
