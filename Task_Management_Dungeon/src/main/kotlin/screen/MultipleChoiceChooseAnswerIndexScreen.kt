@@ -26,8 +26,7 @@ class MultipleChoiceChooseAnswerIndexScreen(private val question: MultipleChoice
         val navigator = LocalNavigator.currentOrThrow
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
-        var selectedIndex by remember { mutableStateOf(-1) }
-        var selectedIndices = remember { mutableStateListOf<Int>() }
+        val selectedIndices = remember { mutableStateListOf<Int>() }
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -46,13 +45,16 @@ class MultipleChoiceChooseAnswerIndexScreen(private val question: MultipleChoice
                         }
                         itemsIndexed(items = question.answers) { index, answer ->
                             bodyText(answer, modifier = Modifier.selectable(
-                                selected = question.correctAnswerIndices.contains(index),
+                                selected = selectedIndices.contains(index),
                                 onClick = {
-                                    question.correctAnswerIndices.addLast(index)
-                                    selectedIndex = index
+                                    if(!selectedIndices.contains(index)){
+                                        selectedIndices.add(index)
+                                    }else{
+                                        selectedIndices.remove(index)
+                                    }
                                 }
                             ).clip(shape = RoundedCornerShape(10.dp)).background(
-                                if (question.correctAnswerIndices.contains(index)) {
+                                if (selectedIndices.contains(index)) {
                                     MaterialTheme.colorScheme.onSecondary
                                 } else MaterialTheme.colorScheme.background
                             ).fillParentMaxWidth().padding(start = 16.dp, end = 16.dp, top = 16.dp))
@@ -75,10 +77,10 @@ class MultipleChoiceChooseAnswerIndexScreen(private val question: MultipleChoice
                                     modifier = Modifier.padding(16.dp),
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
-                                        if (question.correctAnswerIndices.isNotEmpty()) {
+                                        if (selectedIndices.isNotEmpty()) {
+                                            question.correctAnswerIndices = selectedIndices
                                             navigator.push(
-                                                HomeScreen()
-                                                //CheckSingleTaskQuestionScreen(question = question)
+                                                CheckMultipleChoiceQuestionScreen(question)
                                             )
                                         } else {
                                             scope.launch {
