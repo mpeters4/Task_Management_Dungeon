@@ -59,7 +59,7 @@ class SingleChoiceChooseAnswerIndexScreen(private val question: SingleChoiceQues
                                 if (index == question.correctAnswerIndex){
                                     MaterialTheme.colorScheme.onSecondary
                                 }else MaterialTheme.colorScheme.background
-                            ).fillParentMaxWidth().padding(start = 16.dp, end = 16.dp, top = 16.dp))
+                            ).fillParentMaxWidth().padding(start = 16.dp, end = 16.dp))
                             Spacer(modifier = Modifier.padding(8.dp))
                         }
                         item {
