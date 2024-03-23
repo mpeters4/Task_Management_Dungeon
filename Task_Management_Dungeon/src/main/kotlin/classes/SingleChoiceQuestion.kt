@@ -2,7 +2,7 @@ package classes
 
 import androidx.compose.runtime.mutableStateListOf
 
-data class SingleTaskQuestion(
+data class SingleChoiceQuestion(
     var description: String = "",
     var points: Int = 0,
     var pointsToPass: Int = 0,

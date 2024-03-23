@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.SingleTaskQuestion
+import classes.SingleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.bodyText
 import composable.title
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
  * Screen to choose the Correct Answer of the created Question and pass the Question further to the next Screen
  * @param question Single Choice Question created in Screen before
  */
-class SingleChoiceChooseAnswerIndexScreen(private val question: SingleTaskQuestion) : Screen {
+class SingleChoiceChooseAnswerIndexScreen(private val question: SingleChoiceQuestion) : Screen {
 
     @Composable
     override fun Content() {

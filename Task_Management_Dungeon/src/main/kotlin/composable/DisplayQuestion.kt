@@ -1,6 +1,5 @@
 package composable
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,10 +10,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import classes.AssignQuestion
 import classes.MultipleChoiceQuestion
-import classes.SingleTaskQuestion
+import classes.SingleChoiceQuestion
 
 @Composable
-fun QuestionDisplay(question: SingleTaskQuestion, modifier: Modifier = Modifier){
+fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifier){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
         Column(modifier = modifier.fillMaxWidth().padding(16.dp)) {
             Row {
@@ -82,8 +81,8 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
             Row {
                 bodyText("Korrekte Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
-                    question.correctAnswers.forEach(){  index ->
-                        bodyText("Antwort ${index+1}: ")
+                    question.correctAnswerIndices.forEach(){  index ->
+                        bodyText("Antwort ${index+1} ")
                     }
                 }
 

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.SingleTaskQuestion
+import classes.SingleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
@@ -18,7 +18,7 @@ import composable.title
  * Screen to check the Question before saving it to the Database
  * @param question Single Choice Question created in Screen before
  */
-class CheckSingleTaskQuestionScreen(val question: SingleTaskQuestion) : Screen {
+class CheckSingleTaskQuestionScreen(val question: SingleChoiceQuestion) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow

@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.SingleTaskQuestion
+import classes.SingleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.createStringList
 import composable.inputNumberField
@@ -128,7 +128,7 @@ class CreateSingleChoiceScreen : Screen {
                                         if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()) {
                                             navigator.push(
                                                 SingleChoiceChooseAnswerIndexScreen(
-                                                    SingleTaskQuestion(
+                                                    SingleChoiceQuestion(
                                                         questionText,
                                                         points.toInt(),
                                                         pointsToPass.toInt(),
