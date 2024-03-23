@@ -81,7 +81,7 @@ class SingleChoiceChooseAnswerIndexScreen(private val question: SingleChoiceQues
                                     onClick = {
                                         if (question.correctAnswerIndex !=-1) {
                                             navigator.push(
-                                                CheckSingleTaskQuestionScreen(question = question)
+                                                CheckSingleChoiceQuestionScreen(question = question)
                                             )
                                         } else {
                                             scope.launch {

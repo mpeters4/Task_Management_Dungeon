@@ -18,7 +18,7 @@ import composable.title
  * Screen to check the Question before saving it to the Database
  * @param question Single Choice Question created in Screen before
  */
-class CheckSingleTaskQuestionScreen(val question: SingleChoiceQuestion) : Screen {
+class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
