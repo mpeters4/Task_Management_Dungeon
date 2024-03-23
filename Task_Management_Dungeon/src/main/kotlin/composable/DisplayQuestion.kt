@@ -1,8 +1,10 @@
 package composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifie
                 bodyText("Frage: ", modifier =  Modifier.weight(1f))
                 bodyText(question.description, modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
@@ -31,18 +34,22 @@ fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifie
                     }
                 }
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Korrekte Antwort:", modifier = Modifier.weight(1f))
                 bodyText("Antwort ${question.correctAnswerIndex + 1}", modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Erklärung:", modifier =  Modifier.weight(1f))
                 bodyText(question.explanation, modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Punkte:", modifier = Modifier.weight(1f))
                 bodyText("$${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Tags:", 20, Modifier.weight(1f))
                 if(question.tags.isNotEmpty()){
@@ -67,6 +74,7 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
                 bodyText("Frage: ", modifier =  Modifier.weight(1f))
                 bodyText(question.description, modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
@@ -78,6 +86,7 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
                     }
                 }
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Korrekte Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
@@ -85,16 +94,18 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
                         bodyText("Antwort ${index+1} ")
                     }
                 }
-
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Erklärung:", modifier =  Modifier.weight(1f))
                 bodyText(question.explanation, modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Punkte:", modifier = Modifier.weight(1f))
                 bodyText("$${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
             }
+            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Tags:", 20, Modifier.weight(1f))
                 if(question.tags.isNotEmpty()){
