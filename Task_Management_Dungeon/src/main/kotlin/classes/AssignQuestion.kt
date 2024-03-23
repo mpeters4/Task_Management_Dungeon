@@ -1,13 +1,13 @@
 package classes
 
-class AssignQuestion(
-    questionID: Int,
-    description: String,
-    points: Int,
-    pointsToPass: Int,
-    explanation: String,
-    val answers: List<Answer>,
-    val correctAnswerIndex: Int,
-    tags: List<String>
-) : Question(questionID, description, points, pointsToPass, explanation, tags) {
-}
+import androidx.compose.runtime.mutableStateListOf
+
+data class AssignQuestion(
+    var description: String = "",
+    var points: Int = 0,
+    var pointsToPass: Int = 0,
+    var explanation: String = "",
+    val answers: List<String> = mutableStateListOf(),
+    val tags: List<String> = mutableStateListOf(),
+    val assignments: List<Assignment> = mutableStateListOf()
+)
