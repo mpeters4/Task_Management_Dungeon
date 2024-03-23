@@ -10,5 +10,5 @@ data class MultipleChoiceQuestion(
     val answers: List<String> = mutableStateListOf(),
     val tags: List<String> = mutableStateListOf()
 ) {
-    val correctAnswerIndices: List<Int> = mutableStateListOf()
+    var correctAnswerIndices: List<Int> = mutableStateListOf()
 }
