@@ -38,18 +38,18 @@ class HomeScreen : Screen {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Column (
+                Box (
                     Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(8.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
                     title("Willkommen im Dungeon Task Manager")
                     Box(
-                        Modifier.fillMaxSize().padding(top = 30.dp)
+                        Modifier.fillMaxSize().padding(top = 30.dp).align(Alignment.Center)
                     ) {
                         FlowRow(
                             Modifier.height(intrinsicSize = IntrinsicSize.Max)
                                 .width(intrinsicSize = IntrinsicSize.Max)
-                                .align(Alignment.Center),
+                                .align(Alignment.Center).padding(top = 60.dp),
                             maxItemsInEachRow = 3
                         ) {
                             clickableIconCardNavigate(

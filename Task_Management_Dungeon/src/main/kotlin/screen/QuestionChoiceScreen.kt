@@ -3,28 +3,27 @@
 package screen
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.compose.AppTheme
 import composable.clickableIconCardNavigate
+import composable.title
 import icon.squarePlusIcon
 import icon.walkingIcon
 
+/**
+ * Screen to navigate to the different question creation screens
+ */
 class QuestionChoiceScreen : Screen {
     @Composable
     @Preview
@@ -35,17 +34,10 @@ class QuestionChoiceScreen : Screen {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Box(){
-                    Text(
-                        text = "Bitte wählen Sie den Fragetypen:",
-                        fontSize = 50.sp,
-                        style = MaterialTheme.typography.titleLarge,
-                        lineHeight = 50.sp,
-                        textAlign = TextAlign.Start,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                Box{
+                    title("Bitte wählen Sie den Fragetypen")
                     Box(
-                        Modifier.fillMaxSize().padding(top = 100.dp),
+                        Modifier.fillMaxSize().padding(top = 100.dp).verticalScroll(rememberScrollState()),
                         contentAlignment = Alignment.Center,
                     ) {
                         FlowRow(
