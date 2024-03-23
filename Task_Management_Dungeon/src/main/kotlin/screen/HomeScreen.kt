@@ -9,13 +9,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -23,8 +20,14 @@ import com.example.compose.AppTheme
 import composable.clickableIconCardExit
 import composable.clickableIconCardNavigate
 import composable.title
-import icon.*
+import icon.exitIcon
+import icon.rectangleListIcon
+import icon.squarePlusIcon
+import icon.walkingIcon
 
+/**
+ * Homescreen of the Application. Allows to navigate to all the functionalities.
+ */
 class HomeScreen : Screen {
     @Composable
     @Preview
