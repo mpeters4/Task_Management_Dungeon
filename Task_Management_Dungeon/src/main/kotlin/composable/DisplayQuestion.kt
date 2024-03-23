@@ -1,7 +1,6 @@
 package composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -90,7 +89,7 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
             Row {
                 bodyText("Korrekte Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
-                    question.correctAnswerIndices.forEach(){  index ->
+                    question.correctAnswerIndices.forEach{  index ->
                         bodyText("Antwort ${index+1} ")
                     }
                 }
