@@ -36,7 +36,7 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                         )
                     ) {
                         item {
-                            title("Bitte kontrollieren Sie die Angaben und wählen Sie die korrekte Antwort aus der Antwortliste an:")
+                            title("Bitte kontrollieren Sie die Angaben")
                         }
                         item {
                             QuestionDisplay(question, Modifier.fillMaxWidth())
