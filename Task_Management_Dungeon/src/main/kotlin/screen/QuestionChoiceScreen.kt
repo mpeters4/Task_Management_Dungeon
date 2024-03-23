@@ -16,8 +16,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.compose.AppTheme
+import composable.clickableIconCardNavBack
 import composable.clickableIconCardNavigate
 import composable.title
+import icon.backIcon
 import icon.squarePlusIcon
 import icon.walkingIcon
 
@@ -59,14 +61,20 @@ class QuestionChoiceScreen : Screen {
                                 "Multiple-Choice",
                                 Modifier.padding(8.dp),
                                 navigator,
-                                CreateQuestionScreen()
+                                CreateMultipleChoiceScreen()
                             )
                             clickableIconCardNavigate(
                                 walkingIcon(MaterialTheme.colorScheme.onBackground),
                                 "Zuordnungs-\naufgabe",
                                 Modifier.padding(8.dp),
                                 navigator,
-                                CreateQuestionScreen()
+                                CreateAssignScreen()
+                            )
+                            clickableIconCardNavBack(
+                                backIcon(MaterialTheme.colorScheme.onBackground),
+                                "Zurück",
+                                Modifier.padding(8.dp),
+                                navigator,
                             )
                         }
                     }
