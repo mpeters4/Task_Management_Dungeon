@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
  * Screen to check the Question before saving it to the Database
  * @param question Multiple Choice Question created in Screen before
  */
-class CreateMultipleChoiceScreen(val question: MultipleChoiceQuestion) : Screen {
+class CreateMultipleChoiceScreen() : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -107,7 +107,6 @@ class CreateMultipleChoiceScreen(val question: MultipleChoiceQuestion) : Screen 
                                 )
                             }
                         }
-
                         item {
                             Row(//verticalAlignment = Alignment.Bottom,
                                 modifier = Modifier.fillMaxWidth(),
@@ -127,8 +126,8 @@ class CreateMultipleChoiceScreen(val question: MultipleChoiceQuestion) : Screen 
                                     onClick = {
                                         if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()) {
                                             navigator.push(
-                                                SingleChoiceChooseAnswerIndexScreen(
-                                                    SingleChoiceQuestion(
+                                                MultipleChoiceChooseAnswerIndexScreen(
+                                                    MultipleChoiceQuestion(
                                                         questionText,
                                                         points.toInt(),
                                                         pointsToPass.toInt(),
