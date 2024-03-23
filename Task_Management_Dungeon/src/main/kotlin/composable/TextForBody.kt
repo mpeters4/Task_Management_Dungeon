@@ -6,8 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -20,6 +18,6 @@ fun bodyText(text : String, size: Int = 16, modifier: Modifier = Modifier){
         fontSize = size.sp,
         lineHeight = size.sp,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier.padding(bottom = 16.dp)
+        modifier = modifier.padding(16.dp)
     )
 }
