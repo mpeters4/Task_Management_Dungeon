@@ -20,6 +20,10 @@ import composable.bodyText
 import composable.title
 import kotlinx.coroutines.launch
 
+/**
+ * Screen to choose the Correct Answer of the created Question and pass the Question further to the next Screen
+ * @param question Single Choice Question created in Screen before
+ */
 class SingleChoiceChooseAnswerIndexScreen(private val question: SingleTaskQuestion) : Screen {
 
     @Composable

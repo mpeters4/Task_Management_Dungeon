@@ -18,6 +18,9 @@ import composable.inputTextField
 import composable.title
 import kotlinx.coroutines.launch
 
+/**
+ * Screen to Create a Single Choice Question and pass it further to the next Screen (Creates everything but the correctAnswerIndex)
+ */
 class CreateSingleChoiceScreen : Screen {
 
     @Composable

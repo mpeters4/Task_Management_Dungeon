@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import cafe.adriel.voyager.navigator.Navigator
@@ -35,10 +36,10 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication,
+    Window(
+        onCloseRequest = ::exitApplication,
         resizable = true,
         title = "Dungeon Task Manager",
-
     ) {
         window.minimumSize = Dimension(500, 500)
         Navigator(HomeScreen()) { navigator ->
