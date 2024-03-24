@@ -51,7 +51,7 @@ fun createStringList(
                 isError = strings.size < minAmount
             )
         })
-        LazyColumn(Modifier.fillMaxWidth().size(200.dp).clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary),) {
+        LazyColumn(Modifier.fillMaxWidth().size(200.dp).clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)) {
             item {
                 Text(
                     text = outputLabel,
