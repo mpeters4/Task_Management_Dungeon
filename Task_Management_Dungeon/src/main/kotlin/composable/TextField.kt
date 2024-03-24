@@ -7,13 +7,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import java.lang.Error
 
 @Composable
 fun inputTextField(
     modifier: Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    label : String
+    label : String,
+    isError: Boolean
 ) {
     var text by remember { mutableStateOf(value) }
 
@@ -23,7 +25,7 @@ fun inputTextField(
         onValueChange = { text = it
             onValueChange(it)},
         label = { Text(label) },
-        isError = text.isEmpty()
+        isError = isError
     )
 }
 

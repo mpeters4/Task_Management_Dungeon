@@ -60,7 +60,8 @@ class CreateSingleChoiceScreen : Screen {
                                 Modifier,
                                 questionText,
                                 onValueChange = { questionText = it },
-                                "Frage eingeben"
+                                "Frage eingeben",
+                                questionText.isEmpty()
                             )
                         }
                         item {
@@ -88,7 +89,8 @@ class CreateSingleChoiceScreen : Screen {
                                 Modifier,
                                 explanation,
                                 onValueChange = { explanation = it },
-                                "Erklärung angeben"
+                                "Erklärung angeben",
+                                explanation.isEmpty()
                             )
                         }
                         item {

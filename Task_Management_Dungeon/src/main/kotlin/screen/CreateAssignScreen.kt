@@ -54,7 +54,8 @@ class CreateAssignScreen : Screen {
                                 Modifier,
                                 questionText,
                                 onValueChange = { questionText = it },
-                                "Frage eingeben"
+                                "Frage eingeben",
+                                questionText.isEmpty()
                             )
                         }
                         item {
@@ -81,7 +82,8 @@ class CreateAssignScreen : Screen {
                                 Modifier,
                                 explanation,
                                 onValueChange = { explanation = it },
-                                "Erklärung angeben"
+                                "Erklärung angeben",
+                                explanation.isEmpty()
                             )
                         }
                         item {

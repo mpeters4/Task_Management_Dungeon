@@ -11,7 +11,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.MultipleChoiceQuestion
-import classes.SingleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.createStringList
 import composable.inputNumberField
@@ -21,9 +20,8 @@ import kotlinx.coroutines.launch
 
 /**
  * Screen to check the Question before saving it to the Database
- * @param question Multiple Choice Question created in Screen before
  */
-class CreateMultipleChoiceScreen() : Screen {
+class CreateMultipleChoiceScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -60,7 +58,8 @@ class CreateMultipleChoiceScreen() : Screen {
                                 Modifier,
                                 questionText,
                                 onValueChange = { questionText = it },
-                                "Frage eingeben"
+                                "Frage eingeben",
+                                questionText.isEmpty()
                             )
                         }
                         item {
@@ -88,7 +87,8 @@ class CreateMultipleChoiceScreen() : Screen {
                                 Modifier,
                                 explanation,
                                 onValueChange = { explanation = it },
-                                "Erklärung angeben"
+                                "Erklärung angeben",
+                                explanation.isEmpty()
                             )
                         }
                         item {
