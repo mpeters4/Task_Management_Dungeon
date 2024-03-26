@@ -57,7 +57,7 @@ class HomeScreen : Screen {
                                 "Projekte",
                                 Modifier.padding(8.dp),
                                 navigator,
-                                EditProjectScreen()
+                                ProjectScreen()
                             )
                             clickableIconCardNavigate(
                                 walkingIcon(MaterialTheme.colorScheme.onSurfaceVariant),
