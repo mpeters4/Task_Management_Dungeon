@@ -1,4 +1,0 @@
-package classes
-
-class DependencyTypes {
-}
