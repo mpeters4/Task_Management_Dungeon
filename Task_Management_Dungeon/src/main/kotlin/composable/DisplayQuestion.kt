@@ -14,14 +14,16 @@ import classes.MultipleChoiceQuestion
 import classes.SingleChoiceQuestion
 
 @Composable
-fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifier){
+fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifier, showQuestion : Boolean= true){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
         Column(modifier = modifier.fillMaxWidth().padding(16.dp)) {
-            Row {
-                bodyText("Frage: ", modifier =  Modifier.weight(1f))
-                bodyText(question.description, modifier = Modifier.weight(4f))
+            if(showQuestion){
+                Row {
+                    bodyText("Frage: ", modifier =  Modifier.weight(1f))
+                    bodyText(question.description, modifier = Modifier.weight(4f))
+                }
+                Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             }
-            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
@@ -36,7 +38,7 @@ fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifie
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Korrekte Antwort:", modifier = Modifier.weight(1f))
-                bodyText("Antwort ${question.correctAnswerIndex + 1}", modifier = Modifier.weight(4f))
+                bodyText("Antwort ${(question.correctAnswerIndex + 1)}", modifier = Modifier.weight(4f))
             }
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {

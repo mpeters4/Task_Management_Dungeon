@@ -1,19 +1,13 @@
 package screen
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -23,20 +17,37 @@ import com.example.compose.AppTheme
 import composable.checkBoxFilter
 import composable.expandableItem
 import composable.inputTextField
-import composable.title
 
 class QuestionOverviewScreen : Screen {
+
+    fun filterSearchbar(searchBar: String, item: SingleChoiceQuestion): Boolean {
+        if (item.description.lowercase().contains(searchBar.lowercase())) {
+            return true
+        } else if (true) {
+            var check = false
+            item.answers.forEach() {
+                if (it.lowercase().contains(searchBar.lowercase()) && !check) {
+                    return true
+                    // check = true
+                }
+            }
+            check = false
+        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
+            return true
+        }
+        return false
+    }
+
     @Composable
     @Preview
     override fun Content() {
-        var tagList = remember { listOf("tag 1", "tag 2", "a", "tag 4") }
+        var tagList = remember { listOf("tag 1", "tag 2", "a", "31") }
         var tagFilterList = remember { mutableStateListOf<String>() }
-        var questionList = remember {
-            listOf(
+        var questionList = mutableStateListOf(
                 SingleChoiceQuestion(
-                    "Dies ist eine Testfrage, wobei Antwort 2 die Lösung ist",
+                    "Dies ist eine Testfrage, wobei Antwort 2 dieee Lösung ist",
                     1, 1, "Die Erklärung hierzu ist echt nicht nötig",
-                    listOf("Antwort 1", "Antwort 2", "antwoort3"), listOf("tag 1", "tag2")
+                    listOf("Antwort 1", "Antwort 2", "antwoort3"), listOf("tag 1", "tag2"), correctAnswerIndex = 1
                 ),
                 SingleChoiceQuestion(
                     "AFRAGE",
@@ -55,7 +66,7 @@ class QuestionOverviewScreen : Screen {
                     listOf("t1", "t2", "t3")
                 ),
                 SingleChoiceQuestion(
-                    "Frage",
+                    "Frageq",
                     1,
                     1,
                     "Erklärung",
@@ -71,23 +82,23 @@ class QuestionOverviewScreen : Screen {
                     listOf("t1", "a", "t3")
                 ),
                 SingleChoiceQuestion(
-                    "Frage",
+                    "Fragez",
                     1,
                     1,
                     "Erklärunasfasfag",
-                    listOf("Antwort 1", "a2", "a3"),
+                    listOf("Antwort 1q", "a2", "a3"),
                     listOf("t1", "FILTERME", "t3")
                 ),
                 SingleChoiceQuestion(
-                    "AAAA",
+                    "AAAAüZ",
                     1,
                     1,
-                    "Erklärung",
+                    "Erklärungq",
                     listOf("Antwort 1", "a2", "a3"),
-                    listOf("t1", "a", "t3")
+                    listOf("t1", "a", "31")
                 )
             )
-        }
+
         var searchBar by rememberSaveable { mutableStateOf("") }
         val navigator = LocalNavigator.currentOrThrow
         AppTheme {
@@ -97,21 +108,35 @@ class QuestionOverviewScreen : Screen {
             ) {
                 Scaffold(
                     topBar = {
-                        inputTextField(Modifier,searchBar,onValueChange = { searchBar = it },"Suche", false)
+                        inputTextField(Modifier, searchBar, onValueChange = { searchBar = it }, "Suche", false)
+                    },
+                    bottomBar = {
+                        Row(//verticalAlignment = Alignment.Bottom,
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Button(
+                                modifier = Modifier.padding(16.dp),
+                                colors = ButtonDefaults.buttonColors(),
+                                onClick = {
+                                    navigator.pop()
+                                }) {
+                                Text("Zurück")
+                            }
+                        }
                     }
+
                 ) {
                     Row {
                         Column(
                             Modifier.padding(
-                                start = 24.dp,
-                                top = 64.dp,
-                                end = 24.dp
+                                it
                             ).weight(1f)
                         ) {
                             tagList.forEach() { tag ->
-                                    checkBoxFilter(tag, tagList, onCheckedTrue = {
-                                        tagFilterList.add(tag)
-                                    },
+                                checkBoxFilter(tag, tagList, onCheckedTrue = {
+                                    tagFilterList.add(tag)
+                                },
                                     onCheckedFalse = {
                                         tagFilterList.remove(tag)
                                     })
@@ -119,26 +144,42 @@ class QuestionOverviewScreen : Screen {
                         }
                         LazyColumn(
                             Modifier.padding(
-                                start = 24.dp,
-                                top = 64.dp,
-                                end = 24.dp
-                            ).weight(4f)
+                                it
+                            ).weight(5f)
                         ) {
                             items(items = questionList) { item ->
-                                if (tagFilterList.isNotEmpty()){
-                                    tagFilterList.forEach() { it ->
+                                if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
+                                    tagFilterList.forEach() {
                                         if (item.tags.contains(it)) {
-                                            expandableItem(item)
+                                            if (filterSearchbar(it, item)) {
+                                                if (filterSearchbar(searchBar, item)) {
+                                                    expandableItem(item,{questionList.remove(item)})
+                                                }
+                                            }
                                         }
                                     }
-                                }else expandableItem(item)
+                                } else if (searchBar.isEmpty() && tagFilterList.isNotEmpty()) {
+                                    tagFilterList.forEach() {
+                                        if (item.tags.contains(it)) {
+                                            if (filterSearchbar(it, item)) {
+                                                expandableItem(item, {questionList.remove(item)})
+                                            }
+                                        }
+                                    }
+                                } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
+                                    if (filterSearchbar(searchBar, item)) {
+                                        expandableItem(item,{questionList.remove(item)} )
+                                    }
 
+                                }
+                                if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
+                                    expandableItem(item,{questionList.remove(item)})
+                                }
                             }
-
-
                         }
                     }
                 }
+
             }
         }
 

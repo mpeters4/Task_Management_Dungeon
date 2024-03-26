@@ -1,18 +1,25 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package composable
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.*
 import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -21,11 +28,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import classes.SingleChoiceQuestion
+import icon.deleteIcon
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun expandableItem(question: SingleChoiceQuestion) {
+fun expandableItem(question: SingleChoiceQuestion, action: (SingleChoiceQuestion) -> Unit,) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 180f else 0f
@@ -55,7 +62,7 @@ fun expandableItem(question: SingleChoiceQuestion) {
                 Text(
                     modifier = Modifier
                         .weight(6f),
-                    text = "title",
+                    text = question.description,
                     fontSize = 16.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -75,8 +82,13 @@ fun expandableItem(question: SingleChoiceQuestion) {
                 }
             }
             if (expandedState){
-                QuestionDisplay(question)
+                QuestionDisplay(question, showQuestion = false)
+                Image(
+                    deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                    "Remove Item",
+                    Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
             }
+
         }
 
 
