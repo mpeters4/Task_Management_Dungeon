@@ -1,0 +1,6 @@
+package classes
+
+class Dependency(
+
+) {
+}
