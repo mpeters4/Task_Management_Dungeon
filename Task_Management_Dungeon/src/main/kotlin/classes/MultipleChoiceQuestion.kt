@@ -2,13 +2,19 @@ package classes
 
 import androidx.compose.runtime.mutableStateListOf
 
-data class MultipleChoiceQuestion(
-    var description: String = "",
-    var points: Int = 0,
-    var pointsToPass: Int = 0,
-    var explanation: String = "",
+class MultipleChoiceQuestion(
+    description: String = "",
+    points: Int = 0,
+    pointsToPass: Int = 0,
+    explanation: String = "",
+    tags: List<String> = mutableStateListOf(),
     val answers: List<String> = mutableStateListOf(),
-    val tags: List<String> = mutableStateListOf()
+) : Question(
+    description = description,
+    points = points,
+    pointsToPass = pointsToPass,
+    explanation = explanation,
+    tags = tags
 ) {
     var correctAnswerIndices: List<Int> = mutableStateListOf()
 }
