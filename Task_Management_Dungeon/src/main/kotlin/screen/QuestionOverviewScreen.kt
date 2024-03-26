@@ -12,17 +12,13 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.MultipleChoiceQuestion
-import classes.Question
-import classes.SingleChoiceQuestion
+import classes.*
 import com.example.compose.AppTheme
 import composable.checkBoxFilter
 import composable.expandableItem
 import composable.inputTextField
 
 class QuestionOverviewScreen : Screen {
-
-
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
@@ -49,15 +45,17 @@ class QuestionOverviewScreen : Screen {
                     1,
                     "Erklärung",
                     listOf("Antwort 1", "a2", "a3"),
-                    listOf("t1", "a", "t3")
+                    listOf("t1", "a", "t3"),
+                    correctAnswerIndices = listOf(1,2)
                 ),
-                SingleChoiceQuestion(
+                AssignQuestion(
                     "Frage",
                     1,
                     1,
                     "Erklärung",
-                    listOf("Antwort 1", "FILTERME", "a3"),
-                    listOf("t1", "t2", "t3")
+                    assignments = listOf(Assignment("Antwort 1", "FILTERME"),
+                        Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")),
+                    tags = listOf("t1", "t2", "t3")
                 ),
                 SingleChoiceQuestion(
                     "Frageq",
