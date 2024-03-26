@@ -68,12 +68,15 @@ fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifie
 }
 
 @Composable
-fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modifier){
+fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modifier, showQuestion : Boolean= true){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
         Column(modifier = modifier.fillMaxWidth().padding(16.dp)) {
-            Row {
-                bodyText("Frage: ", modifier =  Modifier.weight(1f))
-                bodyText(question.description, modifier = Modifier.weight(4f))
+            if(showQuestion){
+                Row {
+                    bodyText("Frage: ", modifier =  Modifier.weight(1f))
+                    bodyText(question.description, modifier = Modifier.weight(4f))
+                }
+                Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             }
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
@@ -123,12 +126,15 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
     }
 }
 @Composable
-fun QuestionDisplay(question: AssignQuestion, modifier: Modifier){
+fun QuestionDisplay(question: AssignQuestion, modifier: Modifier = Modifier, showQuestion : Boolean= true){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
         Column(modifier = modifier.fillMaxWidth().padding(16.dp)) {
-            Row {
-                bodyText("Frage: ", modifier =  Modifier.weight(1f))
-                bodyText(question.description, modifier = Modifier.weight(4f))
+            if(showQuestion){
+                Row {
+                    bodyText("Frage: ", modifier =  Modifier.weight(1f))
+                    bodyText(question.description, modifier = Modifier.weight(4f))
+                }
+                Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             }
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {

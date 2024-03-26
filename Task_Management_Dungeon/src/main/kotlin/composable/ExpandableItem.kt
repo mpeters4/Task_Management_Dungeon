@@ -7,7 +7,6 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +18,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,12 +25,15 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import classes.AssignQuestion
+import classes.MultipleChoiceQuestion
+import classes.Question
 import classes.SingleChoiceQuestion
 import icon.deleteIcon
 
 
 @Composable
-fun expandableItem(question: SingleChoiceQuestion, action: (SingleChoiceQuestion) -> Unit,) {
+fun expandableItem(question: Question, action: (Question) -> Unit,) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 180f else 0f
@@ -82,7 +83,13 @@ fun expandableItem(question: SingleChoiceQuestion, action: (SingleChoiceQuestion
                 }
             }
             if (expandedState){
-                QuestionDisplay(question, showQuestion = false)
+                if (question is SingleChoiceQuestion) {
+                    QuestionDisplay(question, showQuestion = false)
+                }else if(question is MultipleChoiceQuestion){
+                    QuestionDisplay(question, showQuestion = false)
+                }else if (question is AssignQuestion){
+                    QuestionDisplay(question, showQuestion = false)
+                }
                 Image(
                     deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                     "Remove Item",

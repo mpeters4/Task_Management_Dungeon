@@ -12,6 +12,9 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import classes.AssignQuestion
+import classes.MultipleChoiceQuestion
+import classes.Question
 import classes.SingleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.checkBoxFilter
@@ -20,7 +23,20 @@ import composable.inputTextField
 
 class QuestionOverviewScreen : Screen {
 
-    fun filterSearchbar(searchBar: String, item: SingleChoiceQuestion): Boolean {
+    fun filterSearchbar(searchBar: String, item: Question): Boolean {
+        if (item.description.lowercase().contains(searchBar.lowercase())) {
+            return true
+        } else if (true) {
+            var check = false
+
+            check = false
+        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
+            return true
+        }
+        return false
+    }
+
+    fun filterSearchbar(searchBar: String, item: MultipleChoiceQuestion): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
         } else if (true) {
@@ -30,6 +46,27 @@ class QuestionOverviewScreen : Screen {
                     return true
                     // check = true
                 }
+            }
+            check = false
+        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
+            return true
+        }
+        return false
+    }
+
+    fun filterSearchbar(searchBar: String, item: AssignQuestion): Boolean {
+        if (item.description.lowercase().contains(searchBar.lowercase())) {
+            return true
+        } else if (true) {
+            var check = false
+            item.assignments.forEach() {
+                if (it.termA.lowercase().contains(searchBar.lowercase()) && !check) {
+                    return true
+                    // check = true
+                }else if (it.termB.lowercase().contains(searchBar.lowercase()) && !check) {
+                return true
+                // check = true
+            }
             }
             check = false
         } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
@@ -49,7 +86,7 @@ class QuestionOverviewScreen : Screen {
                     1, 1, "Die Erklärung hierzu ist echt nicht nötig",
                     listOf("Antwort 1", "Antwort 2", "antwoort3"), listOf("tag 1", "tag2"), correctAnswerIndex = 1
                 ),
-                SingleChoiceQuestion(
+                MultipleChoiceQuestion(
                     "AFRAGE",
                     1,
                     1,
