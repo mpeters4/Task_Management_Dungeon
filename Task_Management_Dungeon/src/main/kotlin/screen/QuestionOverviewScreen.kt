@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.AssignQuestion
 import classes.MultipleChoiceQuestion
 import classes.Question
 import classes.SingleChoiceQuestion
@@ -23,53 +22,11 @@ import composable.inputTextField
 
 class QuestionOverviewScreen : Screen {
 
-    fun filterSearchbar(searchBar: String, item: Question): Boolean {
+
+    private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
-        } else if (true) {
-            var check = false
-
-            check = false
-        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
-            return true
-        }
-        return false
-    }
-
-    fun filterSearchbar(searchBar: String, item: MultipleChoiceQuestion): Boolean {
-        if (item.description.lowercase().contains(searchBar.lowercase())) {
-            return true
-        } else if (true) {
-            var check = false
-            item.answers.forEach() {
-                if (it.lowercase().contains(searchBar.lowercase()) && !check) {
-                    return true
-                    // check = true
-                }
-            }
-            check = false
-        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
-            return true
-        }
-        return false
-    }
-
-    fun filterSearchbar(searchBar: String, item: AssignQuestion): Boolean {
-        if (item.description.lowercase().contains(searchBar.lowercase())) {
-            return true
-        } else if (true) {
-            var check = false
-            item.assignments.forEach() {
-                if (it.termA.lowercase().contains(searchBar.lowercase()) && !check) {
-                    return true
-                    // check = true
-                }else if (it.termB.lowercase().contains(searchBar.lowercase()) && !check) {
-                return true
-                // check = true
-            }
-            }
-            check = false
-        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
+        }else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
             return true
         }
         return false
@@ -78,9 +35,9 @@ class QuestionOverviewScreen : Screen {
     @Composable
     @Preview
     override fun Content() {
-        var tagList = remember { listOf("tag 1", "tag 2", "a", "31") }
-        var tagFilterList = remember { mutableStateListOf<String>() }
-        var questionList = mutableStateListOf(
+        val tagList = remember { listOf("tag 1", "tag 2", "a", "31") }
+        val tagFilterList = remember { mutableStateListOf<String>() }
+        val questionList = mutableStateListOf(
                 SingleChoiceQuestion(
                     "Dies ist eine Testfrage, wobei Antwort 2 dieee Lösung ist",
                     1, 1, "Die Erklärung hierzu ist echt nicht nötig",
@@ -141,7 +98,7 @@ class QuestionOverviewScreen : Screen {
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.background,
             ) {
                 Scaffold(
                     topBar = {
@@ -170,7 +127,7 @@ class QuestionOverviewScreen : Screen {
                                 it
                             ).weight(1f)
                         ) {
-                            tagList.forEach() { tag ->
+                            tagList.forEach { tag ->
                                 checkBoxFilter(tag, tagList, onCheckedTrue = {
                                     tagFilterList.add(tag)
                                 },
@@ -186,31 +143,31 @@ class QuestionOverviewScreen : Screen {
                         ) {
                             items(items = questionList) { item ->
                                 if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
-                                    tagFilterList.forEach() {
+                                    tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
                                                 if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(item,{questionList.remove(item)})
+                                                    expandableItem(item) { questionList.remove(item) }
                                                 }
                                             }
                                         }
                                     }
                                 } else if (searchBar.isEmpty() && tagFilterList.isNotEmpty()) {
-                                    tagFilterList.forEach() {
+                                    tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
-                                                expandableItem(item, {questionList.remove(item)})
+                                                expandableItem(item) { questionList.remove(item) }
                                             }
                                         }
                                     }
                                 } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
                                     if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(item,{questionList.remove(item)} )
+                                        expandableItem(item) { questionList.remove(item) }
                                     }
 
                                 }
                                 if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
-                                    expandableItem(item,{questionList.remove(item)})
+                                    expandableItem(item) { questionList.remove(item) }
                                 }
                             }
                         }
