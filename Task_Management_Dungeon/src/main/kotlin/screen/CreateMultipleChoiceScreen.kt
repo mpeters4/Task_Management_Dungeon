@@ -40,13 +40,62 @@ class CreateMultipleChoiceScreen : Screen {
                 color = MaterialTheme.colorScheme.background,
             ) {
                 Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                    bottomBar ={Row(//verticalAlignment = Alignment.Bottom,
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Button(
+                            modifier = Modifier.padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(),
+                            onClick = {
+                                navigator.pop()
+                            }) {
+                            Text("Zurück")
+                        }
+                        Button(
+                            modifier = Modifier.padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(),
+                            onClick = {
+                                if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()) {
+                                    navigator.push(
+                                        MultipleChoiceChooseAnswerIndexScreen(
+                                            MultipleChoiceQuestion(
+                                                questionText,
+                                                points.toInt(),
+                                                pointsToPass.toInt(),
+                                                explanation,
+                                                answers,
+                                                tags
+                                            )
+                                        )
+                                    )
+                                } else if (answers.size < 2) {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = "Bitte geben Sie mindestens 2 Antwortmöglichkeiten an",
+                                            withDismissAction = true
+                                        )
+                                    }
+                                } else {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = "Bitte füllen Sie alle Felder aus",
+                                            withDismissAction = true
+                                        )
+                                    }
+                                }
+                            }) {
+                            Text("Weiter")
+                        }
+                    }}
                 ) {
                     LazyColumn(
                         Modifier.padding(
-                            start = 48.dp,
+                            start = 24.dp,
                             top = 20.dp,
-                            end = 48.dp
+                            end = 24.dp,
+                            bottom = 76.dp
                         )
                     ) {
                         item {
@@ -105,56 +154,6 @@ class CreateMultipleChoiceScreen : Screen {
                                     onValueChange = { pointsToPass = it },
                                     "Punkte zum bestehen"
                                 )
-                            }
-                        }
-                        item {
-                            Row(//verticalAlignment = Alignment.Bottom,
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                Button(
-                                    modifier = Modifier.padding(16.dp),
-                                    colors = ButtonDefaults.buttonColors(),
-                                    onClick = {
-                                        navigator.pop()
-                                    }) {
-                                    Text("Zurück")
-                                }
-                                Button(
-                                    modifier = Modifier.padding(16.dp),
-                                    colors = ButtonDefaults.buttonColors(),
-                                    onClick = {
-                                        if (questionText.isNotEmpty() && points.isNotEmpty() && explanation.isNotEmpty() && pointsToPass.isNotEmpty()) {
-                                            navigator.push(
-                                                MultipleChoiceChooseAnswerIndexScreen(
-                                                    MultipleChoiceQuestion(
-                                                        questionText,
-                                                        points.toInt(),
-                                                        pointsToPass.toInt(),
-                                                        explanation,
-                                                        answers,
-                                                        tags
-                                                    )
-                                                )
-                                            )
-                                        } else if (answers.size < 2) {
-                                            scope.launch {
-                                                snackbarHostState.showSnackbar(
-                                                    message = "Bitte geben Sie mindestens 2 Antwortmöglichkeiten an",
-                                                    withDismissAction = true
-                                                )
-                                            }
-                                        } else {
-                                            scope.launch {
-                                                snackbarHostState.showSnackbar(
-                                                    message = "Bitte füllen Sie alle Felder aus",
-                                                    withDismissAction = true
-                                                )
-                                            }
-                                        }
-                                    }) {
-                                    Text("Weiter")
-                                }
                             }
                         }
                     }
