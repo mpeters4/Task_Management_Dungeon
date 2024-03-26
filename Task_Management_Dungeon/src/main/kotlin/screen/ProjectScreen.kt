@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import classes.Project
 import com.example.compose.AppTheme
 import composable.bodyText
 import composable.inputTextField
@@ -31,10 +32,10 @@ class ProjectScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         var newProjectName by rememberSaveable { mutableStateOf("") }
         var selectedIndex by rememberSaveable { mutableStateOf(-1) }
-        var projects = remember { mutableStateListOf<String>() }
-        projects.add("Projekt A")
-        projects.add("Projekt B")
-        projects.add("Mathe Oberstufe")
+        var projects = remember { mutableStateListOf<Project>() }
+        projects.add(Project(name = "Projekt A"))
+        projects.add(Project(name = "Projekt B"))
+        projects.add(Project(name = "Mathe Oberstufe"))
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -69,10 +70,21 @@ class ProjectScreen : Screen {
                                 colors = ButtonDefaults.buttonColors(),
                                 onClick = {
                                     scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = "Bitte wählen Sie ein Projekt aus oder tragen Sie einen Namen für das neue Projekt ein",
-                                            withDismissAction = true
-                                        )
+                                        if (selectedIndex == -1 && newProjectName.isEmpty()){
+                                            snackbarHostState.showSnackbar(
+                                                message = "Bitte wählen Sie ein Projekt aus oder tragen Sie einen Namen für das neue Projekt ein",
+                                                withDismissAction = true
+                                            )
+                                        }else if (selectedIndex != -1 && newProjectName.isNotEmpty()){
+                                            snackbarHostState.showSnackbar(
+                                                message = "Bitte wählen Sie ein Projekt aus oder tragen Sie einen Namen für das neue Projekt ein.\nBeides ist nicht zulässig!",
+                                                withDismissAction = true
+                                            )
+                                        }else if(selectedIndex != -1){
+                                            navigator.push(EditProjectScreen(projects.get(selectedIndex)))
+                                        }else{
+                                            navigator.push(EditProjectScreen(Project(name = newProjectName)))
+                                        }
                                     }
                                 }) {
                                 Text("Weiter")
@@ -99,14 +111,14 @@ class ProjectScreen : Screen {
                             item {
                                 title("Vorhandene Projekte")
                             }
-                            itemsIndexed(items = projects) { index, answer ->
-                                bodyText(answer, modifier = Modifier.selectable(
+                            itemsIndexed(items = projects) { index, project ->
+                                bodyText(project.name, modifier = Modifier.selectable(
                                     selected = selectedIndex == index,
                                     onClick = {
-                                        if (selectedIndex != index) {
-                                            selectedIndex = index
+                                        selectedIndex = if(selectedIndex != index) {
+                                            index
                                         } else {
-                                            selectedIndex = -1
+                                            -1
                                         }
                                     }
                                 ).clip(shape = RoundedCornerShape(10.dp)).background(
