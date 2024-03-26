@@ -9,6 +9,7 @@ class MultipleChoiceQuestion(
     explanation: String = "",
     tags: List<String> = mutableStateListOf(),
     val answers: List<String> = mutableStateListOf(),
+    var correctAnswerIndices: List<Int> = mutableStateListOf()
 ) : Question(
     description = description,
     points = points,
@@ -16,5 +17,5 @@ class MultipleChoiceQuestion(
     explanation = explanation,
     tags = tags
 ) {
-    var correctAnswerIndices: List<Int> = mutableStateListOf()
+
 }
