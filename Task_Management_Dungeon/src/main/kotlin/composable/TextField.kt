@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import java.lang.Error
 
 @Composable
 fun inputTextField(
@@ -18,7 +17,6 @@ fun inputTextField(
     isError: Boolean
 ) {
     var text by remember { mutableStateOf(value) }
-
     OutlinedTextField(
         modifier = modifier.fillMaxWidth().padding(8.dp),
         value = text,
@@ -28,5 +26,3 @@ fun inputTextField(
         isError = isError
     )
 }
-
-
