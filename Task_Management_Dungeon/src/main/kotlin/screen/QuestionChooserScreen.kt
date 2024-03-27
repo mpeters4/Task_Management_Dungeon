@@ -16,10 +16,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.*
 import com.example.compose.AppTheme
-import composable.bodyText
-import composable.checkBoxFilter
-import composable.expandableItem
-import composable.title
+import composable.*
 import icon.addIcon
 import org.jetbrains.annotations.Nullable
 import kotlin.math.exp
@@ -107,7 +104,11 @@ class QuestionChooserScreen : Screen {
             ) {
                 Scaffold(
                     topBar = {
-                        title("Frage zum hinzufügen auswählen")
+                        Column {
+                            inputTextField(Modifier, searchBar, onValueChange = { searchBar = it }, "Suche", false)
+                            title("Frage zum hinzufügen auswählen")
+                        }
+
                     },
                     bottomBar = {
                         Row(//verticalAlignment = Alignment.Bottom,
@@ -152,8 +153,12 @@ class QuestionChooserScreen : Screen {
                                 }else{
                                     bodyText("Keine Frage ausgewählt")
                                 }
-
-
+                            }
+                            item {
+                                HorizontalDivider(
+                                    thickness = 8.dp,
+                                    color = MaterialTheme.colorScheme.onSecondary
+                                )
                             }
                             items(items = questionList) { item ->
                                 if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
@@ -161,7 +166,7 @@ class QuestionChooserScreen : Screen {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
                                                 if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(item) { chosenQuestion = item }
+                                                    expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
                                                 }
                                             }
                                         }
@@ -170,18 +175,18 @@ class QuestionChooserScreen : Screen {
                                     tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
-                                                expandableItem(item) { chosenQuestion = item }
+                                                expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
                                             }
                                         }
                                     }
                                 } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
                                     if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(item) { chosenQuestion = item }
+                                        expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
                                     }
 
                                 }
                                 if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
-                                    expandableItem(item) { chosenQuestion = item }
+                                    expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
                                 }
                             }
                         }

@@ -145,7 +145,7 @@ class QuestionOverviewScreen : Screen {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
                                                 if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(item) { questionList.remove(item) }
+                                                    expandableItem(question = item, action = { questionList.remove(item) },modifier = Modifier.fillMaxWidth())
                                                 }
                                             }
                                         }
@@ -154,18 +154,18 @@ class QuestionOverviewScreen : Screen {
                                     tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
-                                                expandableItem(item) { questionList.remove(item) }
+                                                expandableItem(question = item, action = { questionList.remove(item) },modifier = Modifier.fillMaxWidth())
                                             }
                                         }
                                     }
                                 } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
                                     if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(item) { questionList.remove(item) }
+                                        expandableItem(question = item, action = { questionList.remove(item) },modifier = Modifier.fillMaxWidth())
                                     }
 
                                 }
                                 if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
-                                    expandableItem(item) { questionList.remove(item) }
+                                    expandableItem(question = item, action = { questionList.remove(item) }, modifier = Modifier.fillMaxWidth())
                                 }
                             }
                         }

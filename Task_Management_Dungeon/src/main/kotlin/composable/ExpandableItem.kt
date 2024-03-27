@@ -33,14 +33,13 @@ import icon.deleteIcon
 
 
 @Composable
-fun expandableItem(question: Question, action: (Question) -> Unit,) {
+fun expandableItem(question: Question, action: (Question) -> Unit, modifier: Modifier = Modifier) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 180f else 0f
     )
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .animateContentSize(
                 animationSpec = tween(
                     durationMillis = 300,
