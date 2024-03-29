@@ -32,7 +32,9 @@ class MultipleChoiceChooseAnswerIndexScreen(private val question: MultipleChoice
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                Scaffold {
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                    ) {
                     LazyColumn(
                         Modifier.padding(
                             start = 24.dp,
