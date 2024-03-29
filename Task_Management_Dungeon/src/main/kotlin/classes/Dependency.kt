@@ -1,9 +1,22 @@
 package classes
 
 class Dependency(
-    val questionA: Question? = null,
-    val questionB: Question? = null,
-    val dependency: DependencyType
+
 ) {
+    var questionA: Question? = null
+        get() = field
+        set(value) {
+            field = value
+        }
+    var questionB: Question? = null
+        get() = field
+        set(value) {
+            field = value
+        }
+    var dependency: String = ""
+        get() = field
+        set(value) {
+            field = value
+        }
 
 }
