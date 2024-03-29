@@ -21,7 +21,7 @@ import icon.addIcon
 import org.jetbrains.annotations.Nullable
 import kotlin.math.exp
 
-class QuestionChooserScreen : Screen {
+class QuestionChooserScreen() : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
@@ -146,27 +146,13 @@ class QuestionChooserScreen : Screen {
                                 it
                             ).weight(6f)
                         ) {
-                            item {
-                                title("Ausgewählte Frage: ")
-                                if (chosenQuestion != null) {
-                                    expandableItem(question = chosenQuestion!!, {})
-                                }else{
-                                    bodyText("Keine Frage ausgewählt")
-                                }
-                            }
-                            item {
-                                HorizontalDivider(
-                                    thickness = 8.dp,
-                                    color = MaterialTheme.colorScheme.onSecondary
-                                )
-                            }
                             items(items = questionList) { item ->
                                 if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
                                     tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
                                                 if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
+                                                    expandableItem(question = item, action = {},modifier = Modifier.fillMaxWidth(), mode = 1)
                                                 }
                                             }
                                         }
@@ -175,18 +161,18 @@ class QuestionChooserScreen : Screen {
                                     tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
-                                                expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
+                                                expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth(), mode = 1)
                                             }
                                         }
                                     }
                                 } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
                                     if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
+                                        expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth(), mode = 1)
                                     }
 
                                 }
                                 if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
-                                    expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth())
+                                    expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth(), mode = 1)
                                 }
                             }
                         }
