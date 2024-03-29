@@ -13,19 +13,20 @@ import androidx.compose.ui.Modifier
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun dropdownSelection(
+    value: String,
     itemList: List<String>,
     modifier: Modifier,
     onItemClick: (String) -> Unit
 ) {
     var showDropdown by rememberSaveable { mutableStateOf(false) }
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
-    var str by rememberSaveable { mutableStateOf("") }
+    var value by rememberSaveable { mutableStateOf(value) }
     ExposedDropdownMenuBox(
         expanded = showDropdown,
         onExpandedChange = {showDropdown = it }
     ){
         TextField(
-            value = str,
+            value = value,
             modifier = modifier
                 .menuAnchor(),
             readOnly = true,
@@ -41,7 +42,7 @@ fun dropdownSelection(
                 DropdownMenuItem(
                     text = { Text(item) },
                     onClick = {
-                        str = item
+                        value = item
                         onItemClick(item)
                         selectedIndex = index
                         showDropdown = false
@@ -49,7 +50,7 @@ fun dropdownSelection(
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                 )
             }
-            onItemClick(str)
+            onItemClick(value)
         }
 
     }

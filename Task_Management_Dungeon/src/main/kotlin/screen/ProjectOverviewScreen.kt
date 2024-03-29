@@ -107,7 +107,6 @@ class ProjectOverviewScreen(val project : Project) : Screen {
                                         projectDependencyList.add(
                                             Dependency()
                                         )
-                                        project.dependencies = projectDependencyList
                                     })
                                 bodyText("Neue Frage hinzufügen")
                             }

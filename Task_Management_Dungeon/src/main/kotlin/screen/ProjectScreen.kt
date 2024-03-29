@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.Project
+import classes.*
 import com.example.compose.AppTheme
 import composable.bodyText
 import composable.inputTextField
@@ -36,6 +36,103 @@ class ProjectScreen : Screen {
         projects.add(Project(name = "Projekt A"))
         projects.add(Project(name = "Projekt B"))
         projects.add(Project(name = "Mathe Oberstufe"))
+
+        //Beispieldaten
+
+            projects.get(0).dependencies.add(Dependency())
+            projects.get(0).dependencies.add(Dependency())
+        //DEP 1
+            projects.get(0).dependencies.get(0).dependency = "Sequenz"
+            projects.get(0).dependencies.get(0).questionA = MultipleChoiceQuestion(
+                "AFRAGE",
+                1,
+                1,
+                "Erklärung",
+                listOf("Antwort 1", "a2", "a3"),
+                listOf("t1", "a", "t3"),
+                correctAnswerIndices = listOf(1, 2)
+            )
+            projects.get(0).dependencies.get(0).questionB = AssignQuestion(
+                "Frage",
+                1,
+                1,
+                "Erklärung",
+                assignments = listOf(
+                    Assignment("Antwort 1", "FILTERME"),
+                    Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")
+                ),
+                tags = listOf("t1", "t2", "t3")
+            )
+        //DEP2
+            projects.get(0).dependencies.get(1).dependency = "Wenn richtig, dann"
+            projects.get(0).dependencies.get(1).questionA = MultipleChoiceQuestion(
+                "AFRAGE",
+                1,
+                1,
+                "Erklärung",
+                listOf("Antwort 1", "a2", "a3"),
+                listOf("t1", "a", "t3"),
+                correctAnswerIndices = listOf(1, 2)
+            )
+            projects.get(0).dependencies.get(1).questionB = AssignQuestion(
+                "Frage",
+                1,
+                1,
+                "Erklärung",
+                assignments = listOf(
+                    Assignment("Antwort 1", "FILTERME"),
+                    Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")
+                ),
+                tags = listOf("t1", "t2", "t3")
+            )
+
+            projects.get(0).dependencies.add(Dependency())
+            projects.get(0).dependencies.add(Dependency())
+        //DEP 3
+            projects.get(0).dependencies.get(2).dependency = "Sequenz"
+            projects.get(0).dependencies.get(2).questionA = MultipleChoiceQuestion(
+                "AFRAGE",
+                1,
+                1,
+                "Erklärung",
+                listOf("Antwort 1", "a2", "a3"),
+                listOf("t1", "a", "t3"),
+                correctAnswerIndices = listOf(1, 2)
+            )
+            projects.get(0).dependencies.get(2).questionB = AssignQuestion(
+                "Frage",
+                1,
+                1,
+                "Erklärung",
+                assignments = listOf(
+                    Assignment("Antwort 1", "FILTERME"),
+                    Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")
+                ),
+                tags = listOf("t1", "t2", "t3")
+            )
+            //DEP4
+            projects.get(0).dependencies.get(3).dependency = "Wenn richtig, dann"
+            projects.get(0).dependencies.get(3).questionA = MultipleChoiceQuestion(
+                "AFRAGE",
+                1,
+                1,
+                "Erklärung",
+                listOf("Antwort 1", "a2", "a3"),
+                listOf("t1", "a", "t3"),
+                correctAnswerIndices = listOf(1, 2)
+            )
+            projects.get(0).dependencies.get(3).questionB = AssignQuestion(
+                "Frage",
+                1,
+                1,
+                "Erklärung",
+                assignments = listOf(
+                    Assignment("Antwort 1", "FILTERME"),
+                    Assignment("a3", "a5"), Assignment("A", "ASSIGNED")
+                ),
+                tags = listOf("t1", "t2", "t3")
+            )
+
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
