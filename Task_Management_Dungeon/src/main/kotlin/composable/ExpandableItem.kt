@@ -29,11 +29,13 @@ import classes.AssignQuestion
 import classes.MultipleChoiceQuestion
 import classes.Question
 import classes.SingleChoiceQuestion
+import icon.addIcon
 import icon.deleteIcon
+import icon.editIcon
 
 
 @Composable
-fun expandableItem(question: Question, action: (Question) -> Unit, modifier: Modifier = Modifier) {
+fun expandableItem(question: Question, action: (Question) -> Unit, modifier: Modifier = Modifier, mode: Int = 0) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 180f else 0f
@@ -81,23 +83,33 @@ fun expandableItem(question: Question, action: (Question) -> Unit, modifier: Mod
                     )
                 }
             }
-            if (expandedState){
+            if (expandedState) {
                 if (question is SingleChoiceQuestion) {
                     QuestionDisplay(question, showQuestion = false)
-                }else if(question is MultipleChoiceQuestion){
+                } else if (question is MultipleChoiceQuestion) {
                     QuestionDisplay(question, showQuestion = false)
-                }else if (question is AssignQuestion){
+                } else if (question is AssignQuestion) {
                     QuestionDisplay(question, showQuestion = false)
                 }
-                Image(
-                    deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
-                    "Remove Item",
-                    Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                if (mode == 0) {
+                    Image(
+                        deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                        "Remove Item",
+                        Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                } else if (mode == 1) {
+                    Image(
+                        addIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                        "add Item",
+                        Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                } else if (mode == 2) {
+                    Image(
+                        editIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                        "add Item",
+                        Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                }
+
             }
 
         }
-
-
-
     }
 }
