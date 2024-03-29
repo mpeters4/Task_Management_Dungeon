@@ -1,8 +1,6 @@
 
 package composable
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,19 +15,17 @@ import androidx.compose.ui.Modifier
 fun dropdownSelection(
     itemList: List<String>,
     modifier: Modifier,
-    onItemClick: (Int) -> Unit
+    onItemClick: (String) -> Unit
 ) {
     var showDropdown by rememberSaveable { mutableStateOf(false) }
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
-    val scrollState = rememberScrollState()
-
-
+    var str by rememberSaveable { mutableStateOf("") }
     ExposedDropdownMenuBox(
         expanded = showDropdown,
         onExpandedChange = {showDropdown = it }
     ){
         TextField(
-            value = itemList[selectedIndex],
+            value = str,
             modifier = modifier
                 .menuAnchor(),
             readOnly = true,
@@ -45,14 +41,17 @@ fun dropdownSelection(
                 DropdownMenuItem(
                     text = { Text(item) },
                     onClick = {
+                        str = item
+                        onItemClick(item)
                         selectedIndex = index
                         showDropdown = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                 )
             }
-
+            onItemClick(str)
         }
+
     }
 }
 
