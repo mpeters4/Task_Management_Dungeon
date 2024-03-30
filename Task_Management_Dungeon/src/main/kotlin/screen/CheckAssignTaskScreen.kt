@@ -14,6 +14,10 @@ import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
 
+/**
+ * Screen to check assign question before saving
+ * @param question Question to check
+ */
 class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
     @Composable
     override fun Content() {

@@ -1,14 +1,11 @@
 package screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -16,12 +13,15 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.*
 import com.example.compose.AppTheme
-import composable.*
-import icon.addIcon
-import org.jetbrains.annotations.Nullable
-import kotlin.math.exp
+import composable.checkBoxFilter
+import composable.expandableItem
+import composable.inputTextField
+import composable.title
 
-class QuestionChooserScreen() : Screen {
+/**
+ * Screen to choose a Question.
+ */
+class QuestionChooserScreen : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true

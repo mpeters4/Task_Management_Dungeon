@@ -19,7 +19,7 @@ import composable.title
 import kotlinx.coroutines.launch
 
 /**
- * Screen to check the Question before saving it to the Database
+ * Screen to create a multiple choice question and pass it Screen (Creates everything but the correctAnswerIndex)
  */
 class CreateMultipleChoiceScreen : Screen {
     @Composable

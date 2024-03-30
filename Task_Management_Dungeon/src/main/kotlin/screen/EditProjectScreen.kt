@@ -25,14 +25,17 @@ import composable.title
 import icon.addIcon
 import kotlinx.coroutines.launch
 
-class EditProjectScreen(var project: Project) : Screen {
+/**
+ * Screen to edit a project
+ * @param project Project to edit
+ */
+class EditProjectScreen(private var project: Project) : Screen {
     @Composable
     @Preview
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
-        var check = false
         //Ab hier existieren nur Beispieldaten
         val dependencies = mutableStateListOf(
             "Sequenz",
@@ -84,11 +87,12 @@ class EditProjectScreen(var project: Project) : Screen {
                             }
                         }
                     }
-                ) {
+                ) { it ->
                     LazyColumn(Modifier.padding(it)) {
                         item {
                             title("Spielablauf:")
                             bodyText("Bitte wählen Sie Fragen aus, die in das Spiel integriert werden sollen. Jede Frage muss in Abhängigkeit zu einer anderen Frage stehen. Die Art der Abhängigkeiten kann dabei frei gewählt werden. Hat eine Frage mehrere Abhängigkeiten, muss die Frage mehrmals ausgewählt und zugeordnet werden.")
+
                         }
                         items(items = project.dependencies) { dependency ->
                             Row(
@@ -159,8 +163,8 @@ class EditProjectScreen(var project: Project) : Screen {
         }
     }
 
-    fun checkProject(project: Project): Boolean {
-        project.dependencies.forEach() { dependency ->
+    private fun checkProject(project: Project): Boolean {
+        project.dependencies.forEach { dependency ->
             if (dependency.dependency.isEmpty()) {
                 return false
             } else if (dependency.questionB == null || dependency.questionA == null) {

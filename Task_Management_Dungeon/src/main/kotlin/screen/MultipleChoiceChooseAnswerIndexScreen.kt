@@ -20,6 +20,10 @@ import composable.bodyText
 import composable.title
 import kotlinx.coroutines.launch
 
+/**
+ * Screen to choose the correct answers of a multiple choice question
+ * @param question Multiple choice question to choose the answers from
+ */
 class MultipleChoiceChooseAnswerIndexScreen(private val question: MultipleChoiceQuestion) : Screen {
     @Composable
     override fun Content() {

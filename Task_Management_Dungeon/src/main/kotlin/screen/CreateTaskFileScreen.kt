@@ -24,11 +24,14 @@ import composable.bodyText
 import composable.title
 import kotlinx.coroutines.launch
 
+/**
+ * Screen to create the dungeon task file
+ */
 class CreateTaskFileScreen : Screen {
     @Composable
     @Preview
     override fun Content() {
-        var projects = remember { mutableStateListOf<Project>() }
+        val projects = remember { mutableStateListOf<Project>() }
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         val selectedIndices = remember { mutableStateListOf<Int>() }

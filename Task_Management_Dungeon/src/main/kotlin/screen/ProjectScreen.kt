@@ -23,6 +23,9 @@ import composable.inputTextField
 import composable.title
 import kotlinx.coroutines.launch
 
+/**
+ * Welcome project screen. Passes the chosen project to the next screen
+ */
 class ProjectScreen : Screen {
     @Composable
     @Preview
@@ -32,7 +35,7 @@ class ProjectScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         var newProjectName by rememberSaveable { mutableStateOf("") }
         var selectedIndex by rememberSaveable { mutableStateOf(-1) }
-        var projects = remember { mutableStateListOf<Project>() }
+        val projects = remember { mutableStateListOf<Project>() }
         projects.add(Project(name = "Projekt A"))
         projects.add(Project(name = "Projekt B"))
         projects.add(Project(name = "Mathe Oberstufe"))

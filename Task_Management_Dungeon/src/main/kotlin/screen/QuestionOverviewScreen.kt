@@ -18,6 +18,9 @@ import composable.checkBoxFilter
 import composable.expandableItem
 import composable.inputTextField
 
+/**
+ * Scrren to get an overview of all Questions
+ */
 class QuestionOverviewScreen : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {

@@ -14,6 +14,10 @@ import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
 
+/**
+ * Screen to check multiple question before saving
+ * @param question Question to check
+ */
 class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): Screen {
     @Composable
     override fun Content() {

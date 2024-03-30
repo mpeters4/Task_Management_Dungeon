@@ -17,6 +17,9 @@ import com.example.compose.AppTheme
 import composable.*
 import kotlinx.coroutines.launch
 
+/**
+ * Screen to create an assign question and pass it the next Screen (Creates everything but the correctAnswerIndex)
+ */
 class CreateAssignScreen : Screen {
     @Composable
     override fun Content() {

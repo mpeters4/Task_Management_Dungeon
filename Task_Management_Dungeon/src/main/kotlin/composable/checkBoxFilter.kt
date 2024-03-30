@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 @Composable
 fun checkBoxFilter(
     text : String,
+    tags : List<String>,
     onCheckedTrue: (SnapshotStateList<String>) -> Unit,
     onCheckedFalse: (SnapshotStateList<String>) -> Unit
 ){
