@@ -20,6 +20,14 @@ import androidx.compose.ui.unit.sp
 import icon.addIcon
 import icon.deleteIcon
 
+/**
+ * Composable function to create a Stringlist
+ * @param modifier Modify the used fields
+ * @param onValueChange Function that runs when the addIcon is clicked. Uses String Value
+ * @param taskLabel Textfield Label
+ * @param outputLabel is shown above the output
+ * @param minAmount TextField shows error if there are fewer assignments than minAmount
+  */
 @Composable
 fun createStringList(
     modifier: Modifier,

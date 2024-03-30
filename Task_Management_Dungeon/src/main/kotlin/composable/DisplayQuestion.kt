@@ -13,6 +13,12 @@ import classes.AssignQuestion
 import classes.MultipleChoiceQuestion
 import classes.SingleChoiceQuestion
 
+/**
+ * Composable Function to display an overview of the question
+ * @param question Single choice question to display
+ * @param modifier Modifier to manipulate the composable
+ * @param showQuestion defines if the question.description is shown
+ */
 @Composable
 fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifier, showQuestion : Boolean= true){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
@@ -67,6 +73,12 @@ fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifie
     }
 }
 
+/**
+ * Composable Function to display an overview of the question
+ * @param question multiple choice question to display
+ * @param modifier Modifier to manipulate the composable
+ * @param showQuestion defines if the question.description is shown
+ */
 @Composable
 fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modifier, showQuestion : Boolean= true){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){
@@ -124,7 +136,14 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
             }
         }
     }
-}
+}/**
+ * Composable Function to display an overview of the question
+ * @param question Assign question to display
+ * @param modifier Modifier to manipulate the composable
+ * @param showQuestion defines if the question.description is shown
+ */
+
+
 @Composable
 fun QuestionDisplay(question: AssignQuestion, modifier: Modifier = Modifier, showQuestion : Boolean= true){
     Box (modifier.fillMaxSize().clip(shape = RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.onSecondary)){

@@ -9,6 +9,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Composable function to use predefined title text
+ * @param title Title message
+ */
 @Composable
 fun title(title : String){
     Text(

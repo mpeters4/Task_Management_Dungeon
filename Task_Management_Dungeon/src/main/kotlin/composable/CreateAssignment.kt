@@ -21,6 +21,14 @@ import classes.Assignment
 import icon.addIcon
 import icon.deleteIcon
 
+/**
+ * Composable Function to create an Assignment used in Assignment Tasks
+ * @param modifier Modify the used fields
+ * @param onValueChange Function that runs when the addIcon is clicked
+ * @param taskLabel Textfield Label
+ * @param outputLabel is shown above the output
+ * @param minAmount TextField shows error if there are fewer assignments than minAmount
+ */
 @Composable
 fun createAssignment(
     modifier: Modifier,

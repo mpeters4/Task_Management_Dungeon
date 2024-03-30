@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package composable
 
 import androidx.compose.animation.animateContentSize
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
@@ -84,28 +81,38 @@ fun expandableItem(question: Question, action: (Question) -> Unit, modifier: Mod
                 }
             }
             if (expandedState) {
-                if (question is SingleChoiceQuestion) {
-                    QuestionDisplay(question, showQuestion = false)
-                } else if (question is MultipleChoiceQuestion) {
-                    QuestionDisplay(question, showQuestion = false)
-                } else if (question is AssignQuestion) {
-                    QuestionDisplay(question, showQuestion = false)
+                when (question) {
+                    is SingleChoiceQuestion -> {
+                        QuestionDisplay(question, showQuestion = false)
+                    }
+
+                    is MultipleChoiceQuestion -> {
+                        QuestionDisplay(question, showQuestion = false)
+                    }
+
+                    is AssignQuestion -> {
+                        QuestionDisplay(question, showQuestion = false)
+                    }
                 }
-                if (mode == 0) {
-                    Image(
-                        deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
-                        "Remove Item",
-                        Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
-                } else if (mode == 1) {
-                    Image(
-                        addIcon(MaterialTheme.colorScheme.onSurfaceVariant),
-                        "add Item",
-                        Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
-                } else if (mode == 2) {
-                    Image(
-                        editIcon(MaterialTheme.colorScheme.onSurfaceVariant),
-                        "add Item",
-                        Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                when (mode) {
+                    0 -> {
+                        Image(
+                            deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                            "Remove Item",
+                            Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                    }
+                    1 -> {
+                        Image(
+                            addIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                            "add Item",
+                            Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                    }
+                    2 -> {
+                        Image(
+                            editIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                            "add Item",
+                            Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
+                    }
                 }
 
             }

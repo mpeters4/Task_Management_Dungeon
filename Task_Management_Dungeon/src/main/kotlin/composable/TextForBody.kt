@@ -9,6 +9,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Composable predefined text for this application
+ * @param text Shown message
+ * @param size Text size
+ * @param modifier Modifier to modify text appearance
+ */
 @Composable
 fun bodyText(text : String, size: Int = 16, modifier: Modifier = Modifier){
     Text(

@@ -1,9 +1,7 @@
 package composable
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -11,7 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * @param modifier Modify appearance of
+ * @param value Value inside the textfield
+ * @param onValueChange Function that runs when the input value changes
+ * @param label Label of the textfield
+ */
 @Composable
 fun inputNumberField(
     modifier: Modifier,

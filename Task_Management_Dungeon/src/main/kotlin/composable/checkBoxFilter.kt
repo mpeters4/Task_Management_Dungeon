@@ -10,15 +10,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 
+/**
+ * Composable checkbox to filter Items
+ * @param text Text next to the checkbox
+ * @param onCheckedTrue Function that runs if the checkbox is ticked
+ * @param onCheckedFalse Function that runs if the checkbox is not ticked
+ */
 @Composable
 fun checkBoxFilter(
     text : String,
-    tags : List<String>,
     onCheckedTrue: (SnapshotStateList<String>) -> Unit,
     onCheckedFalse: (SnapshotStateList<String>) -> Unit
 ){
-    var isChecked = remember { mutableStateOf(false) }
-    var tagList = remember { mutableStateListOf<String>() }
+    val isChecked = remember { mutableStateOf(false) }
+    val tagList = remember { mutableStateListOf<String>() }
 
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -31,11 +36,7 @@ fun checkBoxFilter(
                     onCheckedFalse(tagList)
                 }
             },
-
         )
-        Text(text )
-
-
+        Text(text)
     }
-
 }

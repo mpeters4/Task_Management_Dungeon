@@ -9,7 +9,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
-
+/**
+ * Composable Function to show a selection in a dropdown menu
+ * @param value Chosen value in the selection
+ * @param itemList List of values to choose
+ * @param modifier Modify appearance of the menu
+ * @param onItemClick Function that runs if an item is clicked
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun dropdownSelection(
@@ -20,13 +26,13 @@ fun dropdownSelection(
 ) {
     var showDropdown by rememberSaveable { mutableStateOf(false) }
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
-    var value by rememberSaveable { mutableStateOf(value) }
+    var copyValue by rememberSaveable { mutableStateOf(value) }
     ExposedDropdownMenuBox(
         expanded = showDropdown,
         onExpandedChange = {showDropdown = it }
     ){
         TextField(
-            value = value,
+            value = copyValue,
             modifier = modifier
                 .menuAnchor(),
             readOnly = true,
@@ -42,7 +48,7 @@ fun dropdownSelection(
                 DropdownMenuItem(
                     text = { Text(item) },
                     onClick = {
-                        value = item
+                        copyValue = item
                         onItemClick(item)
                         selectedIndex = index
                         showDropdown = false
@@ -50,7 +56,7 @@ fun dropdownSelection(
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                 )
             }
-            onItemClick(value)
+            onItemClick(copyValue)
         }
 
     }
