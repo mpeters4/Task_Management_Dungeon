@@ -58,7 +58,7 @@ dependencies {
 sqldelight {
     databases {
         create("Database") {
-            packageName.set("frage")
+            packageName.set("taskmanager")
         }
     }
 }
