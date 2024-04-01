@@ -1,0 +1,4 @@
+CREATE TABLE Question_Tag (
+    questionid INTEGER NOT NULL,
+    tagid INTEGER NOT NULL
+);
