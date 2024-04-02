@@ -1,3 +1,4 @@
 CREATE TABLE CorrectAnswer (
-    id INTEGER NOT NULL PRIMARY KEY
+    questionId INTEGER NOT NULL,
+    solutionID INTEGER NOT NULL
 );
