@@ -1,4 +1,4 @@
 CREATE TABLE CorrectAnswer (
-    questionId INTEGER NOT NULL,
+    questionID INTEGER NOT NULL,
     solutionID INTEGER NOT NULL
 );
