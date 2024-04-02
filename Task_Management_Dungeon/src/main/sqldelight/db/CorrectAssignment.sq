@@ -1,0 +1,4 @@
+CREATE TABLE CorrectAssignment (
+    questionID INTEGER NOT NULL,
+    answerID INTEGER NOT NULL
+);
