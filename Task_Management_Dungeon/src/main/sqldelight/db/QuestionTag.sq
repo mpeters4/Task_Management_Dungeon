@@ -1,4 +1,4 @@
-CREATE TABLE Question_Tag (
+CREATE TABLE QuestionTag (
     questionid INTEGER NOT NULL,
     tagid INTEGER NOT NULL
 );
