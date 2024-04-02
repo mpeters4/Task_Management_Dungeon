@@ -1,3 +1,6 @@
 CREATE TABLE Assignment (
-    id INTEGER NOT NULL PRIMARY KEY
+    id INTEGER NOT NULL PRIMARY KEY,
+    questionID INTEGER NOT NULL,
+    termA TEXT DEFAULT "_",
+    termB TEXT DEFAULT "_"
 );
