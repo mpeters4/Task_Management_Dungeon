@@ -8,5 +8,6 @@ open class Question(
     var pointsToPass: Int = 0,
     var explanation: String = "",
     val tags: List<String> = mutableStateListOf(),
+    val type : QuestionType
 ) {
 }

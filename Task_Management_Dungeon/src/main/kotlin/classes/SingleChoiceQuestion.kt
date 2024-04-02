@@ -15,7 +15,8 @@ class SingleChoiceQuestion(
     points = points,
     pointsToPass = pointsToPass,
     explanation = explanation,
-    tags = tags
+    tags = tags,
+    type = QuestionType.SingleChoice
 ) {
 
 }

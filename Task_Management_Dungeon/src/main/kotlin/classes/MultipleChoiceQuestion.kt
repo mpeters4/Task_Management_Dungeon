@@ -15,7 +15,8 @@ class MultipleChoiceQuestion(
     points = points,
     pointsToPass = pointsToPass,
     explanation = explanation,
-    tags = tags
+    tags = tags,
+    type = QuestionType.MultipleChoice
 ) {
 
 }
