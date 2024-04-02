@@ -1,3 +1,0 @@
-CREATE TABLE AssignQuestion (
-    id INTEGER NOT NULL PRIMARY KEY
-);

@@ -1,7 +1,0 @@
-CREATE TABLE SingleChoiceQuestion (
-    id INTEGER NOT NULL PRIMARY KEY,
-    description TEXT NOT NULL,
-    explanation TEXT NOT NULL,
-    points INTEGER NOT NULL,
-    pointsToPass INTEGER NOT NULL
-);
