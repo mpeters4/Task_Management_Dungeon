@@ -2,3 +2,21 @@ CREATE TABLE Tag (
     id INTEGER NOT NULL PRIMARY KEY,
     tag TEXT NOT NULL
 );
+
+getTagById:
+SELECT *
+FROM Tag
+WHERE id = :id;
+
+getAllTags:
+SELECT *
+FROM Tag;
+
+insertTag:
+INSERT OR REPLACE
+INTO Tag
+VALUES (?,?);
+
+deleteTagById:
+DELETE FROM Tag
+WHERE id = :id;

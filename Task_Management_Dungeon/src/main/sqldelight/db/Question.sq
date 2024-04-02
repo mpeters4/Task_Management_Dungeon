@@ -6,3 +6,21 @@ CREATE TABLE Question (
     pointsToPass INTEGER NOT NULL,
     type TEXT NOT NULL CHECK (type IN ("SINGLE_CHOICE_QUESTION","MULTIPLE_CHOICE_QUESTION","ASSIGN_QUESTION"))
 );
+
+getQuestionById:
+SELECT *
+FROM Question
+WHERE id = :id;
+
+getAllQuestions:
+SELECT *
+FROM Question;
+
+insertQuestion:
+INSERT OR REPLACE
+INTO Question
+VALUES (?,?,?,?,?,?);
+
+deleteQuestionById:
+DELETE FROM Question
+WHERE id = :id;

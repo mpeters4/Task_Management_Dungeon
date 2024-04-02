@@ -4,3 +4,22 @@ CREATE TABLE Assignment (
     termA TEXT DEFAULT "_",
     termB TEXT DEFAULT "_"
 );
+
+getAssignmentById:
+SELECT *
+FROM Assignment
+WHERE id = :id;
+
+getAssignmentByQuestionId:
+SELECT *
+FROM Assignment
+WHERE questionID = :id;
+
+insertAssignment:
+INSERT OR REPLACE
+INTO Assignment
+VALUES (?,?,?,?);
+
+deleteAssignmentById:
+DELETE FROM Assignment
+WHERE id = :id;

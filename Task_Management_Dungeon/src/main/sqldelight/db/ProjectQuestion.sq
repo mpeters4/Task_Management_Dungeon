@@ -2,3 +2,17 @@ CREATE TABLE ProjectQuestion (
     projectID INTEGER,
     questionID INTEGER
 );
+
+getAllQuestionsByProjectId:
+SELECT *
+FROM Question JOIN ProjectQuestion
+WHERE ProjectQuestion.projectID = :projectID AND Question.id = questionID;
+
+insertProjectQuestion:
+INSERT OR REPLACE
+INTO ProjectQuestion
+VALUES (?,?);
+
+deleteProjectQuestionByQuestionId:
+DELETE FROM ProjectQuestion
+WHERE questionID = :id AND ProjectQuestion.projectID = :projectId;
