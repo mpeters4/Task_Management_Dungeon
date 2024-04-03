@@ -1,3 +1,4 @@
+import Task_Management_Dungeon.Database
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
@@ -11,10 +12,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
+import databaseInteraction.Driver
 import screen.HomeScreen
 import java.awt.Dimension
+import java.io.File
 
 
 const val MIN_HEIGHT = 300
@@ -36,6 +41,7 @@ fun App() {
 }
 
 fun main() = application {
+    //val driver = Driver.createDriver()
     Window(
         onCloseRequest = ::exitApplication,
         resizable = true,
