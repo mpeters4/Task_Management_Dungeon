@@ -77,8 +77,11 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                                                 question.explanation,
                                                 question.points.toLong(),
                                                 question.pointsToPass.toLong(),
-                                                "SINGLE_CHOICE_QUESTION"
+                                                "SINGLE_CHOICE_QUESTION",
                                             )
+                                            question.answers.forEach(){answer ->
+
+                                            }
                                         }
 
                                         navigator.popUntilRoot()
