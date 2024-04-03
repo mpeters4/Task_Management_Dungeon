@@ -21,6 +21,14 @@ class QuestionDataSourceImpl(db : Database) : QuestionDataSource {
         return queries.getAllQuestions().asFlow().mapToList(Dispatchers.IO)
     }
 
+    override suspend fun getQuestionId(description: String, explanation: String, points: Long, pointsToPass: Long): Long? {
+        return withContext(Dispatchers.IO){
+            queries.getQuestionId(description,explanation,points,pointsToPass).executeAsOneOrNull()
+        }
+
+    }
+
+
     override suspend fun deleteQuestionById(id: Long) {
         return withContext(Dispatchers.IO){
             queries.deleteQuestionById(id)

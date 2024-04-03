@@ -12,6 +12,11 @@ SELECT *
 FROM Question
 WHERE id = :id;
 
+getQuestionId:
+SELECT id
+FROM Question
+WHERE description = :description AND explanation = :explanation AND points = :points AND pointsToPass = :pointsToPass;
+
 getAllQuestions:
 SELECT *
 FROM Question;
