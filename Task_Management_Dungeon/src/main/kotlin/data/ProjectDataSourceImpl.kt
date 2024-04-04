@@ -2,17 +2,26 @@ package data
 
 import Task_Management_Dungeon.Database
 import db.Project
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ProjectDataSourceImpl(db: Database): ProjectDataSource {
-    override suspend fun getProjectById(id: Long): Project {
-        TODO("Not yet implemented")
+    private val queries = db.projectQueries
+    override suspend fun getProjectById(id: Long): Project? {
+        return withContext(Dispatchers.IO){
+            queries.getProjectById(id).executeAsOneOrNull()
+        }
     }
 
     override suspend fun insertProject(name: String, id: Long?) {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO){
+            queries.insertProject(id,name)
+        }
     }
 
     override suspend fun deleteProjectById(id: Long) {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO){
+            queries.deleteProjectById(id)
+        }
     }
 }
