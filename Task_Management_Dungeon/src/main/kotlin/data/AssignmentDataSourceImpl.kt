@@ -16,8 +16,20 @@ class AssignmentDataSourceImpl(db:Database): AssignmentDataSource {
         }
     }
 
+    override suspend fun getAssignmentId(questionId: Long, termA: String, termB: String): Long? {
+        return withContext(Dispatchers.IO){
+            queries.getAssignmentId(questionId, termB = termB, termA = termA ).executeAsOneOrNull()
+        }
+    }
+
     override fun getAssignmentsByQuestionId(id: Long): Flow<List<Assignment>> {
         return queries.getAssignmentByQuestionId(id).asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override suspend fun setCorrectAssignment(id: Long) {
+        return withContext(Dispatchers.IO){
+            queries.setCorrectAssignment(id)
+        }
     }
 
 
