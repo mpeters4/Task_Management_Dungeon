@@ -10,7 +10,6 @@ interface AssignmentDataSource {
 
     fun getAssignmentsByQuestionId(id: Long): Flow<List<Assignment>>
 
-    suspend fun setCorrectAssignment(id: Long)
     suspend fun insertAssignment(questionId: Long, termA: String, termB: String, id: Long? = null)
 
     suspend fun deleteAssignmentById(id: Long)

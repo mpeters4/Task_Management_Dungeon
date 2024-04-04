@@ -26,16 +26,9 @@ class AssignmentDataSourceImpl(db:Database): AssignmentDataSource {
         return queries.getAssignmentByQuestionId(id).asFlow().mapToList(Dispatchers.IO)
     }
 
-    override suspend fun setCorrectAssignment(id: Long) {
-        return withContext(Dispatchers.IO){
-            queries.setCorrectAssignment(id)
-        }
-    }
-
-
     override suspend fun insertAssignment(questionId: Long, termA: String, termB: String, id: Long?) {
         return withContext(Dispatchers.IO){
-            queries.insertAssignment(questionID = questionId, termA = termA, termB = termB, id = id, correct = 0)
+            queries.insertAssignment(questionID = questionId, termA = termA, termB = termB, id = id)
         }
     }
 

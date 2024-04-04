@@ -2,8 +2,7 @@ CREATE TABLE Assignment (
     id INTEGER NOT NULL PRIMARY KEY,
     questionID INTEGER NOT NULL,
     termA TEXT DEFAULT "_",
-    termB TEXT DEFAULT "_",
-    correct INTEGER DEFAULT 0
+    termB TEXT DEFAULT "_"
 );
 
 getAssignmentById:
@@ -21,15 +20,10 @@ SELECT *
 FROM Assignment
 WHERE questionID = :id;
 
-setCorrectAssignment:
-UPDATE Assignment
-SET correct = 1
-WHERE id = :id;
-
 insertAssignment:
 INSERT OR REPLACE
 INTO Assignment
-VALUES (?,?,?,?,?);
+VALUES (?,?,?,?);
 
 deleteAssignmentById:
 DELETE FROM Assignment
