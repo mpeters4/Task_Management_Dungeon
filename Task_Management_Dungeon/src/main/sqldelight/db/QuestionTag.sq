@@ -4,7 +4,7 @@ CREATE TABLE QuestionTag (
 );
 
 getTagsByQuestionId:
-SELECT *
+SELECT tag
 FROM Tag JOIN QuestionTag
 WHERE QuestionTag.questionID = :questionID AND Tag.id = tagID;
 
