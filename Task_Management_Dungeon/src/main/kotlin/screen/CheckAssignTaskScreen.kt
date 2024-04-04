@@ -13,6 +13,9 @@ import classes.AssignQuestion
 import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
+import databaseInteraction.Driver
+import databaseInteraction.Provider
+import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to check assign question before saving
@@ -59,6 +62,7 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
                                         //ADD QUESTION TO DATABASE
+                                        addAssignQuestion(question)
                                         navigator.popUntilRoot()
                                     }) {
                                     Text("Speichern")
@@ -67,6 +71,34 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
                         }
                     }
                 }
+            }
+        }
+    }
+    private fun addAssignQuestion(question : AssignQuestion) {
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val answerData = Provider.provideAssignmentDataSource(Driver.createDriver())
+        runBlocking {
+            //Frage einfügen
+            questionData.insertQuestion(
+                question.description,
+                question.explanation,
+                question.points.toLong(),
+                question.pointsToPass.toLong(),
+                "ASSIGN_QUESTION",
+            )
+            //Antworten einfügen
+            question.assignments.forEach { assignment ->
+                answerData.insertAssignment(
+                    termA = assignment.termA,
+                    termB = assignment.termB,
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!
+                )
+                //TAGS einfügen
             }
         }
     }
