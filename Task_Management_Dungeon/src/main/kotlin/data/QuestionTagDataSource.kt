@@ -8,8 +8,6 @@ interface QuestionTagDataSource {
 
     fun getTagsByQuestionId(questionId: Long): Flow<List<String>>
 
-    fun getQuestionsByTag(): Flow<List<Question>>
-
     suspend fun insertQuestionTag(questionId: Long, tagId: Long)
 
     suspend fun deleteQuestionTag(questionId: Long, tagId: Long)
