@@ -1,23 +1,34 @@
 package data
 
 import Task_Management_Dungeon.Database
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import db.Tag
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 class TagDataSourceImpl(db : Database): TagDataSource {
+    private val queries = db.tagQueries
     override suspend fun getTagById(id: Long): Tag? {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO){
+            queries.getTagById(id).executeAsOneOrNull()
+        }
     }
 
     override fun getAllTags(): Flow<List<Tag>> {
-        TODO("Not yet implemented")
+        return queries.getAllTags().asFlow().mapToList(Dispatchers.IO)
     }
 
     override suspend fun insertTag(tag: String, id: Long?) {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO){
+            queries.insertTag(tag = tag, id = id )
+        }
     }
 
     override suspend fun deleteTagById(id: Long) {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO){
+            queries.deleteTagById(id)
+        }
     }
 }
