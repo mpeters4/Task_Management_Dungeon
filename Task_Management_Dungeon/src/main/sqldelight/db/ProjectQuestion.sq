@@ -4,7 +4,7 @@ CREATE TABLE ProjectQuestion (
 );
 
 getAllQuestionsByProjectId:
-SELECT *
+SELECT Question.id,Question.description, Question.explanation, Question.points, Question.pointsToPass, Question.type
 FROM Question JOIN ProjectQuestion
 WHERE ProjectQuestion.projectID = :projectID AND Question.id = questionID;
 
