@@ -8,7 +8,6 @@ SELECT *
 FROM Answer JOIN CorrectAnswer
 WHERE CorrectAnswer.questionID = :questionID AND Answer.id = answerID;
 
-
 insertCorrectAnswer:
 INSERT OR REPLACE
 INTO CorrectAnswer

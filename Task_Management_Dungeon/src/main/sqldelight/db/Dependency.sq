@@ -12,9 +12,10 @@ SELECT *
 FROM Dependency
 WHERE dependencyID = :id;
 
-getAllDependencies:
+getAllDependenciesByProjectId:
 SELECT *
-FROM Dependency;
+FROM Dependency
+WHERE projectID= :projectId;
 
 insertDependency:
 INSERT OR REPLACE

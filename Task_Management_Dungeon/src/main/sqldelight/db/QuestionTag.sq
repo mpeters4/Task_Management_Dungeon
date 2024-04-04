@@ -3,10 +3,15 @@ CREATE TABLE QuestionTag (
     tagID INTEGER NOT NULL
 );
 
-getTagByQuestionId:
+getTagsByQuestionId:
 SELECT *
 FROM Tag JOIN QuestionTag
 WHERE QuestionTag.questionID = :questionID AND Tag.id = tagID;
+
+getQuestionsByTag:
+SELECT *
+FROM Question JOIN QuestionTag JOIN Tag
+WHERE tagID = :tagId;
 
 insertQuestionTag:
 INSERT OR REPLACE
