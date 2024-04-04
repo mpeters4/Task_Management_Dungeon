@@ -1,13 +1,19 @@
 CREATE TABLE Answer (
     id INTEGER NOT NULL PRIMARY KEY,
     questionID INTEGER NOT NULL,
-    answer TEXT NOT NULL
+    answer TEXT NOT NULL,
+    correct INTEGER DEFAULT 0
 );
 
 getAnswerById:
 SELECT *
 FROM Answer
 WHERE id = :id;
+
+getAnswerId:
+SELECT id
+FROM Answer
+WHERE questionID = :questionId AND answer = :answer;
 
 getAnswersByQuestionId:
 SELECT *
@@ -17,7 +23,12 @@ WHERE questionID = :id;
 insertAnswer:
 INSERT OR REPLACE
 INTO Answer
-VALUES (?,?,?);
+VALUES (?,?,?,?);
+
+setCorrectAnswer:
+UPDATE Answer
+SET correct = 1
+WHERE id = :id;
 
 deleteAnswerById:
 DELETE FROM Answer

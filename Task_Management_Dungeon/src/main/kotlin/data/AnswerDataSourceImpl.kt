@@ -16,13 +16,25 @@ class AnswerDataSourceImpl(db: Database): AnswerDataSource {
         }
     }
 
+    override suspend fun getAnswerId(questionId: Long, answer: String): Long? {
+        return withContext(Dispatchers.IO){
+            queries.getAnswerId(questionId,answer).executeAsOneOrNull()
+        }
+    }
+
     override fun getAnswersByQuestionId(id: Long): Flow<List<Answer>> {
         return queries.getAnswersByQuestionId(id).asFlow().mapToList(Dispatchers.IO)
     }
 
+    override suspend fun setCorrectAnswer(id: Long) {
+        return withContext(Dispatchers.IO){
+            queries.setCorrectAnswer(id)
+        }
+    }
+
     override suspend fun insertAnswer(questionId: Long, answer: String, id: Long?) {
         return withContext(Dispatchers.IO){
-            queries.insertAnswer(questionID = questionId, answer = answer, id = id)
+            queries.insertAnswer(questionID = questionId, answer = answer, id = id, correct = 0)
         }
     }
 

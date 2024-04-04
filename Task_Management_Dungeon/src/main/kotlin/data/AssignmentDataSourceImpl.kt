@@ -23,7 +23,7 @@ class AssignmentDataSourceImpl(db:Database): AssignmentDataSource {
 
     override suspend fun insertAssignment(questionId: Long, termA: String, termB: String, id: Long?) {
         return withContext(Dispatchers.IO){
-            queries.insertAssignment(questionID = questionId, termA = termA, termB = termB, id = id)
+            queries.insertAssignment(questionID = questionId, termA = termA, termB = termB, id = id, correct = 0)
         }
     }
 
