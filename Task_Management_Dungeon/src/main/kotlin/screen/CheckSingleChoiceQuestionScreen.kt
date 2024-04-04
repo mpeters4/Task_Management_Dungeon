@@ -71,6 +71,7 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
                                         //ADD QUESTION TO DATABASE
+                                        /*
                                         GlobalScope.launch(Dispatchers.Default){
                                             questionData.insertQuestion(
                                                 question.description,
@@ -84,6 +85,8 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                                             }
                                         }
 
+*/
+                                        addSingleChoiceQuestion(question)
                                         navigator.popUntilRoot()
                                     }) {
                                     Text("Speichern")
@@ -91,6 +94,48 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun addSingleChoiceQuestion(question : classes.SingleChoiceQuestion){
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+        val correctAnswerData = Provider.provideCorrectAnswerDataSource(Driver.createDriver())
+        GlobalScope.launch {
+            //Frage einfügen
+            questionData.insertQuestion(
+                question.description,
+                question.explanation,
+                question.points.toLong(),
+                question.pointsToPass.toLong(),
+                "SINGLE_CHOICE_QUESTION",
+            )
+            //Antworten einfügen
+            question.answers.forEachIndexed { index, answer ->
+                answerData.insertAnswer(
+                    answer = answer,
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!
+                )
+                //Korrekte Anworten anfügen
+                if (question.correctAnswerIndex == index) {
+                    answerData.setCorrectAnswer(
+                        answerData.getAnswerId(
+                            answer = answer,
+                            questionId = questionData.getQuestionId(
+                                question.description,
+                                question.explanation,
+                                question.points.toLong(),
+                                question.pointsToPass.toLong()
+                            )!!
+                        )!!
+                    )
                 }
             }
         }
