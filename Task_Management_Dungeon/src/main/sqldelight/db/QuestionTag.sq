@@ -8,10 +8,6 @@ SELECT tag
 FROM Tag JOIN QuestionTag
 WHERE QuestionTag.questionID = :questionID AND Tag.id = tagID;
 
-getQuestionsByTag:
-SELECT *
-FROM Question JOIN QuestionTag JOIN Tag
-WHERE tagID = :tagId;
 
 insertQuestionTag:
 INSERT OR REPLACE
@@ -20,4 +16,4 @@ VALUES (?,?);
 
 deleteQuestionTag:
 DELETE FROM QuestionTag
-WHERE tagID = :tagId AND questionID;
+WHERE tagID = :tagId AND questionID = :questionId;
