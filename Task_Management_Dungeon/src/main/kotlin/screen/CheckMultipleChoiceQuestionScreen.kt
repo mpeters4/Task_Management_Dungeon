@@ -13,6 +13,9 @@ import classes.MultipleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
+import databaseInteraction.Driver
+import databaseInteraction.Provider
+import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to check multiple question before saving
@@ -59,6 +62,7 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): S
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
                                         //ADD QUESTION TO DATABASE
+                                        addMultipleChoiceQuestion(question)
                                         navigator.popUntilRoot()
                                     }) {
                                     Text("Speichern")
@@ -70,5 +74,47 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): S
             }
         }
 
+    }
+
+    private fun addMultipleChoiceQuestion(question : MultipleChoiceQuestion) {
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+        runBlocking {
+            //Frage einfügen
+            questionData.insertQuestion(
+                question.description,
+                question.explanation,
+                question.points.toLong(),
+                question.pointsToPass.toLong(),
+                "MULTIPLE_CHOICE_QUESTION",
+            )
+            //Antworten einfügen
+            question.answers.forEachIndexed { index, answer ->
+                answerData.insertAnswer(
+                    answer = answer,
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!
+                )
+                //Korrekte Anworten anfügen
+                if (question.correctAnswerIndices.contains(index)) {
+                    answerData.setCorrectAnswer(
+                        answerData.getAnswerId(
+                            answer = answer,
+                            questionId = questionData.getQuestionId(
+                                question.description,
+                                question.explanation,
+                                question.points.toLong(),
+                                question.pointsToPass.toLong()
+                            )!!
+                        )!!
+                    )
+                }
+                //TAGS einfügen
+            }
+        }
     }
 }
