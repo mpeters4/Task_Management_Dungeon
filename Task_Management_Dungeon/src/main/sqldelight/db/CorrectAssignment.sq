@@ -4,7 +4,7 @@ CREATE TABLE CorrectAssignment (
 );
 
 getCorrectAssignmentByQuestionId:
-SELECT *
+SELECT Assignment.id, Assignment.questionID,Assignment.termA, Assignment.termB
 FROM Assignment JOIN CorrectAssignment
 WHERE CorrectAssignment.questionID = :questionID AND Assignment.id = assignmentID;
 
@@ -13,6 +13,6 @@ INSERT OR REPLACE
 INTO CorrectAssignment
 VALUES (?,?);
 
-deleteCorrectAnswerByAssignmentId:
+deleteCorrectAssignmentByAssignmentId:
 DELETE FROM CorrectAssignment
 WHERE assignmentID = :assignmentId AND questionID = :questionId;
