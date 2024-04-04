@@ -4,7 +4,7 @@ CREATE TABLE CorrectAnswer (
 );
 
 getCorrectAnswerByQuestionId:
-SELECT *
+SELECT Answer.id,Answer.questionID, Answer.answer
 FROM Answer JOIN CorrectAnswer
 WHERE CorrectAnswer.questionID = :questionID AND Answer.id = answerID;
 
