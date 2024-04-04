@@ -19,7 +19,7 @@ class DependencyDataSourceImpl(db: Database): DependencyDataSource {
     override fun getAllDependenciesByProjectId(projectId: Long): Flow<List<Dependency>> {
         return queries.getAllDependenciesByProjectId(projectId).asFlow().mapToList(Dispatchers.IO)
     }
-
+    
     override suspend fun insertDependency(
         questionAId: Long,
         questionBId: Long,
