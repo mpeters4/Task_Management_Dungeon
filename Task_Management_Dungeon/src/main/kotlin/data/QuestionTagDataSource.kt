@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuestionTagDataSource {
 
-    fun getTagsByQuestionId(questionId: Long): Flow<List<Tag>>
+    fun getTagsByQuestionId(questionId: Long): Flow<List<String>>
 
     fun getQuestionsByTag(): Flow<List<Question>>
 
