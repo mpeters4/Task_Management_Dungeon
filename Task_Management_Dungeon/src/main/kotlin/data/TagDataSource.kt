@@ -8,6 +8,8 @@ interface TagDataSource {
 
     suspend fun getTagById(id: Long): Tag?
 
+    suspend fun getTagByName(name: String) : Long?
+
     fun getAllTags(): Flow<List<Tag>>
 
     suspend fun insertTag(tag: String, id: Long? = null)

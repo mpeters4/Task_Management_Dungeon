@@ -8,6 +8,11 @@ SELECT *
 FROM Tag
 WHERE id = :id;
 
+getTagByName:
+SELECT Tag.id
+FROM Tag
+WHERE tag = :name;
+
 getAllTags:
 SELECT *
 FROM Tag;
