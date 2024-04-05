@@ -19,6 +19,8 @@ import composable.expandableItem
 import composable.inputTextField
 import databaseInteraction.Driver
 import databaseInteraction.Provider
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 
 /**
  * Scrren to get an overview of all Questions
@@ -27,62 +29,145 @@ class QuestionOverviewScreen : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
-        }else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
+        } else if (item.explanation.lowercase().contains(searchBar.lowercase())) {
             return true
         }
         return false
     }
 
-    private suspend fun getAnswersToQuestionId(qustionId: Long): List<String>{
+
+    private suspend fun getAnswersToQuestionId(questionId: Long): List<String> {
+        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+        val answerDataList = answerData.getAnswersByQuestionId(questionId).firstOrNull()
+        //sval aaa = answerDataList.forEach {  }
+        var answers = mutableListOf<String>()
+        answerDataList!!.forEach(){answer ->
+            answers.add(answer.answer)
+        }
+        //LOAD ANSWER
+        return answers
+    }
+
+    private suspend fun getCorrectAnswersByQuestionId(questionId: Long): List<String> {
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         val answerList = mutableStateListOf<String>()
+        answerList.add("A01")
+        answerList.add("A03")
         //LOAD ANSWER
         return answerList
     }
 
-    private suspend fun getAssignmentsToQuestionId(qustionId: Long): List<String>{
+
+    private suspend fun getAssignmentsToQuestionId(questionId: Long): List<Assignment> {
         val assignmentData = Provider.provideAssignmentDataSource(Driver.createDriver())
-        val assignmentList = mutableStateListOf<String>()
+        val assignmentList = mutableStateListOf<Assignment>()
+        assignmentList.add(Assignment())
+        assignmentList.add(Assignment("TERMa", "TermB"))
+        assignmentList.add(Assignment(termB = "TermB"))
+        assignmentList.add(Assignment("TERMa"))
         //LOAD ANSWER
         return assignmentList
     }
 
-    private suspend fun getTagsToQuestionId(qustionId: Long): List<String>{
+    private suspend fun getTagsToQuestionId(questionId: Long): List<String> {
         val tagData = Provider.provideTagDataSource(Driver.createDriver())
         val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
         val tagList = mutableStateListOf<String>()
         //LOAD TAGS
+        tagList.add("t1")
+        tagList.add("testtag")
+        tagList.add("titititi")
 
         return tagList
     }
 
-    private suspend fun getQuestions(): List<Question>{
-        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+    private suspend fun getQuestions(): List<db.Question> {
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
-        val questionList = mutableStateListOf<Question>()
-        //LOAD QUESTIONS
-
+        val questionList = mutableStateListOf<db.Question>()
         return questionList
     }
 
 
-
-    private suspend fun getAllQuestions(): List<Question> {
+    private suspend fun getAllQuestionsAsClasses(questions: List<db.Question>): List<Question> {
         val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         //val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         val tagData = Provider.provideTagDataSource(Driver.createDriver())
         val questionList = mutableStateListOf<Question>()
-
+        var tags: List<String> = mutableStateListOf()
+        var answers: List<String> = mutableStateListOf()
+        var correctAnswers: List<String> = mutableStateListOf()
+        var correctAnswerIndices: List<Int> = mutableListOf()
+        var assignments: List<Assignment> = mutableStateListOf()
         //LOAD QuestionsDATA
         val questionDataList = getQuestions()
         //FOR EACH QUESTION ->
+        questions.forEach { question ->
+            //GET ANSWERS
+            tags = getTagsToQuestionId(question.id)
+            if (question.type == "SINGLE_CHOICE_QUESTION") {
+                answers = getAnswersToQuestionId(question.id)
+                correctAnswers = getCorrectAnswersByQuestionId(question.id)
+                answers.forEachIndexed() { index, answer ->
+                    if (correctAnswers.contains(answer)) {
+                        correctAnswerIndices.addLast(index)
+                    }
+                }
+                questionList.add(
+                    SingleChoiceQuestion(
+                        question.description,
+                        question.points.toInt(),
+                        question.pointsToPass.toInt(),
+                        question.explanation,
+                        answers,
+                        tags,
+                        correctAnswerIndices.get(0)
+                    )
+                )
+                correctAnswerIndices = mutableStateListOf()
+            } else if (question.type == "MULTIPLE_CHOICE_QUESTION") {
+                answers = getAnswersToQuestionId(question.id)
+                correctAnswers = getCorrectAnswersByQuestionId(question.id)
+                answers.forEachIndexed() { index, answer ->
+                    if (correctAnswers.contains(answer)) {
+                        correctAnswerIndices.addLast(index)
+                    }
+                }
+                questionList.add(
+                    MultipleChoiceQuestion(
+                        question.description,
+                        question.points.toInt(),
+                        question.pointsToPass.toInt(),
+                        question.explanation,
+                        answers = answers,
+                        tags = tags,
+                        correctAnswerIndices = correctAnswerIndices
+                    )
+                )
+                correctAnswerIndices = mutableStateListOf()
+            } else if (question.type == "ASSIGN_QUESTION") {
+                tags = getTagsToQuestionId(question.id)
+                assignments = getAssignmentsToQuestionId(questionId = question.id)
+                questionList.add(
+                    AssignQuestion(
+                        question.description,
+                        question.points.toInt(),
+                        question.pointsToPass.toInt(),
+                        question.explanation,
+                        assignments = assignments
+                    )
+                )
+            } else {
+            }
+            // GET TAGS
+        }
         //LOAD ANSWERS
         //IF question.type SINGLE OR MULTI
-        var answerList = getAnswersToQuestionId(0)
+        //var answerList = getAnswersToQuestionId(0)
         //IF question.type is ASSIGN
-        var assignmentList = getAssignmentsToQuestionId(0)
+        //var assignmentList = getAssignmentsToQuestionId(0)
         //LOAD TAGS
-        var tagList = getTagsToQuestionId(0)
+        //var tagList = getTagsToQuestionId(0)
         //ADD NEW QuestionCLASS and CONNECT ANSWERS
         //ADD To List
         //if(this.Question.type == SINGLE)
@@ -91,75 +176,22 @@ class QuestionOverviewScreen : Screen {
         // questionList.add(MULTIPLECHOICEQuestion, answerlist, taglist)
         //else if(this.Question.type == ASSIGN)
         // questionList.add(MULTIPLECHOICEQuestion, assignmentList, taglist)
-
-
-
         return questionList
     }
 
     @Composable
     @Preview
     override fun Content() {
-        val tagList = remember { listOf("tag 1", "tag 2", "a", "31") }
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagList = tagData.getAllTags().collectAsState(initial = emptyList()).value
         val tagFilterList = remember { mutableStateListOf<String>() }
-        val questionList = mutableStateListOf(
-                SingleChoiceQuestion(
-                    "Dies ist eine Testfrage, wobei Antwort 2 dieee Lösung ist",
-                    1, 1, "Die Erklärung hierzu ist echt nicht nötig",
-                    listOf("Antwort 1", "Antwort 2", "antwoort3"), listOf("tag 1", "tag2"), correctAnswerIndex = 1
-                ),
-                MultipleChoiceQuestion(
-                    "AFRAGE",
-                    1,
-                    1,
-                    "Erklärung",
-                    listOf("Antwort 1", "a2", "a3"),
-                    listOf("t1", "a", "t3"),
-                    correctAnswerIndices = listOf(1,2)
-                ),
-                AssignQuestion(
-                    "Frage",
-                    1,
-                    1,
-                    "Erklärung",
-                    assignments = listOf(Assignment("Antwort 1", "FILTERME"),
-                        Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")),
-                    tags = listOf("t1", "t2", "t3")
-                ),
-                SingleChoiceQuestion(
-                    "Frageq",
-                    1,
-                    1,
-                    "Erklärung",
-                    listOf("Antwort 1", "a2", "a3"),
-                    listOf("t1", "t2", "t3")
-                ),
-                SingleChoiceQuestion(
-                    "AFRAGE",
-                    1,
-                    1,
-                    "Erklärung",
-                    listOf("Antwort 1", "a2", "a3"),
-                    listOf("t1", "a", "t3")
-                ),
-                SingleChoiceQuestion(
-                    "Fragez",
-                    1,
-                    1,
-                    "Erklärunasfasfag",
-                    listOf("Antwort 1q", "a2", "a3"),
-                    listOf("t1", "FILTERME", "t3")
-                ),
-                SingleChoiceQuestion(
-                    "AAAAüZ",
-                    1,
-                    1,
-                    "Erklärungq",
-                    listOf("Antwort 1", "a2", "a3"),
-                    listOf("t1", "a", "31")
-                )
-            )
-
+        //Get all questions from DB
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val questionDataList = questionData.getAllQuestions().collectAsState(initial = emptyList()).value
+        //Turn all Questions to full Question classes and connect them to Answers and Tags
+        var questionList = runBlocking {
+            getAllQuestionsAsClasses(questionDataList)
+        }
         var searchBar by rememberSaveable { mutableStateOf("") }
         val navigator = LocalNavigator.currentOrThrow
         AppTheme {
@@ -186,7 +218,6 @@ class QuestionOverviewScreen : Screen {
                             }
                         }
                     }
-
                 ) {
                     Row {
                         Column(
@@ -195,11 +226,11 @@ class QuestionOverviewScreen : Screen {
                             ).weight(1f)
                         ) {
                             tagList.forEach { tag ->
-                                checkBoxFilter(tag, tagList, onCheckedTrue = {
-                                    tagFilterList.add(tag)
+                                checkBoxFilter(tag.tag,  onCheckedTrue = {
+                                    tagFilterList.add(tag.tag)
                                 },
                                     onCheckedFalse = {
-                                        tagFilterList.remove(tag)
+                                        tagFilterList.remove(tag.tag)
                                     })
                             }
                         }
@@ -214,7 +245,20 @@ class QuestionOverviewScreen : Screen {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
                                                 if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(question = item, action = { questionList.remove(item) },modifier = Modifier.fillMaxWidth())
+                                                    expandableItem(question = item, action = {
+                                                        runBlocking {
+                                                            questionData.deleteQuestionById(
+                                                                questionData.getQuestionId(
+                                                                    item.description,
+                                                                    item.explanation,
+                                                                    item.points.toLong(),
+                                                                    item.pointsToPass.toLong()
+                                                                )!!
+                                                            )
+                                                            getAllQuestionsAsClasses(questionDataList)
+                                                        }
+
+                                                    }, modifier = Modifier.fillMaxWidth())
                                                 }
                                             }
                                         }
@@ -223,18 +267,60 @@ class QuestionOverviewScreen : Screen {
                                     tagFilterList.forEach {
                                         if (item.tags.contains(it)) {
                                             if (filterSearchbar(it, item)) {
-                                                expandableItem(question = item, action = { questionList.remove(item) },modifier = Modifier.fillMaxWidth())
+                                                expandableItem(
+                                                    question = item,
+                                                    action = { runBlocking {
+                                                        questionData.deleteQuestionById(
+                                                            questionData.getQuestionId(
+                                                                item.description,
+                                                                item.explanation,
+                                                                item.points.toLong(),
+                                                                item.pointsToPass.toLong()
+                                                            )!!
+                                                        )
+                                                        getAllQuestionsAsClasses(questionDataList)
+                                                    }},
+                                                    modifier = Modifier.fillMaxWidth()
+                                                )
                                             }
                                         }
                                     }
                                 } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
                                     if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(question = item, action = { questionList.remove(item) },modifier = Modifier.fillMaxWidth())
+                                        expandableItem(
+                                            question = item,
+                                            action = { runBlocking {
+                                                questionData.deleteQuestionById(
+                                                    questionData.getQuestionId(
+                                                        item.description,
+                                                        item.explanation,
+                                                        item.points.toLong(),
+                                                        item.pointsToPass.toLong()
+                                                    )!!
+                                                )
+                                                getAllQuestionsAsClasses(questionDataList)
+                                            }},
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
                                     }
 
                                 }
                                 if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
-                                    expandableItem(question = item, action = { questionList.remove(item) }, modifier = Modifier.fillMaxWidth())
+                                    expandableItem(
+                                        question = item,
+                                        action = { runBlocking {
+                                            questionData.deleteQuestionById(
+                                                questionData.getQuestionId(
+                                                    item.description,
+                                                    item.explanation,
+                                                    item.points.toLong(),
+                                                    item.pointsToPass.toLong()
+                                                )!!
+                                            )
+                                            getAllQuestionsAsClasses(questionDataList)
+                                        }},
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
                                 }
                             }
                         }
