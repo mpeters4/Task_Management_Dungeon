@@ -21,7 +21,7 @@ import kotlinx.coroutines.runBlocking
  * Screen to check multiple question before saving
  * @param question Question to check
  */
-class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): Screen {
+class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -76,9 +76,23 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): S
 
     }
 
-    private fun addMultipleChoiceQuestion(question : MultipleChoiceQuestion) {
+    private suspend fun addTags(questionId: Long, newTags: List<String>) {
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
+            newTags.forEach{newTag ->
+                if (tagData.getTagByName(newTag)!= null){
+                    tagQuestionData.insertQuestionTag(questionId = questionId,tagData.getTagByName(newTag)!!)
+                }else{
+                    tagData.insertTag(newTag)
+                    tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(newTag)!!)
+                }
+            }
+        }
+
+    private fun addMultipleChoiceQuestion(question: MultipleChoiceQuestion) {
         val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+
         runBlocking {
             //Frage einfügen
             questionData.insertQuestion(
@@ -113,7 +127,16 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): S
                         )!!
                     )
                 }
-                //TAGS einfügen
+                addTags(
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!,
+                    question.tags
+                )
+
             }
         }
     }

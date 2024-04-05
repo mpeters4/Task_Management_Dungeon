@@ -74,6 +74,20 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
             }
         }
     }
+
+    private suspend fun addTags(questionId: Long, newTags: List<String>) {
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
+        newTags.forEach{newTag ->
+            if (tagData.getTagByName(newTag)!= null){
+                tagQuestionData.insertQuestionTag(questionId = questionId,tagData.getTagByName(newTag)!!)
+            }else{
+                tagData.insertTag(newTag)
+                tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(newTag)!!)
+            }
+        }
+    }
+
     private fun addAssignQuestion(question : AssignQuestion) {
         val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         val answerData = Provider.provideAssignmentDataSource(Driver.createDriver())
@@ -99,8 +113,16 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
                     )!!
                 )
                 //TAGS einfügen
+                addTags(
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!,
+                    question.tags
+                )
             }
         }
     }
-
 }
