@@ -133,7 +133,7 @@ class QuestionChooserScreen : Screen {
                             ).weight(1f)
                         ) {
                             tagList.forEach { tag ->
-                                checkBoxFilter(tag, tagList, onCheckedTrue = {
+                                checkBoxFilter(tag,  onCheckedTrue = {
                                     tagFilterList.add(tag)
                                 },
                                     onCheckedFalse = {
