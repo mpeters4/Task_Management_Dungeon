@@ -17,6 +17,8 @@ import com.example.compose.AppTheme
 import composable.checkBoxFilter
 import composable.expandableItem
 import composable.inputTextField
+import databaseInteraction.Driver
+import databaseInteraction.Provider
 
 /**
  * Scrren to get an overview of all Questions
@@ -29,6 +31,70 @@ class QuestionOverviewScreen : Screen {
             return true
         }
         return false
+    }
+
+    private suspend fun getAnswersToQuestionId(qustionId: Long): List<String>{
+        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+        val answerList = mutableStateListOf<String>()
+        //LOAD ANSWER
+        return answerList
+    }
+
+    private suspend fun getAssignmentsToQuestionId(qustionId: Long): List<String>{
+        val assignmentData = Provider.provideAssignmentDataSource(Driver.createDriver())
+        val assignmentList = mutableStateListOf<String>()
+        //LOAD ANSWER
+        return assignmentList
+    }
+
+    private suspend fun getTagsToQuestionId(qustionId: Long): List<String>{
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
+        val tagList = mutableStateListOf<String>()
+        //LOAD TAGS
+
+        return tagList
+    }
+
+    private suspend fun getQuestions(): List<Question>{
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
+        val questionList = mutableStateListOf<Question>()
+        //LOAD QUESTIONS
+
+        return questionList
+    }
+
+
+
+    private suspend fun getAllQuestions(): List<Question> {
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        //val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val questionList = mutableStateListOf<Question>()
+
+        //LOAD QuestionsDATA
+        val questionDataList = getQuestions()
+        //FOR EACH QUESTION ->
+        //LOAD ANSWERS
+        //IF question.type SINGLE OR MULTI
+        var answerList = getAnswersToQuestionId(0)
+        //IF question.type is ASSIGN
+        var assignmentList = getAssignmentsToQuestionId(0)
+        //LOAD TAGS
+        var tagList = getTagsToQuestionId(0)
+        //ADD NEW QuestionCLASS and CONNECT ANSWERS
+        //ADD To List
+        //if(this.Question.type == SINGLE)
+        // questionList.add(SINGLECHOICEQuestion, answerlist, taglist)
+        //else if(this.Question.type == MULTIPLE)
+        // questionList.add(MULTIPLECHOICEQuestion, answerlist, taglist)
+        //else if(this.Question.type == ASSIGN)
+        // questionList.add(MULTIPLECHOICEQuestion, assignmentList, taglist)
+
+
+
+        return questionList
     }
 
     @Composable
