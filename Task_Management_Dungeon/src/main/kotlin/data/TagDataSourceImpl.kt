@@ -16,6 +16,10 @@ class TagDataSourceImpl(db : Database): TagDataSource {
         }
     }
 
+    override fun getTagsByQuestionId(questionId: Long): Flow<List<String>> {
+        return queries.getTagsByQuestionId(questionId).asFlow().mapToList(Dispatchers.IO)
+    }
+
     override suspend fun getTagByName(name: String): Long? {
         return withContext(Dispatchers.IO){
             queries.getTagByName(name).executeAsOneOrNull()

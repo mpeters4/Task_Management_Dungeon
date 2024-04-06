@@ -13,6 +13,11 @@ SELECT Tag.id
 FROM Tag
 WHERE tag = :name;
 
+getTagsByQuestionId:
+SELECT Tag.tag
+FROM Tag JOIN QuestionTag
+WHERE tagID  = Tag.id AND questionID =:questionId;
+
 getAllTags:
 SELECT *
 FROM Tag;

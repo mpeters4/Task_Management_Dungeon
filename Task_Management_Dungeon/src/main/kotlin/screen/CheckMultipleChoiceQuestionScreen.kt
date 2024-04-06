@@ -127,16 +127,7 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion) : 
                         )!!
                     )
                 }
-                addTags(
-                    questionId = questionData.getQuestionId(
-                        question.description,
-                        question.explanation,
-                        question.points.toLong(),
-                        question.pointsToPass.toLong()
-                    )!!,
-                    question.tags
-                )
-
+                //addTags(questionId = questionData.getQuestionId(question.description, question.explanation, question.points.toLong(), question.pointsToPass.toLong())!!, question.tags)
             }
         }
     }

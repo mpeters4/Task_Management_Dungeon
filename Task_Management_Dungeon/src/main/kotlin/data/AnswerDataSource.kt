@@ -11,6 +11,8 @@ interface AnswerDataSource {
 
     fun getAnswersByQuestionId(id: Long): Flow<List<Answer>>
 
+    fun getCorrectAnswersByQuestionId(questionId: Long): Flow<List<Answer>>
+
     suspend fun setCorrectAnswer(id: Long)
 
     suspend fun insertAnswer(questionId: Long, answer: String, id: Long? = null)

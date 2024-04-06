@@ -50,11 +50,14 @@ class QuestionOverviewScreen : Screen {
 
     private suspend fun getCorrectAnswersByQuestionId(questionId: Long): List<String> {
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
-        val answerList = mutableStateListOf<String>()
-        answerList.add("A01")
-        answerList.add("A03")
+        val answerList = answerData.getCorrectAnswersByQuestionId(questionId).firstOrNull()
         //LOAD ANSWER
-        return answerList
+        var answers = mutableListOf<String>()
+        answerList!!.forEach(){answer ->
+            answers.add(answer.answer)
+        }
+        //LOAD ANSWER
+        return answers
     }
 
 
@@ -72,13 +75,14 @@ class QuestionOverviewScreen : Screen {
     private suspend fun getTagsToQuestionId(questionId: Long): List<String> {
         val tagData = Provider.provideTagDataSource(Driver.createDriver())
         val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
-        val tagList = mutableStateListOf<String>()
+        val tagDataList = tagData.getTagsByQuestionId(questionId).firstOrNull()
+        //LOAD ANSWER
+        var tags = mutableListOf<String>()
+        tagDataList!!.forEach(){tag ->
+            tags.add(tag)
+        }
         //LOAD TAGS
-        tagList.add("t1")
-        tagList.add("testtag")
-        tagList.add("titititi")
-
-        return tagList
+        return tags
     }
 
     private suspend fun getQuestions(): List<db.Question> {

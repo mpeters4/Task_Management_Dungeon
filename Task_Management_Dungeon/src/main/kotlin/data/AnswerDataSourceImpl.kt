@@ -26,6 +26,10 @@ class AnswerDataSourceImpl(db: Database): AnswerDataSource {
         return queries.getAnswersByQuestionId(id).asFlow().mapToList(Dispatchers.IO)
     }
 
+    override fun getCorrectAnswersByQuestionId(questionId: Long): Flow<List<Answer>> {
+        return queries.getCorrectAnswersByQuestionId(questionId).asFlow().mapToList(Dispatchers.IO)
+    }
+
     override suspend fun setCorrectAnswer(id: Long) {
         return withContext(Dispatchers.IO){
             queries.setCorrectAnswer(id)

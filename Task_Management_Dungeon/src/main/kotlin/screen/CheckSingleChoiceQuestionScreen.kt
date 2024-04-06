@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -15,6 +16,7 @@ import composable.QuestionDisplay
 import composable.title
 import databaseInteraction.Driver
 import databaseInteraction.Provider
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -62,21 +64,6 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
                                         //ADD QUESTION TO DATABASE
-                                        /*
-                                        GlobalScope.launch(Dispatchers.Default){
-                                            questionData.insertQuestion(
-                                                question.description,
-                                                question.explanation,
-                                                question.points.toLong(),
-                                                question.pointsToPass.toLong(),
-                                                "SINGLE_CHOICE_QUESTION",
-                                            )
-                                            question.answers.forEach(){answer ->
-
-                                            }
-                                        }
-
-*/
                                         addSingleChoiceQuestion(question)
                                         navigator.popUntilRoot()
                                     }) {
@@ -91,19 +78,38 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
     }
 
     private suspend fun addTags(questionId: Long, newTags: List<String>) {
+        /* Fehlerhafte Lösung
         val tagData = Provider.provideTagDataSource(Driver.createDriver())
         val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
-        newTags.forEach{newTag ->
-            if (tagData.getTagByName(newTag)!= null){
-                tagQuestionData.insertQuestionTag(questionId = questionId,tagData.getTagByName(newTag)!!)
-            }else{
-                tagData.insertTag(newTag)
-                tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(newTag)!!)
+        var tagsFromDB = tagData.getAllTags().firstOrNull()
+        var tagsToAdd = mutableListOf<String>()
+        if (tagsFromDB != null) {
+            newTags.forEach { tag ->
+                tagsToAdd.add(tag)
             }
-        }
+            tagsFromDB.forEach { tagDB ->
+                if (tagsToAdd.contains(tagDB.tag)) {
+                    tagQuestionData.insertQuestionTag(questionId = questionId, tagData.getTagByName(tagDB.tag+"1")!!)
+                    tagsToAdd.remove(tagDB.tag)
+                }
+            }
+            while (tagsToAdd != null){
+                tagsToAdd[0]
+                tagData.insertTag(tagsToAdd[0])
+                tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(tagsToAdd.get(0))!!)
+                tagsToAdd.remove(tagsToAdd[0])
+            }
+        } else {
+            while (tagsToAdd.isNotEmpty()){
+                tagsToAdd.get(0)
+                tagData.insertTag(tagsToAdd[0])
+                tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(tagsToAdd[0])!!)
+                tagsToAdd.remove(tagsToAdd[0])
+            }
+        }*/
     }
 
-    private fun addSingleChoiceQuestion(question : SingleChoiceQuestion){
+    private fun addSingleChoiceQuestion(question: SingleChoiceQuestion) {
         val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         runBlocking {
@@ -140,15 +146,7 @@ class CheckSingleChoiceQuestionScreen(val question: SingleChoiceQuestion) : Scre
                         )!!
                     )
                 }
-                addTags(
-                    questionId = questionData.getQuestionId(
-                        question.description,
-                        question.explanation,
-                        question.points.toLong(),
-                        question.pointsToPass.toLong()
-                    )!!,
-                    question.tags
-                )
+                //addTags(questionId = questionData.getQuestionId(question.description, question.explanation, question.points.toLong(),question.pointsToPass.toLong())!!, question.tags)
             }
         }
     }

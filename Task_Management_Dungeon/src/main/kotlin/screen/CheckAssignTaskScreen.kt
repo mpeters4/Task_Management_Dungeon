@@ -113,15 +113,7 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
                     )!!
                 )
                 //TAGS einfügen
-                addTags(
-                    questionId = questionData.getQuestionId(
-                        question.description,
-                        question.explanation,
-                        question.points.toLong(),
-                        question.pointsToPass.toLong()
-                    )!!,
-                    question.tags
-                )
+               // addTags(questionId = questionData.getQuestionId(question.description, question.explanation, question.points.toLong(), question.pointsToPass.toLong())!!,question.tags)
             }
         }
     }
