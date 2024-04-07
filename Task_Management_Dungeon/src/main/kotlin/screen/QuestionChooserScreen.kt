@@ -13,15 +13,12 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.*
 import com.example.compose.AppTheme
-import composable.checkBoxFilter
-import composable.expandableItem
-import composable.inputTextField
-import composable.title
+import composable.*
 
 /**
  * Screen to choose a Question.
  */
-class QuestionChooserScreen : Screen {
+class QuestionChooserScreen(dependency: Dependency) : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
@@ -126,62 +123,103 @@ class QuestionChooserScreen : Screen {
                         }
                     }
                 ) {
-                    Row {
-                        Column(
-                            Modifier.padding(
-                                it
-                            ).weight(1f)
-                        ) {
-                            tagList.forEach { tag ->
-                                checkBoxFilter(tag,  onCheckedTrue = {
-                                    tagFilterList.add(tag)
-                                },
-                                    onCheckedFalse = {
-                                        tagFilterList.remove(tag)
-                                    })
+//                    Row {
+//                        Column(
+//                            Modifier.padding(
+//                                it
+//                            ).weight(1f)
+//                        ) {
+//                            tagList.forEach { tag ->
+//                                checkBoxFilter(tag,  onCheckedTrue = {
+//                                    tagFilterList.add(tag)
+//                                },
+//                                    onCheckedFalse = {
+//                                        tagFilterList.remove(tag)
+//                                    })
+//                            }
+//                        }
+                    LazyColumn(
+                        Modifier.padding(
+                            it
+                        )
+                    ) {
+                        item { bodyText("Ausgewählte Frage:") }
+                        item {
+                            if (chosenQuestion != null) {
+                                expandableItem(
+                                    question = chosenQuestion!!,
+                                    action = {},
+                                    modifier = Modifier.fillMaxWidth(),
+                                    mode = 0
+                                )
+                            } else {
+                                bodyText("Bitte wählen Sie eine Frage zum hinzufügen aus.\n\nEine Frage wählen Sie mithilfe des hinzufügen Symbols(+) ganz unten in jeder Ausgeklappten Frage aus.", size = 20)
                             }
                         }
-                        LazyColumn(
-                            Modifier.padding(
-                                it
-                            ).weight(6f)
-                        ) {
-                            items(items = questionList) { item ->
-                                if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
-                                    tagFilterList.forEach {
-                                        if (item.tags.contains(it)) {
-                                            if (filterSearchbar(it, item)) {
-                                                if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(question = item, action = {},modifier = Modifier.fillMaxWidth(), mode = 1)
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else if (searchBar.isEmpty() && tagFilterList.isNotEmpty()) {
-                                    tagFilterList.forEach {
-                                        if (item.tags.contains(it)) {
-                                            if (filterSearchbar(it, item)) {
-                                                expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth(), mode = 1)
-                                            }
-                                        }
-                                    }
-                                } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
-                                    if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth(), mode = 1)
-                                    }
+                        item {
+                            HorizontalDivider(
+                                Modifier.padding(12.dp),
+                                color = MaterialTheme.colorScheme.onSecondary,
+                                thickness = 10.dp
+                            )
+                        }
 
+                        items(items = questionList) { item ->
+                            if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
+                                tagFilterList.forEach {
+                                    if (item.tags.contains(it)) {
+                                        if (filterSearchbar(it, item)) {
+                                            if (filterSearchbar(searchBar, item)) {
+                                                expandableItem(
+                                                    question = item,
+                                                    action = {},
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    mode = 1
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
-                                if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
-                                    expandableItem(question = item, action = { chosenQuestion = item },modifier = Modifier.fillMaxWidth(), mode = 1)
+                            } else if (searchBar.isEmpty() && tagFilterList.isNotEmpty()) {
+                                tagFilterList.forEach {
+                                    if (item.tags.contains(it)) {
+                                        if (filterSearchbar(it, item)) {
+                                            expandableItem(
+                                                question = item,
+                                                action = { chosenQuestion = item },
+                                                modifier = Modifier.fillMaxWidth(),
+                                                mode = 1
+                                            )
+                                        }
+                                    }
                                 }
+                            } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
+                                if (filterSearchbar(searchBar, item)) {
+                                    expandableItem(
+                                        question = item,
+                                        action = { chosenQuestion = item },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        mode = 1
+                                    )
+                                }
+
+                            }
+                            if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
+                                expandableItem(
+                                    question = item,
+                                    action = { chosenQuestion = item },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    mode = 1
+                                )
                             }
                         }
                     }
                 }
-
-
             }
 
+
         }
+
     }
 }
+
