@@ -15,24 +15,30 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.Dependency
-import classes.Project
+import classes.*
 import com.example.compose.AppTheme
-import composable.bodyText
-import composable.dropdownSelection
-import composable.expandableItem
-import composable.title
+import composable.*
+import databaseInteraction.Driver
+import databaseInteraction.Provider
 import icon.addIcon
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to edit a project
  * @param project Project to edit
  */
-class EditProjectScreen(private var project: Project) : Screen {
+class EditProjectScreen(private val projectId: Long) : Screen {
     @Composable
     @Preview
     override fun Content() {
+        val projectData = Provider.provideProjectDataSource(Driver.createDriver())
+        val dependencyData = Provider.provideDependencyDataSource(Driver.createDriver())
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+        val project = runBlocking { projectData.getProjectById(projectId) }
+        val projectDependencies =
+            dependencyData.getAllDependenciesByProjectId(projectId).collectAsState(initial = emptyList()).value
         val navigator = LocalNavigator.currentOrThrow
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
@@ -44,7 +50,6 @@ class EditProjectScreen(private var project: Project) : Screen {
             "Optionale Unteraufgabe",
             "Pflicht Unteraufgabe"
         )
-        var test by remember { mutableStateOf("") }
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -53,10 +58,15 @@ class EditProjectScreen(private var project: Project) : Screen {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                     topBar = {
-                        title(project.name)
+                        if (project != null) {
+                            title(project.name)
+                        } else {
+                            title("FEHLER! Bitte gehen Sie zurück ins Hauptmenü")
+                        }
+
                     },
                     bottomBar = {
-                        Row(//verticalAlignment = Alignment.Bottom,
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Start
                         ) {
@@ -72,18 +82,9 @@ class EditProjectScreen(private var project: Project) : Screen {
                                 modifier = Modifier.padding(16.dp),
                                 colors = ButtonDefaults.buttonColors(),
                                 onClick = {
-                                        if (!checkProject(project)) {
-                                            scope.launch {
-                                                snackbarHostState.showSnackbar(
-                                                    message = "Bitte füllen Sie alle Felder aus und fügen Sie alle Fragen hinzu",
-                                                    withDismissAction = true
-                                                )
-                                            }
-                                        } else  {
-                                            navigator.popUntilRoot()
-                                        }
+                                    navigator.popUntilRoot()
                                 }) {
-                                Text("Speichern")
+                                Text("Fertig")
                             }
                         }
                     }
@@ -94,50 +95,13 @@ class EditProjectScreen(private var project: Project) : Screen {
                             bodyText("Bitte wählen Sie Fragen aus, die in das Spiel integriert werden sollen. Jede Frage muss in Abhängigkeit zu einer anderen Frage stehen. Die Art der Abhängigkeiten kann dabei frei gewählt werden. Hat eine Frage mehrere Abhängigkeiten, muss die Frage mehrmals ausgewählt und zugeordnet werden.")
 
                         }
-                        items(items = project.dependencies) { dependency ->
-                            Row(
-                                modifier = Modifier.padding(start = 48.dp, end = 48.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                if (dependency.questionA != null) {
-                                    expandableItem(
-                                        question = dependency.questionA!!,
-                                        action = {  /*navigator.push(QuestionChooserScreen())*/ },
-                                        modifier = Modifier.weight(5f)
-                                    )
-                                } else {
-                                    Text(
-                                        "Frage hinzufügen",
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.weight(5f)
-                                            .clickable { /*navigator.push(QuestionChooserScreen())*/ })
-                                }
-                                dropdownSelection(
-                                    itemList = dependencies,
-                                    modifier = Modifier,
-                                    onItemClick = { test = it },
-                                    value = dependency.dependency
-                                )
-                                if (dependency.questionB != null) {
-                                    expandableItem(
-                                        question = dependency.questionB!!,
-                                        action = { /*navigator.push(QuestionChooserScreen())*/ },
-                                        modifier = Modifier.weight(5f)
-                                    )
-                                } else {
-                                    Text(
-                                        "Frage hinzufügen",
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.weight(5f)
-                                            .clickable { /*navigator.push(QuestionChooserScreen())*/ })
-                                }
-                            }
+                        items(items = projectDependencies) { dependency ->
+                            dependencyCard(dependency)
                         }
-
                         item {
                             Card(
                                 Modifier.padding(top = 16.dp, start = 128.dp, end = 128.dp).clickable {
-                                    navigator.push(QuestionChooserScreen(Dependency()))
+                                    navigator.push(QuestionChooserScreen(Dependency(projectId)))
                                 }
                             ) {
                                 Row(
@@ -153,22 +117,10 @@ class EditProjectScreen(private var project: Project) : Screen {
                                     Text("Neuen Aufgabenteil hinzufügen", textAlign = TextAlign.Center)
                                 }
                             }
-
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun checkProject(project: Project): Boolean {
-        project.dependencies.forEach { dependency ->
-            if (dependency.dependency.isEmpty()) {
-                return false
-            } else if (dependency.questionB == null || dependency.questionA == null) {
-                return false
-            }
-        }
-        return true
     }
 }

@@ -125,7 +125,7 @@ class QuestionOverviewScreen : Screen {
                         question.explanation,
                         answers,
                         tags,
-                        correctAnswerIndices.get(0)
+                        correctAnswerIndices[0]
                     )
                 )
                 correctAnswerIndices = mutableStateListOf()
@@ -165,21 +165,6 @@ class QuestionOverviewScreen : Screen {
             }
             // GET TAGS
         }
-        //LOAD ANSWERS
-        //IF question.type SINGLE OR MULTI
-        //var answerList = getAnswersToQuestionId(0)
-        //IF question.type is ASSIGN
-        //var assignmentList = getAssignmentsToQuestionId(0)
-        //LOAD TAGS
-        //var tagList = getTagsToQuestionId(0)
-        //ADD NEW QuestionCLASS and CONNECT ANSWERS
-        //ADD To List
-        //if(this.Question.type == SINGLE)
-        // questionList.add(SINGLECHOICEQuestion, answerlist, taglist)
-        //else if(this.Question.type == MULTIPLE)
-        // questionList.add(MULTIPLECHOICEQuestion, answerlist, taglist)
-        //else if(this.Question.type == ASSIGN)
-        // questionList.add(MULTIPLECHOICEQuestion, assignmentList, taglist)
         return questionList
     }
 

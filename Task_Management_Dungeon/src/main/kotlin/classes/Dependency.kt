@@ -1,6 +1,7 @@
 package classes
 
 class Dependency(
+    val projectId: Long
 
 ) {
     var questionA: Question? = null

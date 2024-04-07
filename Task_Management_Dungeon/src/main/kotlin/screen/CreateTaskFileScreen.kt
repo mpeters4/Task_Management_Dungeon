@@ -8,10 +8,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -22,6 +20,8 @@ import classes.Project
 import com.example.compose.AppTheme
 import composable.bodyText
 import composable.title
+import databaseInteraction.Driver
+import databaseInteraction.Provider
 import kotlinx.coroutines.launch
 
 /**
@@ -31,15 +31,14 @@ class CreateTaskFileScreen : Screen {
     @Composable
     @Preview
     override fun Content() {
-        val projects = remember { mutableStateListOf<Project>() }
+        val projectData = Provider.provideProjectDataSource(Driver.createDriver())
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
-        val selectedIndices = remember { mutableStateListOf<Int>() }
-        projects.add(Project(name = "Projekt A"))
-        projects.add(Project(name = "Projekt B"))
-        projects.add(Project(name = "Mathe Oberstufe"))
-
         val navigator = LocalNavigator.currentOrThrow
+        var newProjectName by rememberSaveable { mutableStateOf("") }
+        var selectedIndex by rememberSaveable { mutableStateOf(-1) }
+        val projects = projectData.getAllProjects().collectAsState(initial = emptyList()).value
+        val selectedIndices = remember { mutableStateListOf<Int>() }
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -50,7 +49,7 @@ class CreateTaskFileScreen : Screen {
                     topBar = {
                         Column {
                             title("Aufgabendatei erstellen")
-                            bodyText("Bitte wählen Sie die Projekte, die in die Aufgabendatei aufgenommen werden sollen")
+                            bodyText("Bitte wählen Sie die Projekte, die in die Aufgabendatei aufgenommen werden sollen und bestätigen Sie mit weiter")
                         }
                      },
                     bottomBar = {

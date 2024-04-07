@@ -8,8 +8,12 @@ SELECT *
 FROM Project
 WHERE id = :id;
 
-getProjectByName:
+getAllProjects:
 SELECT *
+FROM Project;
+
+getProjectId:
+SELECT id
 FROM Project
 WHERE name = :name;
 
