@@ -102,7 +102,7 @@ class EditProjectScreen(private var project: Project) : Screen {
                                 if (dependency.questionA != null) {
                                     expandableItem(
                                         question = dependency.questionA!!,
-                                        action = { navigator.push(QuestionChooserScreen()) },
+                                        action = {  /*navigator.push(QuestionChooserScreen())*/ },
                                         modifier = Modifier.weight(5f)
                                     )
                                 } else {
@@ -110,7 +110,7 @@ class EditProjectScreen(private var project: Project) : Screen {
                                         "Frage hinzufügen",
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier.weight(5f)
-                                            .clickable { navigator.push(QuestionChooserScreen()) })
+                                            .clickable { /*navigator.push(QuestionChooserScreen())*/ })
                                 }
                                 dropdownSelection(
                                     itemList = dependencies,
@@ -121,7 +121,7 @@ class EditProjectScreen(private var project: Project) : Screen {
                                 if (dependency.questionB != null) {
                                     expandableItem(
                                         question = dependency.questionB!!,
-                                        action = { navigator.push(QuestionChooserScreen()) },
+                                        action = { /*navigator.push(QuestionChooserScreen())*/ },
                                         modifier = Modifier.weight(5f)
                                     )
                                 } else {
@@ -129,7 +129,7 @@ class EditProjectScreen(private var project: Project) : Screen {
                                         "Frage hinzufügen",
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier.weight(5f)
-                                            .clickable { navigator.push(QuestionChooserScreen()) })
+                                            .clickable { /*navigator.push(QuestionChooserScreen())*/ })
                                 }
                             }
                         }
@@ -137,9 +137,7 @@ class EditProjectScreen(private var project: Project) : Screen {
                         item {
                             Card(
                                 Modifier.padding(top = 16.dp, start = 128.dp, end = 128.dp).clickable {
-                                    project.dependencies.add(
-                                        Dependency()
-                                    )
+                                    navigator.push(QuestionChooserScreen(Dependency()))
                                 }
                             ) {
                                 Row(
