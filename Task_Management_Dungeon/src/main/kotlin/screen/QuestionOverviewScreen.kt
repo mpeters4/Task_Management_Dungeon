@@ -63,13 +63,16 @@ class QuestionOverviewScreen : Screen {
 
     private suspend fun getAssignmentsToQuestionId(questionId: Long): List<Assignment> {
         val assignmentData = Provider.provideAssignmentDataSource(Driver.createDriver())
-        val assignmentList = mutableStateListOf<Assignment>()
-        assignmentList.add(Assignment())
-        assignmentList.add(Assignment("TERMa", "TermB"))
-        assignmentList.add(Assignment(termB = "TermB"))
-        assignmentList.add(Assignment("TERMa"))
+        val assignmentList = assignmentData.getAssignmentsByQuestionId(questionId).firstOrNull()
+        var assignments = mutableListOf<Assignment>()
+        if (assignmentList!= null){
+            assignmentList.forEach{
+                assignments.add(Assignment(it.termA!!,it.termB!!))
+            }
+        }
+
         //LOAD ANSWER
-        return assignmentList
+        return assignments
     }
 
     private suspend fun getTagsToQuestionId(questionId: Long): List<String> {
