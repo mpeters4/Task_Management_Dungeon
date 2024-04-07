@@ -14,11 +14,12 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.*
 import com.example.compose.AppTheme
 import composable.*
+import kotlinx.coroutines.launch
 
 /**
  * Screen to choose a Question.
  */
-class QuestionChooserScreen(dependency: Dependency) : Screen {
+class QuestionChooserScreen(var dependency: Dependency) : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
@@ -30,7 +31,6 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
 
     @Composable
     override fun Content() {
-        val tagList = remember { listOf("tag 1", "tag 2", "a", "31") }
         val tagFilterList = remember { mutableStateListOf<String>() }
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
@@ -106,9 +106,13 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
                     topBar = {
                         Column {
                             inputTextField(Modifier, searchBar, onValueChange = { searchBar = it }, "Suche", false)
-                            title("Frage zum hinzufügen auswählen")
-                        }
+                            if(dependency.questionA == null){
+                                title("Frage 1 zum hinzufügen auswählen")
+                            }else{
+                                title("Frage 2 zum hinzufügen auswählen")
+                            }
 
+                        }
                     },
                     bottomBar = {
                         Row(//verticalAlignment = Alignment.Bottom,
@@ -128,11 +132,21 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
                                 colors = ButtonDefaults.buttonColors(),
                                 onClick = {
                                     if(chosenQuestion != null){
-
+                                        if (dependency.questionA !=null){
+                                            dependency.questionB = chosenQuestion
+                                            navigator.push(CreateDependencyScreen(dependency = dependency))
+                                        }else{
+                                            dependency.questionA = chosenQuestion
+                                            navigator.push(QuestionBChooserScreen(dependency = dependency))
+                                        }
                                     }else{
-
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = "Bitte wählen Sie eine Frage aus!",
+                                                withDismissAction = true
+                                            )
+                                        }
                                     }
-                                    navigator.pop()
                                 }) {
                                 Text("Weiter")
                             }
@@ -166,7 +180,7 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
                                     question = chosenQuestion!!,
                                     action = {},
                                     modifier = Modifier.fillMaxWidth(),
-                                    mode = 0
+                                    mode = 3
                                 )
                             } else {
                                 bodyText("Bitte wählen Sie eine Frage zum hinzufügen aus.\n\nEine Frage wählen Sie mithilfe des hinzufügen Symbols(+) ganz unten in jeder Ausgeklappten Frage aus.", size = 20)
