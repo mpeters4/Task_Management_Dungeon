@@ -32,6 +32,8 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
     override fun Content() {
         val tagList = remember { listOf("tag 1", "tag 2", "a", "31") }
         val tagFilterList = remember { mutableStateListOf<String>() }
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
         val questionList = mutableStateListOf(
             SingleChoiceQuestion(
                 "Dies ist eine Testfrage, wobei Antwort 2 dieee Lösung ist",
@@ -100,6 +102,7 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
                 color = MaterialTheme.colorScheme.background,
             ) {
                 Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                     topBar = {
                         Column {
                             inputTextField(Modifier, searchBar, onValueChange = { searchBar = it }, "Suche", false)
@@ -119,6 +122,19 @@ class QuestionChooserScreen(dependency: Dependency) : Screen {
                                     navigator.pop()
                                 }) {
                                 Text("Zurück")
+                            }
+                            Button(
+                                modifier = Modifier.padding(16.dp),
+                                colors = ButtonDefaults.buttonColors(),
+                                onClick = {
+                                    if(chosenQuestion != null){
+
+                                    }else{
+
+                                    }
+                                    navigator.pop()
+                                }) {
+                                Text("Weiter")
                             }
                         }
                     }
