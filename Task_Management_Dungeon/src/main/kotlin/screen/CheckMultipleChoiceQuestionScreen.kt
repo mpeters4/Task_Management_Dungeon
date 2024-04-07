@@ -13,12 +13,15 @@ import classes.MultipleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
+import databaseInteraction.Driver
+import databaseInteraction.Provider
+import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to check multiple question before saving
  * @param question Question to check
  */
-class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): Screen {
+class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -59,6 +62,7 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): S
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
                                         //ADD QUESTION TO DATABASE
+                                        addMultipleChoiceQuestion(question)
                                         navigator.popUntilRoot()
                                     }) {
                                     Text("Speichern")
@@ -70,5 +74,61 @@ class CheckMultipleChoiceQuestionScreen(val question: MultipleChoiceQuestion): S
             }
         }
 
+    }
+
+    private suspend fun addTags(questionId: Long, newTags: List<String>) {
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
+            newTags.forEach{newTag ->
+                if (tagData.getTagByName(newTag)!= null){
+                    tagQuestionData.insertQuestionTag(questionId = questionId,tagData.getTagByName(newTag)!!)
+                }else{
+                    tagData.insertTag(newTag)
+                    tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(newTag)!!)
+                }
+            }
+        }
+
+    private fun addMultipleChoiceQuestion(question: MultipleChoiceQuestion) {
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
+
+        runBlocking {
+            //Frage einfügen
+            questionData.insertQuestion(
+                question.description,
+                question.explanation,
+                question.points.toLong(),
+                question.pointsToPass.toLong(),
+                "MULTIPLE_CHOICE_QUESTION",
+            )
+            //Antworten einfügen
+            question.answers.forEachIndexed { index, answer ->
+                answerData.insertAnswer(
+                    answer = answer,
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!
+                )
+                //Korrekte Anworten anfügen
+                if (question.correctAnswerIndices.contains(index)) {
+                    answerData.setCorrectAnswer(
+                        answerData.getAnswerId(
+                            answer = answer,
+                            questionId = questionData.getQuestionId(
+                                question.description,
+                                question.explanation,
+                                question.points.toLong(),
+                                question.pointsToPass.toLong()
+                            )!!
+                        )!!
+                    )
+                }
+                //addTags(questionId = questionData.getQuestionId(question.description, question.explanation, question.points.toLong(), question.pointsToPass.toLong())!!, question.tags)
+            }
+        }
     }
 }

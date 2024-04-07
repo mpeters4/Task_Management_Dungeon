@@ -21,7 +21,10 @@ import com.example.compose.AppTheme
 import composable.bodyText
 import composable.inputTextField
 import composable.title
+import databaseInteraction.Driver
+import databaseInteraction.Provider
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Welcome project screen. Passes the chosen project to the next screen
@@ -30,111 +33,13 @@ class ProjectScreen : Screen {
     @Composable
     @Preview
     override fun Content() {
+        val projectData = Provider.provideProjectDataSource(Driver.createDriver())
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         val navigator = LocalNavigator.currentOrThrow
         var newProjectName by rememberSaveable { mutableStateOf("") }
         var selectedIndex by rememberSaveable { mutableStateOf(-1) }
-        val projects = remember { mutableStateListOf<Project>() }
-        projects.add(Project(name = "Projekt A"))
-        projects.add(Project(name = "Projekt B"))
-        projects.add(Project(name = "Mathe Oberstufe"))
-
-        //Beispieldaten
-
-            projects.get(0).dependencies.add(Dependency())
-            projects.get(0).dependencies.add(Dependency())
-        //DEP 1
-            projects.get(0).dependencies.get(0).dependency = "Sequenz"
-            projects.get(0).dependencies.get(0).questionA = MultipleChoiceQuestion(
-                "AFRAGE",
-                1,
-                1,
-                "Erklärung",
-                listOf("Antwort 1", "a2", "a3"),
-                listOf("t1", "a", "t3"),
-                correctAnswerIndices = listOf(1, 2)
-            )
-            projects.get(0).dependencies.get(0).questionB = AssignQuestion(
-                "Frage",
-                1,
-                1,
-                "Erklärung",
-                assignments = listOf(
-                    Assignment("Antwort 1", "FILTERME"),
-                    Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")
-                ),
-                tags = listOf("t1", "t2", "t3")
-            )
-        //DEP2
-            projects.get(0).dependencies.get(1).dependency = "Wenn richtig, dann"
-            projects.get(0).dependencies.get(1).questionA = MultipleChoiceQuestion(
-                "AFRAGE",
-                1,
-                1,
-                "Erklärung",
-                listOf("Antwort 1", "a2", "a3"),
-                listOf("t1", "a", "t3"),
-                correctAnswerIndices = listOf(1, 2)
-            )
-            projects.get(0).dependencies.get(1).questionB = AssignQuestion(
-                "Frage",
-                1,
-                1,
-                "Erklärung",
-                assignments = listOf(
-                    Assignment("Antwort 1", "FILTERME"),
-                    Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")
-                ),
-                tags = listOf("t1", "t2", "t3")
-            )
-
-            projects.get(0).dependencies.add(Dependency())
-            projects.get(0).dependencies.add(Dependency())
-        //DEP 3
-            projects.get(0).dependencies.get(2).dependency = "Sequenz"
-            projects.get(0).dependencies.get(2).questionA = MultipleChoiceQuestion(
-                "AFRAGE",
-                1,
-                1,
-                "Erklärung",
-                listOf("Antwort 1", "a2", "a3"),
-                listOf("t1", "a", "t3"),
-                correctAnswerIndices = listOf(1, 2)
-            )
-            projects.get(0).dependencies.get(2).questionB = AssignQuestion(
-                "Frage",
-                1,
-                1,
-                "Erklärung",
-                assignments = listOf(
-                    Assignment("Antwort 1", "FILTERME"),
-                    Assignment("a3", "a5"), Assignment("A", "SOWASVON ASSIGNED")
-                ),
-                tags = listOf("t1", "t2", "t3")
-            )
-            //DEP4
-            projects.get(0).dependencies.get(3).dependency = "Wenn richtig, dann"
-            projects.get(0).dependencies.get(3).questionA = MultipleChoiceQuestion(
-                "AFRAGE",
-                1,
-                1,
-                "Erklärung",
-                listOf("Antwort 1", "a2", "a3"),
-                listOf("t1", "a", "t3"),
-                correctAnswerIndices = listOf(1, 2)
-            )
-            projects.get(0).dependencies.get(3).questionB = AssignQuestion(
-                "Frage",
-                1,
-                1,
-                "Erklärung",
-                assignments = listOf(
-                    Assignment("Antwort 1", "FILTERME"),
-                    Assignment("a3", "a5"), Assignment("A", "ASSIGNED")
-                ),
-                tags = listOf("t1", "t2", "t3")
-            )
+        val projects = projectData.getAllProjects().collectAsState(initial = emptyList()).value
 
         AppTheme {
             Surface(
@@ -181,9 +86,10 @@ class ProjectScreen : Screen {
                                                 withDismissAction = true
                                             )
                                         }else if(selectedIndex != -1){
-                                            navigator.push(EditProjectScreen(projects.get(selectedIndex)))
+                                            navigator.push(EditProjectScreen(projects.get(selectedIndex).id))
                                         }else{
-                                            navigator.push(EditProjectScreen(Project(name = newProjectName)))
+                                            projectData.insertProject(newProjectName)
+                                            navigator.push(EditProjectScreen(projectData.getProjectId(newProjectName)!!))
                                         }
                                     }
                                 }) {

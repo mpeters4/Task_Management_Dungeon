@@ -1,6 +1,5 @@
 package screen
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,18 +13,17 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.*
 import com.example.compose.AppTheme
-import composable.checkBoxFilter
-import composable.expandableItem
-import composable.inputTextField
+import composable.*
 import databaseInteraction.Driver
 import databaseInteraction.Provider
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 /**
- * Scrren to get an overview of all Questions
+ * Screen to choose a Question.
  */
-class QuestionOverviewScreen : Screen {
+class QuestionBChooserScreen(var dependency: Dependency) : Screen {
     private fun filterSearchbar(searchBar: String, item: Question): Boolean {
         if (item.description.lowercase().contains(searchBar.lowercase())) {
             return true
@@ -34,7 +32,6 @@ class QuestionOverviewScreen : Screen {
         }
         return false
     }
-
 
     private suspend fun getAnswersToQuestionId(questionId: Long): List<String> {
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
@@ -63,16 +60,13 @@ class QuestionOverviewScreen : Screen {
 
     private suspend fun getAssignmentsToQuestionId(questionId: Long): List<Assignment> {
         val assignmentData = Provider.provideAssignmentDataSource(Driver.createDriver())
-        val assignmentList = assignmentData.getAssignmentsByQuestionId(questionId).firstOrNull()
-        var assignments = mutableListOf<Assignment>()
-        if (assignmentList!= null){
-            assignmentList.forEach{
-                assignments.add(Assignment(it.termA!!,it.termB!!))
-            }
-        }
-
+        val assignmentList = mutableStateListOf<Assignment>()
+        assignmentList.add(Assignment())
+        assignmentList.add(Assignment("TERMa", "TermB"))
+        assignmentList.add(Assignment(termB = "TermB"))
+        assignmentList.add(Assignment("TERMa"))
         //LOAD ANSWER
-        return assignments
+        return assignmentList
     }
 
     private suspend fun getTagsToQuestionId(questionId: Long): List<String> {
@@ -171,12 +165,17 @@ class QuestionOverviewScreen : Screen {
         return questionList
     }
 
+
+
+
     @Composable
-    @Preview
     override fun Content() {
+        val tagFilterList = remember { mutableStateListOf<String>() }
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
         val tagData = Provider.provideTagDataSource(Driver.createDriver())
         val tagList = tagData.getAllTags().collectAsState(initial = emptyList()).value
-        val tagFilterList = remember { mutableStateListOf<String>() }
+
         //Get all questions from DB
         val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         val questionDataList = questionData.getAllQuestions().collectAsState(initial = emptyList()).value
@@ -185,6 +184,7 @@ class QuestionOverviewScreen : Screen {
             getAllQuestionsAsClasses(questionDataList)
         }
         var searchBar by rememberSaveable { mutableStateOf("") }
+        var chosenQuestion: Question? = null
         val navigator = LocalNavigator.currentOrThrow
         AppTheme {
             Surface(
@@ -192,8 +192,17 @@ class QuestionOverviewScreen : Screen {
                 color = MaterialTheme.colorScheme.background,
             ) {
                 Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                     topBar = {
-                        inputTextField(Modifier, searchBar, onValueChange = { searchBar = it }, "Suche", false)
+                        Column {
+                            inputTextField(Modifier, searchBar, onValueChange = { searchBar = it }, "Suche", false)
+                            if(dependency.questionA == null){
+                                title("Frage 1 zum hinzufügen auswählen")
+                            }else{
+                                title("Frage 2 zum hinzufügen auswählen")
+                            }
+
+                        }
                     },
                     bottomBar = {
                         Row(//verticalAlignment = Alignment.Bottom,
@@ -208,119 +217,114 @@ class QuestionOverviewScreen : Screen {
                                 }) {
                                 Text("Zurück")
                             }
+                            Button(
+                                modifier = Modifier.padding(16.dp),
+                                colors = ButtonDefaults.buttonColors(),
+                                onClick = {
+                                    if(chosenQuestion != null){
+                                        if (dependency.questionA !=null){
+                                            dependency.questionB = chosenQuestion
+                                            navigator.push(CreateDependencyScreen(dependency = dependency))
+                                        }else{
+                                            dependency.questionA = chosenQuestion
+                                            navigator.push(QuestionChooserScreen(dependency = dependency))
+                                        }
+                                    }else{
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = "Bitte wählen Sie eine Frage aus!",
+                                                withDismissAction = true
+                                            )
+                                        }
+                                    }
+                                }) {
+                                Text("Weiter")
+                            }
                         }
                     }
                 ) {
-                    Row {
-                        Column(
-                            Modifier.padding(
-                                it
-                            ).weight(1f)
-                        ) {
-                            tagList.forEach { tag ->
-                                checkBoxFilter(tag.tag,  onCheckedTrue = {
-                                    tagFilterList.add(tag.tag)
-                                },
-                                    onCheckedFalse = {
-                                        tagFilterList.remove(tag.tag)
-                                    })
+                    LazyColumn(
+                        Modifier.padding(
+                            it
+                        )
+                    ) {
+                        item { bodyText("Ausgewählte Frage:") }
+                        item {
+                            if (chosenQuestion != null) {
+                                expandableItem(
+                                    question = chosenQuestion!!,
+                                    action = {},
+                                    modifier = Modifier.fillMaxWidth(),
+                                    mode = 0
+                                )
+                            } else {
+                                bodyText("Bitte wählen Sie eine Frage zum hinzufügen aus.\n\nEine Frage wählen Sie mithilfe des hinzufügen Symbols(+) ganz unten in jeder Ausgeklappten Frage aus.", size = 20)
                             }
                         }
-                        LazyColumn(
-                            Modifier.padding(
-                                it
-                            ).weight(5f)
-                        ) {
-                            items(items = questionList) { item ->
-                                if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
-                                    tagFilterList.forEach {
-                                        if (item.tags.contains(it)) {
-                                            if (filterSearchbar(it, item)) {
-                                                if (filterSearchbar(searchBar, item)) {
-                                                    expandableItem(question = item, action = {
-                                                        runBlocking {
-                                                            questionData.deleteQuestionById(
-                                                                questionData.getQuestionId(
-                                                                    item.description,
-                                                                    item.explanation,
-                                                                    item.points.toLong(),
-                                                                    item.pointsToPass.toLong()
-                                                                )!!
-                                                            )
-                                                            getAllQuestionsAsClasses(questionDataList)
-                                                        }
+                        item {
+                            HorizontalDivider(
+                                Modifier.padding(12.dp),
+                                color = MaterialTheme.colorScheme.onSecondary,
+                                thickness = 10.dp
+                            )
+                        }
 
-                                                    }, modifier = Modifier.fillMaxWidth())
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else if (searchBar.isEmpty() && tagFilterList.isNotEmpty()) {
-                                    tagFilterList.forEach {
-                                        if (item.tags.contains(it)) {
-                                            if (filterSearchbar(it, item)) {
+                        items(items = questionList) { item ->
+                            if (tagFilterList.isNotEmpty() && searchBar.isNotEmpty()) {
+                                tagFilterList.forEach {
+                                    if (item.tags.contains(it)) {
+                                        if (filterSearchbar(it, item)) {
+                                            if (filterSearchbar(searchBar, item)) {
                                                 expandableItem(
                                                     question = item,
-                                                    action = { runBlocking {
-                                                        questionData.deleteQuestionById(
-                                                            questionData.getQuestionId(
-                                                                item.description,
-                                                                item.explanation,
-                                                                item.points.toLong(),
-                                                                item.pointsToPass.toLong()
-                                                            )!!
-                                                        )
-                                                        getAllQuestionsAsClasses(questionDataList)
-                                                    }},
-                                                    modifier = Modifier.fillMaxWidth()
+                                                    action = {},
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    mode = 1
                                                 )
                                             }
                                         }
                                     }
-                                } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
-                                    if (filterSearchbar(searchBar, item)) {
-                                        expandableItem(
-                                            question = item,
-                                            action = { runBlocking {
-                                                questionData.deleteQuestionById(
-                                                    questionData.getQuestionId(
-                                                        item.description,
-                                                        item.explanation,
-                                                        item.points.toLong(),
-                                                        item.pointsToPass.toLong()
-                                                    )!!
-                                                )
-                                                getAllQuestionsAsClasses(questionDataList)
-                                            }},
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
-                                    }
-
                                 }
-                                if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
+                            } else if (searchBar.isEmpty() && tagFilterList.isNotEmpty()) {
+                                tagFilterList.forEach {
+                                    if (item.tags.contains(it)) {
+                                        if (filterSearchbar(it, item)) {
+                                            expandableItem(
+                                                question = item,
+                                                action = { chosenQuestion = item },
+                                                modifier = Modifier.fillMaxWidth(),
+                                                mode = 1
+                                            )
+                                        }
+                                    }
+                                }
+                            } else if (searchBar.isNotEmpty() && tagFilterList.isEmpty()) {
+                                if (filterSearchbar(searchBar, item)) {
                                     expandableItem(
                                         question = item,
-                                        action = { runBlocking {
-                                            questionData.deleteQuestionById(
-                                                questionData.getQuestionId(
-                                                    item.description,
-                                                    item.explanation,
-                                                    item.points.toLong(),
-                                                    item.pointsToPass.toLong()
-                                                )!!
-                                            )
-                                            getAllQuestionsAsClasses(questionDataList)
-                                        }},
-                                        modifier = Modifier.fillMaxWidth()
+                                        action = { chosenQuestion = item },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        mode = 1
                                     )
                                 }
+
+                            }
+                            if (searchBar.isEmpty() && tagFilterList.isEmpty()) {
+                                expandableItem(
+                                    question = item,
+                                    action = { chosenQuestion = item },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    mode = 1
+                                )
                             }
                         }
                     }
                 }
-
             }
+
+
         }
 
     }
 }
+

@@ -12,7 +12,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.AssignQuestion
 import classes.Assignment
-import classes.MultipleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.*
 import kotlinx.coroutines.launch
@@ -100,7 +99,7 @@ class CreateAssignScreen : Screen {
                         )
                     ) {
                         item {
-                            title("Multiple Choice Frage erstellen")
+                            title("Zuordnungsaufgabe erstellen")
                         }
                         //Multiple_Choice_Frage erstellen
                         item {

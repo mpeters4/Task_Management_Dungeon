@@ -1,6 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
-
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 
 plugins {
     kotlin("jvm")
@@ -14,6 +13,17 @@ version = "1.0-SNAPSHOT"
 //Set Compiler to Java 21.01
 compose {
     kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.5.7")
+}
+
+kotlin{
+
+    sourceSets{
+        main{
+            dependencies{
+               // implementation("app.cash.sqldelight:native-driver:2.0.1")
+            }
+        }
+    }
 }
 
 repositories {
@@ -49,7 +59,8 @@ dependencies {
     //Material 3
     implementation("org.jetbrains.compose.material3:material3-desktop:1.6.0")
     //SQLdelight
-   // implementation("app.cash.sqldelight:native-driver:2.0.1")
+    implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
+    implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
 
 
 }
@@ -58,7 +69,7 @@ dependencies {
 sqldelight {
     databases {
         create("Database") {
-            packageName.set("frage")
+            packageName.set("Task_Management_Dungeon")
         }
     }
 }

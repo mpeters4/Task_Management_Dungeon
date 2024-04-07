@@ -113,6 +113,7 @@ fun expandableItem(question: Question, action: (Question) -> Unit, modifier: Mod
                             "add Item",
                             Modifier.padding(10.dp).align(Alignment.End).clickable { action(question) })
                     }
+                    3 -> {}
                 }
 
             }

@@ -14,5 +14,6 @@ class AssignQuestion(
     points = points,
     pointsToPass = pointsToPass,
     explanation = explanation,
-    tags = tags
+    tags = tags,
+    type = QuestionType.Assign
 )

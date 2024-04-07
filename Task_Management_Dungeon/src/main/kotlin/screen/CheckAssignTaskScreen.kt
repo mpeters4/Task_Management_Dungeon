@@ -13,6 +13,9 @@ import classes.AssignQuestion
 import com.example.compose.AppTheme
 import composable.QuestionDisplay
 import composable.title
+import databaseInteraction.Driver
+import databaseInteraction.Provider
+import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to check assign question before saving
@@ -59,6 +62,7 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
                                     colors = ButtonDefaults.buttonColors(),
                                     onClick = {
                                         //ADD QUESTION TO DATABASE
+                                        addAssignQuestion(question)
                                         navigator.popUntilRoot()
                                     }) {
                                     Text("Speichern")
@@ -71,4 +75,46 @@ class CheckAssignTaskScreen(val question : AssignQuestion) : Screen{
         }
     }
 
+    private suspend fun addTags(questionId: Long, newTags: List<String>) {
+        val tagData = Provider.provideTagDataSource(Driver.createDriver())
+        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
+        newTags.forEach{newTag ->
+            if (tagData.getTagByName(newTag)!= null){
+                tagQuestionData.insertQuestionTag(questionId = questionId,tagData.getTagByName(newTag)!!)
+            }else{
+                tagData.insertTag(newTag)
+                tagQuestionData.insertQuestionTag(questionId, tagData.getTagByName(newTag)!!)
+            }
+        }
+    }
+
+    private fun addAssignQuestion(question : AssignQuestion) {
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        val answerData = Provider.provideAssignmentDataSource(Driver.createDriver())
+        runBlocking {
+            //Frage einfügen
+            questionData.insertQuestion(
+                question.description,
+                question.explanation,
+                question.points.toLong(),
+                question.pointsToPass.toLong(),
+                "ASSIGN_QUESTION",
+            )
+            //Antworten einfügen
+            question.assignments.forEach { assignment ->
+                answerData.insertAssignment(
+                    termA = assignment.termA,
+                    termB = assignment.termB,
+                    questionId = questionData.getQuestionId(
+                        question.description,
+                        question.explanation,
+                        question.points.toLong(),
+                        question.pointsToPass.toLong()
+                    )!!
+                )
+                //TAGS einfügen
+               // addTags(questionId = questionData.getQuestionId(question.description, question.explanation, question.points.toLong(), question.pointsToPass.toLong())!!,question.tags)
+            }
+        }
+    }
 }
