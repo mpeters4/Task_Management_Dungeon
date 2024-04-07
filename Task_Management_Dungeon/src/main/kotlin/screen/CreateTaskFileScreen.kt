@@ -9,14 +9,12 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import classes.Project
 import com.example.compose.AppTheme
 import composable.bodyText
 import composable.title
@@ -35,8 +33,6 @@ class CreateTaskFileScreen : Screen {
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         val navigator = LocalNavigator.currentOrThrow
-        var newProjectName by rememberSaveable { mutableStateOf("") }
-        var selectedIndex by rememberSaveable { mutableStateOf(-1) }
         val projects = projectData.getAllProjects().collectAsState(initial = emptyList()).value
         val selectedIndices = remember { mutableStateListOf<Int>() }
         AppTheme {
