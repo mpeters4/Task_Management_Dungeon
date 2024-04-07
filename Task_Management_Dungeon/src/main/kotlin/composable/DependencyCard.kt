@@ -21,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun dependencyCard(dependency: db.Dependency){
     val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+    val dependencyData = Provider.provideDependencyDataSource((Driver.createDriver()))
     val questionA = runBlocking {DataBaseCommunication.getQuestionAsClass(questionData.getQuestionById(dependency.questionAID)!!) }
     val questionB = runBlocking {DataBaseCommunication.getQuestionAsClass(questionData.getQuestionById(dependency.questionBID)!!) }
 
@@ -36,7 +37,7 @@ fun dependencyCard(dependency: db.Dependency){
             Image(
                 deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                 "Remove Item",
-                Modifier.padding(10.dp).clickable {  }.width(56.dp))
+                Modifier.padding(10.dp).clickable { runBlocking { dependencyData.deleteDependencyById(dependency.dependencyID)}}.width(56.dp)  )
         }
     }
 }
