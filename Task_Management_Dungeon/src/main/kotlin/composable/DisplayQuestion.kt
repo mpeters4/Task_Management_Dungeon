@@ -54,7 +54,7 @@ fun QuestionDisplay(question: SingleChoiceQuestion, modifier: Modifier = Modifie
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Punkte:", modifier = Modifier.weight(1f))
-                bodyText("$${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
+                bodyText("${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
             }
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
@@ -119,7 +119,7 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Punkte:", modifier = Modifier.weight(1f))
-                bodyText("$${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
+                bodyText("${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
             }
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
@@ -175,7 +175,7 @@ fun QuestionDisplay(question: AssignQuestion, modifier: Modifier = Modifier, sho
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Punkte:", modifier = Modifier.weight(1f))
-                bodyText("$${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
+                bodyText("${question.points} (Punkte zum Bestehen: ${question.pointsToPass})", modifier = Modifier.weight(4f))
             }
             Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
