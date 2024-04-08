@@ -3,6 +3,7 @@ package databaseInteraction
 import androidx.compose.runtime.mutableStateListOf
 import classes.*
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 
 object DataBaseCommunication {
     suspend fun getAnswersToQuestionId(questionId: Long): List<String> {
@@ -38,6 +39,27 @@ object DataBaseCommunication {
         assignmentList.add(Assignment("TERMa"))
         //LOAD ANSWER
         return assignmentList
+    }
+
+    fun getQuestionsFromDependencyList(dependencies:List<db.Dependency>?): List<Question>{
+        var questions = mutableListOf<Question>()
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        var addedId = mutableListOf<Long>()
+        if (dependencies != null){
+            dependencies.forEach{dep ->
+                runBlocking {
+                    if(!addedId.contains(dep.questionAID)){
+                        questions.add(getQuestionAsClass(questionData.getQuestionById(dep.questionAID)!!)!!)
+                        addedId.add(dep.questionAID)
+                    }
+                    if(!addedId.contains(dep.questionBID)){
+                        questions.add(getQuestionAsClass(questionData.getQuestionById(dep.questionBID)!!)!!)
+                        addedId.add(dep.questionBID)
+                    }
+                }
+            }
+        }
+        return questions
     }
 
     suspend fun getQuestionAsClass(question: db.Question): Question? {
