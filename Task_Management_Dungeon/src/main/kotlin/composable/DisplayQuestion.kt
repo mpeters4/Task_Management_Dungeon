@@ -90,7 +90,6 @@ fun QuestionDisplay(question: MultipleChoiceQuestion, modifier: Modifier = Modif
                 }
                 Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             }
-            Divider (color = MaterialTheme.colorScheme.background, modifier = Modifier.height(2.dp).fillMaxWidth())
             Row {
                 bodyText("Antworten:", modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.weight(4f)) {
