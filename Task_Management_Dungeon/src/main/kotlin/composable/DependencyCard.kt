@@ -19,13 +19,16 @@ import icon.deleteIcon
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun dependencyCard(dependency: db.Dependency){
+fun dependencyCard(
+    dependency: db.Dependency,
+    action: () -> Unit
+){
     val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
     val dependencyData = Provider.provideDependencyDataSource((Driver.createDriver()))
     val questionA = runBlocking {DataBaseCommunication.getQuestionAsClass(questionData.getQuestionById(dependency.questionAID)!!) }
     val questionB = runBlocking {DataBaseCommunication.getQuestionAsClass(questionData.getQuestionById(dependency.questionBID)!!) }
 
-    Card {
+    Card(modifier = Modifier.padding(16.dp)) {
         Row(Modifier.align(Alignment.CenterHorizontally)) {
             if (questionA != null) {
                 expandableItem(questionA,{}, mode = 3, modifier = Modifier.weight(3f))
@@ -33,11 +36,15 @@ fun dependencyCard(dependency: db.Dependency){
             if (questionB != null) {
                 expandableItem(questionB,{}, mode = 3, modifier = Modifier.weight(3f))
             }
-            Box(modifier = Modifier.width(200.dp)) { bodyText(dependency.dependency, modifier = Modifier.align(Alignment.TopCenter)) }
+            Box(modifier = Modifier.width(200.dp)) { bodyText(dependency.dependency, modifier = Modifier.align(Alignment.Center).padding(top = 24.dp)) }
             Image(
                 deleteIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                 "Remove Item",
-                Modifier.padding(10.dp).clickable { runBlocking { dependencyData.deleteDependencyById(dependency.dependencyID)}}.width(56.dp)  )
+                Modifier.padding(10.dp, top = 30.dp).clickable {
+                    runBlocking { dependencyData.deleteDependencyById(dependency.dependencyID)}
+                    action()
+                }.width(56.dp)
+            )
         }
     }
 }
