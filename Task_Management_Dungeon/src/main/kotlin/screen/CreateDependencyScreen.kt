@@ -12,23 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.stack.popUntil
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import classes.Dependency
-import classes.MultipleChoiceQuestion
 import com.example.compose.AppTheme
 import composable.bodyText
 import composable.title
 import databaseInteraction.Driver
 import databaseInteraction.Provider
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 /**
- * Screen to choose the Questions of a dependency
- * @param question Multiple choice question to choose the answers from
+ * Screen to choose the dependency type
+ * @param dependency dependency to add
  */
 class CreateDependencyScreen(private var dependency: Dependency) : Screen {
     @Composable
@@ -69,7 +66,7 @@ class CreateDependencyScreen(private var dependency: Dependency) : Screen {
                             bodyText(answer, modifier = Modifier.selectable(
                                 selected = selectedIndex == index,
                                 onClick = {
-                                    dependency.dependency = dependencyList.get(index)
+                                    dependency.dependency = dependencyList[index]
                                     selectedIndex = index
                                 }
                             ).clip(shape = RoundedCornerShape(10.dp)).background(
@@ -115,9 +112,8 @@ class CreateDependencyScreen(private var dependency: Dependency) : Screen {
                                                     0,
                                                     dependencyList[selectedIndex]
                                                 )
-                                                navigator.popUntilRoot()
                                             }
-                                            //navigator.popUntil { screen: Screen -> screen == EditProjectScreen(dependency.projectId) }
+                                            navigator.popUntil {it is EditProjectScreen }
                                         } else {
                                             scope.launch {
                                                 snackbarHostState.showSnackbar(
