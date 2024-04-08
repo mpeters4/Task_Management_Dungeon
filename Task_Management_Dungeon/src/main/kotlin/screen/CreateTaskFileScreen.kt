@@ -77,10 +77,14 @@ class CreateTaskFileScreen : Screen {
                                         }
                                     } else {
                                         selectedProjectIds.forEach{
-                                            TaskFileWriter.writeProjectToFile(it,"")
+                                            TaskFileWriter.writeProjectToFile(it,"TeSTT")
                                         }
-
-                                        navigator.pop()
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = "Datei wurde erstellt!",
+                                                withDismissAction = true
+                                            )
+                                        }
                                     }
                                 }) {
                                 Text("Datei Speichern")
