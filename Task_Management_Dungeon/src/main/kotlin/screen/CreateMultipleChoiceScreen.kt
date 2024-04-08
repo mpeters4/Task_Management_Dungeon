@@ -62,6 +62,7 @@ class CreateMultipleChoiceScreen : Screen {
                                         navigator.push(
                                             MultipleChoiceChooseAnswerIndexScreen(
                                                 MultipleChoiceQuestion(
+                                                    0,
                                                     questionText,
                                                     points.toInt(),
                                                     pointsToPass.toInt(),

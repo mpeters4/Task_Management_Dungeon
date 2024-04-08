@@ -64,6 +64,7 @@ class CreateSingleChoiceScreen : Screen {
                                         navigator.push(
                                             SingleChoiceChooseAnswerIndexScreen(
                                                 SingleChoiceQuestion(
+                                                    0,
                                                     questionText,
                                                     points.toInt(),
                                                     pointsToPass.toInt(),

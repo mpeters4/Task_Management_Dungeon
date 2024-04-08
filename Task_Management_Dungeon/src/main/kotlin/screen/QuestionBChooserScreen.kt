@@ -116,6 +116,7 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
                 }
                 questionList.add(
                     SingleChoiceQuestion(
+                        0,
                         question.description,
                         question.points.toInt(),
                         question.pointsToPass.toInt(),
@@ -136,6 +137,7 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
                 }
                 questionList.add(
                     MultipleChoiceQuestion(
+                        0,
                         question.description,
                         question.points.toInt(),
                         question.pointsToPass.toInt(),
@@ -151,6 +153,7 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
                 assignments = getAssignmentsToQuestionId(questionId = question.id)
                 questionList.add(
                     AssignQuestion(
+                        0,
                         question.description,
                         question.points.toInt(),
                         question.pointsToPass.toInt(),
