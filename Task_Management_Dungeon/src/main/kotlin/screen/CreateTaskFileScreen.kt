@@ -9,6 +9,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.compose.AppTheme
 import composable.bodyText
+import composable.inputTextField
 import composable.title
 import databaseInteraction.Driver
 import databaseInteraction.Provider
@@ -35,6 +37,7 @@ class CreateTaskFileScreen : Screen {
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         val navigator = LocalNavigator.currentOrThrow
+        var filename by rememberSaveable { mutableStateOf("") }
         val projects = projectData.getAllProjects().collectAsState(initial = emptyList()).value
         val selectedIndices = remember { mutableStateListOf<Int>() }
         val selectedProjectIds = remember { mutableStateListOf<Long>() }
@@ -50,7 +53,7 @@ class CreateTaskFileScreen : Screen {
                             title("Aufgabendatei erstellen")
                             bodyText("Bitte wählen Sie die Projekte, die in die Aufgabendatei aufgenommen werden sollen und bestätigen Sie mit weiter")
                         }
-                     },
+                    },
                     bottomBar = {
                         Row(//verticalAlignment = Alignment.Bottom,
                             modifier = Modifier.fillMaxWidth(),
@@ -60,7 +63,7 @@ class CreateTaskFileScreen : Screen {
                                 modifier = Modifier.padding(16.dp),
                                 colors = ButtonDefaults.buttonColors(),
                                 onClick = {
-                                   navigator.pop()
+                                    navigator.pop()
                                 }) {
                                 Text("Zurück")
                             }
@@ -75,9 +78,20 @@ class CreateTaskFileScreen : Screen {
                                                 withDismissAction = true
                                             )
                                         }
+                                    } else if (filename.isEmpty()){
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = "Bitte geben Sie einen Dateinamen an",
+                                                withDismissAction = true
+                                            )
+                                        }
                                     } else {
-                                        selectedProjectIds.forEach{
-                                            TaskFileWriter.writeProjectToFile(it,"TeSTT")
+                                        selectedProjectIds.forEach {
+                                            TaskFileWriter.writeProjectToFile(it, filename)
+                                        }
+                                        while (selectedIndices.isNotEmpty()){
+                                            selectedIndices.removeLast()
+                                            filename= ""
                                         }
                                         scope.launch {
                                             snackbarHostState.showSnackbar(
@@ -95,6 +109,15 @@ class CreateTaskFileScreen : Screen {
                     LazyColumn(
                         Modifier.padding(it).fillMaxSize()
                     ) {
+                        item {
+                            inputTextField(
+                                label = "Dateinamen angeben",
+                                modifier = Modifier.padding(start = 24.dp, end = 24.dp),
+                                value = filename,
+                                onValueChange = { filename = it },
+                                isError = filename.isEmpty()
+                            )
+                        }
                         itemsIndexed(items = projects) { index, project ->
                             bodyText(project.name, modifier = Modifier.selectable(
                                 selected = selectedIndices.contains(index),

@@ -3,8 +3,11 @@ package databaseInteraction
 import Task_Management_Dungeon.Database
 import app.cash.sqldelight.db.SqlDriver
 import data.*
-
+/**
+ * Provides data Sources to interact with the Database
+ */
 object Provider {
+
     fun provideQuestionDataSource(driver : SqlDriver): QuestionDataSource {
         return QuestionDataSourceImpl(Database(driver))
     }

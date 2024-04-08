@@ -70,8 +70,6 @@ class QuestionOverviewScreen : Screen {
                 assignments.add(Assignment(it.termA!!,it.termB!!))
             }
         }
-
-        //LOAD ANSWER
         return assignments
     }
 
