@@ -3,6 +3,7 @@ package databaseInteraction
 import androidx.compose.runtime.mutableStateListOf
 import classes.*
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 
 object DataBaseCommunication {
     suspend fun getAnswersToQuestionId(questionId: Long): List<String> {
@@ -40,6 +41,27 @@ object DataBaseCommunication {
         return assignmentList
     }
 
+    fun getQuestionsFromDependencyList(dependencies:List<db.Dependency>?): List<Question>{
+        var questions = mutableListOf<Question>()
+        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
+        var addedId = mutableListOf<Long>()
+        if (dependencies != null){
+            dependencies.forEach{dep ->
+                runBlocking {
+                    if(!addedId.contains(dep.questionAID)){
+                        questions.add(getQuestionAsClass(questionData.getQuestionById(dep.questionAID)!!)!!)
+                        addedId.add(dep.questionAID)
+                    }
+                    if(!addedId.contains(dep.questionBID)){
+                        questions.add(getQuestionAsClass(questionData.getQuestionById(dep.questionBID)!!)!!)
+                        addedId.add(dep.questionBID)
+                    }
+                }
+            }
+        }
+        return questions
+    }
+
     suspend fun getQuestionAsClass(question: db.Question): Question? {
         when (question.type) {
             "SINGLE_CHOICE_QUESTION" -> {
@@ -52,6 +74,7 @@ object DataBaseCommunication {
                     }
                 }
                 return SingleChoiceQuestion(
+                    id = question.id,
                     description = question.description,
                     explanation = question.explanation,
                     points = question.points.toInt(),
@@ -71,6 +94,7 @@ object DataBaseCommunication {
                     }
                 }
                 return MultipleChoiceQuestion(
+                    id = question.id,
                     description = question.description,
                     explanation = question.explanation,
                     points = question.points.toInt(),
@@ -82,6 +106,7 @@ object DataBaseCommunication {
 
             "ASSIGN_QUESTION" -> {
                 return AssignQuestion(
+                    id = question.id,
                     description = question.description,
                     explanation = question.explanation,
                     points = question.points.toInt(),

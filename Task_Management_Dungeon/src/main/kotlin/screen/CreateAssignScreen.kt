@@ -60,6 +60,7 @@ class CreateAssignScreen : Screen {
                                         navigator.push(
                                             CheckAssignTaskScreen(
                                                 AssignQuestion(
+                                                    0,
                                                     questionText,
                                                     points.toInt(),
                                                     pointsToPass.toInt(),

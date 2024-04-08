@@ -20,7 +20,9 @@ import composable.bodyText
 import composable.title
 import databaseInteraction.Driver
 import databaseInteraction.Provider
+import databaseInteraction.TaskFileWriter
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to create the dungeon task file
@@ -35,6 +37,7 @@ class CreateTaskFileScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val projects = projectData.getAllProjects().collectAsState(initial = emptyList()).value
         val selectedIndices = remember { mutableStateListOf<Int>() }
+        val selectedProjectIds = remember { mutableStateListOf<Long>() }
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -68,11 +71,21 @@ class CreateTaskFileScreen : Screen {
                                     if (selectedIndices.isEmpty()) {
                                         scope.launch {
                                             snackbarHostState.showSnackbar(
-                                                message = "Bitte wählen Sie mindestens eine korrekte Antwort aus",
+                                                message = "Bitte wählen Sie mindestens ein Projekt aus",
                                                 withDismissAction = true
                                             )
                                         }
-                                    } else {navigator.pop()}
+                                    } else {
+                                        selectedProjectIds.forEach{
+                                            TaskFileWriter.writeProjectToFile(it,"TeSTT")
+                                        }
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = "Datei wurde erstellt!",
+                                                withDismissAction = true
+                                            )
+                                        }
+                                    }
                                 }) {
                                 Text("Datei Speichern")
                             }
@@ -88,8 +101,10 @@ class CreateTaskFileScreen : Screen {
                                 onClick = {
                                     if (!selectedIndices.contains(index)) {
                                         selectedIndices.add(index)
+                                        selectedProjectIds.add(project.id)
                                     } else {
                                         selectedIndices.remove(index)
+                                        selectedProjectIds.remove(project.id)
                                     }
                                 }
                             ).clip(shape = RoundedCornerShape(10.dp)).background(
