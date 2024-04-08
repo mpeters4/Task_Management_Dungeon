@@ -18,6 +18,11 @@ import databaseInteraction.Provider
 import icon.deleteIcon
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Card with a dependency view
+ * @param dependency dependency to show
+ * @param action function that is called when the remove icon is clicked
+ */
 @Composable
 fun dependencyCard(
     dependency: db.Dependency,
