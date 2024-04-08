@@ -74,6 +74,7 @@ object DataBaseCommunication {
                     }
                 }
                 return SingleChoiceQuestion(
+                    id = question.id,
                     description = question.description,
                     explanation = question.explanation,
                     points = question.points.toInt(),
@@ -93,6 +94,7 @@ object DataBaseCommunication {
                     }
                 }
                 return MultipleChoiceQuestion(
+                    id = question.id,
                     description = question.description,
                     explanation = question.explanation,
                     points = question.points.toInt(),
@@ -104,6 +106,7 @@ object DataBaseCommunication {
 
             "ASSIGN_QUESTION" -> {
                 return AssignQuestion(
+                    id = question.id,
                     description = question.description,
                     explanation = question.explanation,
                     points = question.points.toInt(),
