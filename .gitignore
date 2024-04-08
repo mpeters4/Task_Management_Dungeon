@@ -8,3 +8,4 @@ Task_Management_Dungeon/gradle/wrapper/gradle-wrapper.jar
 Task_Management_Dungeon/gradle/wrapper/gradle-wrapper.jar
 Task_Management_Dungeon/task_manager.db
 Task_Management_Dungeon/Dungeon_Files/Test.dng
+*.dng
