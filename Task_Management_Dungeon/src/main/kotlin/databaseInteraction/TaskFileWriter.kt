@@ -15,7 +15,6 @@ object TaskFileWriter {
         var dependencies = runBlocking { dependencyData.getAllDependenciesByProjectId(projectId).firstOrNull() }
         // create Questionlist
         val questions = DataBaseCommunication.getQuestionsFromDependencyList(dependencies)
-
         //ProjektAnleitung zum Schreiben
         try {
             File("Dungeon_Files/$filename.dng").appendText("// $project\n")
@@ -25,12 +24,8 @@ object TaskFileWriter {
         questions.forEach {
             writeQuestion(it, filename)
         }
-        /*
-        Get projekt
-        get dependencies
-        get questionsById ->dependencies
-        get answers by questionId ->dependencies
-         */
+        writeGraph(dependencies!!, filename)
+        writeSzenarioDefinitions(filename)
     }
 
     fun writeQuestion(question: Question, filename: String) {
@@ -92,23 +87,23 @@ object TaskFileWriter {
                                 "\n\tsolution: <"
                     )
                     question.assignments.forEachIndexed { index, assignment ->
-                        if (index == 0){
-                            if (assignment.termA == "_"){
+                        if (index == 0) {
+                            if (assignment.termA == "_") {
                                 File("Dungeon_Files/$filename.dng").appendText("\n\t\t[_, \"${assignment.termB}\"]")
-                            }else{
-                                if (assignment.termB == "_"){
+                            } else {
+                                if (assignment.termB == "_") {
                                     File("Dungeon_Files/$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", _]")
-                                }else{
+                                } else {
                                     File("Dungeon_Files/$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
                                 }
                             }
-                        }else{
-                            if (assignment.termA == "_"){
+                        } else {
+                            if (assignment.termA == "_") {
                                 File("Dungeon_Files/$filename.dng").appendText(",\n\t\t[_, \"${assignment.termB}\"]")
-                            }else{
-                                if (assignment.termB == "_"){
+                            } else {
+                                if (assignment.termB == "_") {
                                     File("Dungeon_Files/$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", _]")
-                                }else{
+                                } else {
                                     File("Dungeon_Files/$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
                                 }
                             }
@@ -123,5 +118,43 @@ object TaskFileWriter {
 
     }
 
+    fun writeGraph(dependencies: List<db.Dependency>, filename: String) {
+        File("Dungeon_Files/$filename.dng").appendText("\ngraph ${dependencies[0].projectID}_graph {")
 
+        dependencies.forEach { dependency ->
+            File("Dungeon_Files/$filename.dng").appendText("\n\t${dependency.questionAID} -> ${dependency.questionBID}")
+            when (dependency.dependency) {
+                "Sequenz" -> {
+                    File("Dungeon_Files/$filename.dng").appendText(" [type=seq];")
+                }
+
+                "Pflicht Unteraufgabe" -> {
+                    File("Dungeon_Files/$filename.dng").appendText(" [type=st_m];")
+                }
+
+                "Optionale Unteraufgabe" -> {
+                    File("Dungeon_Files/$filename.dng").appendText(" [type=st_o];")
+                }
+
+                "Bei falscher Antwort" -> {
+                    File("Dungeon_Files/$filename.dng").appendText(" [type=c_f];")
+                }
+
+                "Bei richtiger Antwort" -> {
+                    File("Dungeon_Files/$filename.dng").appendText(" [type=c_c];")
+                }
+            }
+        }
+        File("Dungeon_Files/$filename.dng").appendText(
+            "\n}\n\ndungeon_config ${dependencies[0].projectID} {" +
+                    "\n\t\tdependency_graph:  ${dependencies[0].projectID}_graph" +
+                    "\n}\n\n"
+        )
+    }
+
+    fun writeSzenarioDefinitions(filename: String){
+        File("src/main/resources/szenario_definitions").forEachLine {line ->
+            File("Dungeon_Files/$filename.dng").appendText( line +"\n")
+        }
+    }
 }
