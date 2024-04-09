@@ -3,7 +3,7 @@ Die Erstellung erfolgt im Rahmen meiner Bachelorarbeit.
 
 Folgende externe Bibliotheken wurden verwendet.
 
-[Voyager Copyright (c) 2021 Adriel Café](https://github.com/adrielcafe/voyager/tree/main)
+[Voyager Copyright (c) 2021 Adriel Café](https://github.com/adrielcafe/voyager/tree/main?tab=MIT-1-ov-file)
 
 [SQL Delight(c)](https://cashapp.github.io/sqldelight/2.0.2/)
 
