@@ -41,19 +41,19 @@ dependencies {
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
 
-    // Navigator
+    // Navigator Copyright (c) 2021 Adriel Café
     implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
 
-    // Screen Model
+    // Screen Model Copyright (c) 2021 Adriel Café
     implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
 
-    // BottomSheetNavigator
+    // BottomSheetNavigator Copyright (c) 2021 Adriel Café
     implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
 
-    // TabNavigator
+    // TabNavigator Copyright (c) 2021 Adriel Café
     implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
 
-    // Transitions
+    // Transitions Copyright (c) 2021 Adriel Café
     implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
 
     //Material 3
