@@ -20,10 +20,7 @@ import com.example.compose.AppTheme
 import composable.clickableIconCardExit
 import composable.clickableIconCardNavigate
 import composable.title
-import icon.exitIcon
-import icon.rectangleListIcon
-import icon.squarePlusIcon
-import icon.walkingIcon
+import icon.*
 
 /**
  * Homescreen of the Application. Allows to navigate to all the functionalities.
@@ -50,17 +47,17 @@ class HomeScreen : Screen {
                             Modifier.height(intrinsicSize = IntrinsicSize.Max)
                                 .width(intrinsicSize = IntrinsicSize.Max)
                                 .align(Alignment.Center).padding(top = 60.dp),
-                            maxItemsInEachRow = 3
+                            maxItemsInEachRow = 3,
                         ) {
                             clickableIconCardNavigate(
-                                squarePlusIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                                projectIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Projekte",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 ProjectScreen()
                             )
                             clickableIconCardNavigate(
-                                walkingIcon(MaterialTheme.colorScheme.onSurfaceVariant),
+                                addFileIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Aufgabendatei\ngenerieren",
                                 Modifier.padding(8.dp),
                                 navigator,
@@ -73,13 +70,14 @@ class HomeScreen : Screen {
                                 navigator,
                                 QuestionChoiceScreen()
                             )
+                            /*
                             clickableIconCardNavigate(
                                 walkingIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Simulieren",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 HomeScreen()
-                            )
+                            )*/
                             clickableIconCardNavigate(
                                 rectangleListIcon(MaterialTheme.colorScheme.onSurfaceVariant),
                                 "Fragenliste",
