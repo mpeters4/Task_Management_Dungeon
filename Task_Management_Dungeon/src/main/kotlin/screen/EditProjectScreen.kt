@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -21,12 +22,11 @@ import composable.*
 import databaseInteraction.Driver
 import databaseInteraction.Provider
 import icon.addIcon
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 /**
  * Screen to edit a project
- * @param project Project to edit
+ * @param projectId Project to edit
  */
 class EditProjectScreen(private val projectId: Long) : Screen {
     @Composable
@@ -34,22 +34,12 @@ class EditProjectScreen(private val projectId: Long) : Screen {
     override fun Content() {
         val projectData = Provider.provideProjectDataSource(Driver.createDriver())
         val dependencyData = Provider.provideDependencyDataSource(Driver.createDriver())
-        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
-        val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         val project = runBlocking { projectData.getProjectById(projectId) }
-        val projectDependencies =
-            dependencyData.getAllDependenciesByProjectId(projectId).collectAsState(initial = emptyList()).value
+        var projectDependencies = dependencyData.getAllDependenciesByProjectId(projectId).collectAsState(initial = emptyList()).value
+        val dependencyCopyList = SnapshotStateList<db.Dependency>()
+        projectDependencies.forEach{dependencyCopyList.add(it)}
         val navigator = LocalNavigator.currentOrThrow
         val snackbarHostState = remember { SnackbarHostState() }
-        val scope = rememberCoroutineScope()
-        //Ab hier existieren nur Beispieldaten
-        val dependencies = mutableStateListOf(
-            "Sequenz",
-            "Wenn Richtig, dann",
-            "Wenn Falsch, dann",
-            "Optionale Unteraufgabe",
-            "Pflicht Unteraufgabe"
-        )
         AppTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -88,15 +78,15 @@ class EditProjectScreen(private val projectId: Long) : Screen {
                             }
                         }
                     }
-                ) { it ->
+                ) {
                     LazyColumn(Modifier.padding(it)) {
                         item {
                             title("Spielablauf:")
                             bodyText("Bitte wählen Sie Fragen aus, die in das Spiel integriert werden sollen. Jede Frage muss in Abhängigkeit zu einer anderen Frage stehen. Die Art der Abhängigkeiten kann dabei frei gewählt werden. Hat eine Frage mehrere Abhängigkeiten, muss die Frage mehrmals ausgewählt und zugeordnet werden.")
 
                         }
-                        items(items = projectDependencies) { dependency ->
-                            dependencyCard(dependency)
+                        items(items = dependencyCopyList) { dependency ->
+                            dependencyCard(dependency, action = {dependencyCopyList.remove(dependency) })
                         }
                         item {
                             Card(

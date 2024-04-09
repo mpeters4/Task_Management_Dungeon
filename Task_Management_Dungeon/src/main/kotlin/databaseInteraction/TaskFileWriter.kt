@@ -6,13 +6,21 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 
 
+/**
+ * Writes a Taskfile
+ */
 object TaskFileWriter {
 
+    /**
+     * Writes a taskfile from a projectId
+     * @param projectId ID of the project
+     * @param filename name of the File
+     */
     fun writeProjectToFile(projectId: Long, filename: String) {
         val projectData = Provider.provideProjectDataSource(Driver.createDriver())
         val dependencyData = Provider.provideDependencyDataSource(Driver.createDriver())
         val project = runBlocking { projectData.getProjectById(projectId) }
-        var dependencies = runBlocking { dependencyData.getAllDependenciesByProjectId(projectId).firstOrNull() }
+        val dependencies = runBlocking { dependencyData.getAllDependenciesByProjectId(projectId).firstOrNull() }
         // create Questionlist
         val questions = DataBaseCommunication.getQuestionsFromDependencyList(dependencies)
         //ProjektAnleitung zum Schreiben
@@ -28,7 +36,7 @@ object TaskFileWriter {
         writeSzenarioDefinitions(filename)
     }
 
-    fun writeQuestion(question: Question, filename: String) {
+    private fun writeQuestion(question: Question, filename: String) {
         try {
             when (question) {
                 is SingleChoiceQuestion -> {
@@ -118,7 +126,7 @@ object TaskFileWriter {
 
     }
 
-    fun writeGraph(dependencies: List<db.Dependency>, filename: String) {
+    private fun writeGraph(dependencies: List<db.Dependency>, filename: String) {
         File("Dungeon_Files/$filename.dng").appendText("\ngraph ${dependencies[0].projectID}_graph {")
 
         dependencies.forEach { dependency ->
@@ -152,7 +160,7 @@ object TaskFileWriter {
         )
     }
 
-    fun writeSzenarioDefinitions(filename: String){
+    private fun writeSzenarioDefinitions(filename: String){
         File("src/main/resources/szenario_definitions").forEachLine {line ->
             File("Dungeon_Files/$filename.dng").appendText( line +"\n")
         }
