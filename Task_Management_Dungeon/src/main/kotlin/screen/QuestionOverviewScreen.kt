@@ -40,7 +40,7 @@ class QuestionOverviewScreen : Screen {
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         val answerDataList = answerData.getAnswersByQuestionId(questionId).firstOrNull()
         //sval aaa = answerDataList.forEach {  }
-        var answers = mutableListOf<String>()
+        val answers = mutableListOf<String>()
         answerDataList!!.forEach(){answer ->
             answers.add(answer.answer)
         }
@@ -64,7 +64,7 @@ class QuestionOverviewScreen : Screen {
     private suspend fun getAssignmentsToQuestionId(questionId: Long): List<Assignment> {
         val assignmentData = Provider.provideAssignmentDataSource(Driver.createDriver())
         val assignmentList = assignmentData.getAssignmentsByQuestionId(questionId).firstOrNull()
-        var assignments = mutableListOf<Assignment>()
+        val assignments = mutableListOf<Assignment>()
         if (assignmentList!= null){
             assignmentList.forEach{
                 assignments.add(Assignment(it.termA!!,it.termB!!))
@@ -102,7 +102,7 @@ class QuestionOverviewScreen : Screen {
         var tags: List<String> = mutableStateListOf()
         var answers: List<String> = mutableStateListOf()
         var correctAnswers: List<String> = mutableStateListOf()
-        var correctAnswerIndices: List<Int> = mutableListOf()
+        var correctAnswerIndices = mutableListOf<Int>()
         var assignments: List<Assignment> = mutableStateListOf()
         //LOAD QuestionsDATA
         val questionDataList = getQuestions()
@@ -115,7 +115,7 @@ class QuestionOverviewScreen : Screen {
                 correctAnswers = getCorrectAnswersByQuestionId(question.id)
                 answers.forEachIndexed() { index, answer ->
                     if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.addLast(index)
+                        correctAnswerIndices.add(index)
                     }
                 }
                 questionList.add(
@@ -136,7 +136,7 @@ class QuestionOverviewScreen : Screen {
                 correctAnswers = getCorrectAnswersByQuestionId(question.id)
                 answers.forEachIndexed() { index, answer ->
                     if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.addLast(index)
+                        correctAnswerIndices.add(index)
                     }
                 }
                 questionList.add(

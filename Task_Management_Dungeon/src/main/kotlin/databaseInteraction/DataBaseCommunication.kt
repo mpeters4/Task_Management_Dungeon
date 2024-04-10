@@ -82,10 +82,10 @@ object DataBaseCommunication {
             "SINGLE_CHOICE_QUESTION" -> {
                 val answers = getAnswersToQuestionId(question.id)
                 val correctAnswers = getCorrectAnswersByQuestionId(question.id)
-                val correctAnswerIndices: List<Int> = mutableListOf()
+                val correctAnswerIndices= mutableListOf<Int> ()
                 answers.forEachIndexed { index, answer ->
                     if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.addLast(index)
+                        correctAnswerIndices.add(index)
                     }
                 }
                 return SingleChoiceQuestion(
@@ -102,10 +102,10 @@ object DataBaseCommunication {
             "MULTIPLE_CHOICE_QUESTION" -> {
                 val answers = getAnswersToQuestionId(question.id)
                 val correctAnswers = getCorrectAnswersByQuestionId(question.id)
-                val correctAnswerIndices: List<Int> = mutableListOf()
+                val correctAnswerIndices= mutableListOf<Int> ()
                 answers.forEachIndexed { index, answer ->
                     if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.addLast(index)
+                        correctAnswerIndices.add(index)
                     }
                 }
                 return MultipleChoiceQuestion(

@@ -98,7 +98,7 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
         var tags: List<String> = mutableStateListOf()
         var answers: List<String> = mutableStateListOf()
         var correctAnswers: List<String> = mutableStateListOf()
-        var correctAnswerIndices: List<Int> = mutableListOf()
+        var correctAnswerIndices= mutableListOf<Int>()
         var assignments: List<Assignment> = mutableStateListOf()
         //LOAD QuestionsDATA
         val questionDataList = getQuestions()
@@ -111,7 +111,7 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
                 correctAnswers = getCorrectAnswersByQuestionId(question.id)
                 answers.forEachIndexed() { index, answer ->
                     if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.addLast(index)
+                        correctAnswerIndices.add(index)
                     }
                 }
                 questionList.add(
@@ -132,7 +132,7 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
                 correctAnswers = getCorrectAnswersByQuestionId(question.id)
                 answers.forEachIndexed() { index, answer ->
                     if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.addLast(index)
+                        correctAnswerIndices.add(index)
                     }
                 }
                 questionList.add(
