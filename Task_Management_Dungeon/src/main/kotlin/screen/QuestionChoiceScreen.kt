@@ -19,9 +19,7 @@ import com.example.compose.AppTheme
 import composable.clickableIconCardNavBack
 import composable.clickableIconCardNavigate
 import composable.title
-import icon.backIcon
-import icon.squarePlusIcon
-import icon.walkingIcon
+import icon.*
 
 /**
  * Screen to navigate to the different question creation screens
@@ -50,21 +48,21 @@ class QuestionChoiceScreen : Screen {
                             maxItemsInEachRow = 3
                         ) {
                             clickableIconCardNavigate(
-                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
+                                singleChoiceIcon(MaterialTheme.colorScheme.onBackground),
                                 "Single-Choice",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateSingleChoiceScreen()
                             )
                             clickableIconCardNavigate(
-                                squarePlusIcon(MaterialTheme.colorScheme.onBackground),
+                                multipleChopiceIcon(MaterialTheme.colorScheme.onBackground),
                                 "Multiple-Choice",
                                 Modifier.padding(8.dp),
                                 navigator,
                                 CreateMultipleChoiceScreen()
                             )
                             clickableIconCardNavigate(
-                                walkingIcon(MaterialTheme.colorScheme.onBackground),
+                                assignIcon(MaterialTheme.colorScheme.onBackground),
                                 "Zuordnungs-\naufgabe",
                                 Modifier.padding(8.dp),
                                 navigator,
