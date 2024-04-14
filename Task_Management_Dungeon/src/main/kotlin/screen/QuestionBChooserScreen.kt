@@ -37,8 +37,8 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         val answerDataList = answerData.getAnswersByQuestionId(questionId).firstOrNull()
         //sval aaa = answerDataList.forEach {  }
-        var answers = mutableListOf<String>()
-        answerDataList!!.forEach(){answer ->
+        val answers = mutableListOf<String>()
+        answerDataList!!.forEach{answer ->
             answers.add(answer.answer)
         }
         //LOAD ANSWER
@@ -49,8 +49,8 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
         val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
         val answerList = answerData.getCorrectAnswersByQuestionId(questionId).firstOrNull()
         //LOAD ANSWER
-        var answers = mutableListOf<String>()
-        answerList!!.forEach(){answer ->
+        val answers = mutableListOf<String>()
+        answerList!!.forEach{answer ->
             answers.add(answer.answer)
         }
         //LOAD ANSWER
@@ -58,8 +58,8 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
     }
 
 
-    private suspend fun getAssignmentsToQuestionId(questionId: Long): List<Assignment> {
-        val assignmentData = Provider.provideAssignmentDataSource(Driver.createDriver())
+    private fun getAssignmentsToQuestionId(): List<Assignment> {
+        Provider.provideAssignmentDataSource(Driver.createDriver())
         val assignmentList = mutableStateListOf<Assignment>()
         assignmentList.add(Assignment())
         assignmentList.add(Assignment("TERMa", "TermB"))
@@ -71,97 +71,89 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
 
     private suspend fun getTagsToQuestionId(questionId: Long): List<String> {
         val tagData = Provider.provideTagDataSource(Driver.createDriver())
-        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
         val tagDataList = tagData.getTagsByQuestionId(questionId).firstOrNull()
         //LOAD ANSWER
-        var tags = mutableListOf<String>()
-        tagDataList!!.forEach(){tag ->
+        val tags = mutableListOf<String>()
+        tagDataList!!.forEach{tag ->
             tags.add(tag)
         }
         //LOAD TAGS
         return tags
     }
 
-    private suspend fun getQuestions(): List<db.Question> {
-        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
-        val tagQuestionData = Provider.provideQuestionTagDataSource(Driver.createDriver())
-        val questionList = mutableStateListOf<db.Question>()
-        return questionList
-    }
-
-
     private suspend fun getAllQuestionsAsClasses(questions: List<db.Question>): List<Question> {
-        val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
-        //val answerData = Provider.provideAnswerDataSource(Driver.createDriver())
-        val tagData = Provider.provideTagDataSource(Driver.createDriver())
         val questionList = mutableStateListOf<Question>()
-        var tags: List<String> = mutableStateListOf()
-        var answers: List<String> = mutableStateListOf()
-        var correctAnswers: List<String> = mutableStateListOf()
+        var tags: List<String>
+        var answers: List<String>
+        var correctAnswers: List<String>
         var correctAnswerIndices= mutableListOf<Int>()
-        var assignments: List<Assignment> = mutableStateListOf()
+        var assignments: List<Assignment>
         //LOAD QuestionsDATA
-        val questionDataList = getQuestions()
         //FOR EACH QUESTION ->
         questions.forEach { question ->
             //GET ANSWERS
             tags = getTagsToQuestionId(question.id)
-            if (question.type == "SINGLE_CHOICE_QUESTION") {
-                answers = getAnswersToQuestionId(question.id)
-                correctAnswers = getCorrectAnswersByQuestionId(question.id)
-                answers.forEachIndexed() { index, answer ->
-                    if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.add(index)
+            when (question.type) {
+                "SINGLE_CHOICE_QUESTION" -> {
+                    answers = getAnswersToQuestionId(question.id)
+                    correctAnswers = getCorrectAnswersByQuestionId(question.id)
+                    answers.forEachIndexed { index, answer ->
+                        if (correctAnswers.contains(answer)) {
+                            correctAnswerIndices.add(index)
+                        }
                     }
-                }
-                questionList.add(
-                    SingleChoiceQuestion(
-                        0,
-                        question.description,
-                        question.points.toInt(),
-                        question.pointsToPass.toInt(),
-                        question.explanation,
-                        answers,
-                        tags,
-                        correctAnswerIndices[0]
+                    questionList.add(
+                        SingleChoiceQuestion(
+                            0,
+                            question.description,
+                            question.points.toInt(),
+                            question.pointsToPass.toInt(),
+                            question.explanation,
+                            answers,
+                            tags,
+                            correctAnswerIndices[0]
+                        )
                     )
-                )
-                correctAnswerIndices = mutableStateListOf()
-            } else if (question.type == "MULTIPLE_CHOICE_QUESTION") {
-                answers = getAnswersToQuestionId(question.id)
-                correctAnswers = getCorrectAnswersByQuestionId(question.id)
-                answers.forEachIndexed() { index, answer ->
-                    if (correctAnswers.contains(answer)) {
-                        correctAnswerIndices.add(index)
+                    correctAnswerIndices = mutableStateListOf()
+                }
+                "MULTIPLE_CHOICE_QUESTION" -> {
+                    answers = getAnswersToQuestionId(question.id)
+                    correctAnswers = getCorrectAnswersByQuestionId(question.id)
+                    answers.forEachIndexed { index, answer ->
+                        if (correctAnswers.contains(answer)) {
+                            correctAnswerIndices.add(index)
+                        }
                     }
+                    questionList.add(
+                        MultipleChoiceQuestion(
+                            0,
+                            question.description,
+                            question.points.toInt(),
+                            question.pointsToPass.toInt(),
+                            question.explanation,
+                            answers = answers,
+                            tags = tags,
+                            correctAnswerIndices = correctAnswerIndices
+                        )
+                    )
+                    correctAnswerIndices = mutableStateListOf()
                 }
-                questionList.add(
-                    MultipleChoiceQuestion(
-                        0,
-                        question.description,
-                        question.points.toInt(),
-                        question.pointsToPass.toInt(),
-                        question.explanation,
-                        answers = answers,
-                        tags = tags,
-                        correctAnswerIndices = correctAnswerIndices
+                "ASSIGN_QUESTION" -> {
+                    tags = getTagsToQuestionId(question.id)
+                    assignments = getAssignmentsToQuestionId()
+                    questionList.add(
+                        AssignQuestion(
+                            0,
+                            question.description,
+                            question.points.toInt(),
+                            question.pointsToPass.toInt(),
+                            question.explanation,
+                            assignments = assignments
+                        )
                     )
-                )
-                correctAnswerIndices = mutableStateListOf()
-            } else if (question.type == "ASSIGN_QUESTION") {
-                tags = getTagsToQuestionId(question.id)
-                assignments = getAssignmentsToQuestionId(questionId = question.id)
-                questionList.add(
-                    AssignQuestion(
-                        0,
-                        question.description,
-                        question.points.toInt(),
-                        question.pointsToPass.toInt(),
-                        question.explanation,
-                        assignments = assignments
-                    )
-                )
-            } else {
+                }
+                else -> {
+                }
             }
             // GET TAGS
         }
@@ -176,14 +168,11 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
         val tagFilterList = remember { mutableStateListOf<String>() }
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
-        val tagData = Provider.provideTagDataSource(Driver.createDriver())
-        val tagList = tagData.getAllTags().collectAsState(initial = emptyList()).value
-
         //Get all questions from DB
         val questionData = Provider.provideQuestionDataSource(Driver.createDriver())
         val questionDataList = questionData.getAllQuestions().collectAsState(initial = emptyList()).value
         //Turn all Questions to full Question classes and connect them to Answers and Tags
-        var questionList = runBlocking {
+        val questionList = runBlocking {
             getAllQuestionsAsClasses(questionDataList)
         }
         var searchBar by rememberSaveable { mutableStateOf("") }
