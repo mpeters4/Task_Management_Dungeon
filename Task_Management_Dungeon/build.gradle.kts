@@ -61,7 +61,8 @@ dependencies {
     //SQLdelight
     implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
     implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
-
+	
+	implementation("org.slf4j:slf4j-nop:1.7.25")
 
 }
 
