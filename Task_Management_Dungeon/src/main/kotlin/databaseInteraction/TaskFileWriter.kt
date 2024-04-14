@@ -42,11 +42,11 @@ object TaskFileWriter {
             when (question) {
                 is SingleChoiceQuestion -> {
                     File("$filename.dng").appendText(
-                        "\nsingle_choice_task ${question.id} {" +
+                        "\nsingle_choice_task t${question.id} {" +
                                 "\n\tdescription: \"${question.description}\"," +
                                 "\n\texplanation: \"${question.explanation}\"," +
-                                "\n\tpoints: \"${question.points}\"," +
-                                "\n\tpoints_to_pass: \"${question.pointsToPass}\"," +
+                                "\n\tpoints: ${question.points}," +
+                                "\n\tpoints_to_pass: ${question.pointsToPass}," +
                                 "\n\tanswers: ["
                     )
                     question.answers.forEachIndexed { index, answer ->
@@ -61,11 +61,11 @@ object TaskFileWriter {
 
                 is MultipleChoiceQuestion -> {
                     File("$filename.dng").appendText(
-                        "\nmultiple_choice_task ${question.id} {" +
+                        "\nmultiple_choice_task t${question.id} {" +
                                 "\n\tdescription: \"${question.description}\"," +
                                 "\n\texplanation: \"${question.explanation}\"," +
-                                "\n\tpoints: \"${question.points}\"," +
-                                "\n\tpoints_to_pass: \"${question.pointsToPass}\"," +
+                                "\n\tpoints: ${question.points}," +
+                                "\n\tpoints_to_pass: ${question.pointsToPass}," +
                                 "\n\tanswers: ["
                     )
                     question.answers.forEachIndexed { index, answer ->
@@ -88,11 +88,11 @@ object TaskFileWriter {
 
                 is AssignQuestion -> {
                     File("$filename.dng").appendText(
-                        "\nassign_task ${question.id} {" +
+                        "\nassign_task t${question.id} {" +
                                 "\n\tdescription: \"${question.description}\"," +
                                 "\n\texplanation: \"${question.explanation}\"," +
-                                "\n\tpoints: \"${question.points}\"," +
-                                "\n\tpoints_to_pass: \"${question.pointsToPass}\"," +
+                                "\n\tpoints: ${question.points}," +
+                                "\n\tpoints_to_pass: ${question.pointsToPass}," +
                                 "\n\tsolution: <"
                     )
                     question.assignments.forEachIndexed { index, assignment ->
@@ -128,10 +128,10 @@ object TaskFileWriter {
     }
 
     private fun writeGraph(dependencies: List<db.Dependency>, filename: String) {
-        File("$filename.dng").appendText("\ngraph ${dependencies[0].projectID}_graph {")
+        File("$filename.dng").appendText("\ngraph p${dependencies[0].projectID}_graph {")
 
         dependencies.forEach { dependency ->
-            File("$filename.dng").appendText("\n\t${dependency.questionAID} -> ${dependency.questionBID}")
+            File("$filename.dng").appendText("\n\tt${dependency.questionAID} -> t${dependency.questionBID}")
             when (dependency.dependency) {
                 "Sequenz" -> {
                     File("$filename.dng").appendText(" [type=seq];")
@@ -156,7 +156,7 @@ object TaskFileWriter {
         }
         File("$filename.dng").appendText(
             "\n}\n\ndungeon_config ${dependencies[0].projectID} {" +
-                    "\n\t\tdependency_graph:  ${dependencies[0].projectID}_graph" +
+                    "\n\t\tdependency_graph:  p${dependencies[0].projectID}_graph" +
                     "\n}\n\n"
         )
     }
