@@ -23,9 +23,10 @@ object TaskFileWriter {
         val dependencies = runBlocking { dependencyData.getAllDependenciesByProjectId(projectId).firstOrNull() }
         // create Questionlist
         val questions = DataBaseCommunication.getQuestionsFromDependencyList(dependencies)
+        File("$filename.dng").createNewFile()
         //ProjektAnleitung zum Schreiben
         try {
-            File("Dungeon_Files/$filename.dng").appendText("// $project\n")
+            File("$filename.dng").appendText("// $project")
         } catch (e: Exception) {
             println("An error occurred: ${e.message}")
         }
@@ -40,7 +41,7 @@ object TaskFileWriter {
         try {
             when (question) {
                 is SingleChoiceQuestion -> {
-                    File("Dungeon_Files/$filename.dng").appendText(
+                    File("$filename.dng").appendText(
                         "\nsingle_choice_task ${question.id} {" +
                                 "\n\tdescription: \"${question.description}\"," +
                                 "\n\texplanation: \"${question.explanation}\"," +
@@ -50,16 +51,16 @@ object TaskFileWriter {
                     )
                     question.answers.forEachIndexed { index, answer ->
                         if (index == 0) {
-                            File("Dungeon_Files/$filename.dng").appendText("\n\t\"$answer\"")
+                            File("$filename.dng").appendText("\n\t\"$answer\"")
                         } else {
-                            File("Dungeon_Files/$filename.dng").appendText(",\n\t\"$answer\"")
+                            File("$filename.dng").appendText(",\n\t\"$answer\"")
                         }
                     }
-                    File("Dungeon_Files/$filename.dng").appendText("],\n\tcorrect_answer_index: ${question.correctAnswerIndex}\n}\n")
+                    File("$filename.dng").appendText("],\n\tcorrect_answer_index: ${question.correctAnswerIndex}\n}\n")
                 }
 
                 is MultipleChoiceQuestion -> {
-                    File("Dungeon_Files/$filename.dng").appendText(
+                    File("$filename.dng").appendText(
                         "\nmultiple_choice_task ${question.id} {" +
                                 "\n\tdescription: \"${question.description}\"," +
                                 "\n\texplanation: \"${question.explanation}\"," +
@@ -69,24 +70,24 @@ object TaskFileWriter {
                     )
                     question.answers.forEachIndexed { index, answer ->
                         if (index == 0) {
-                            File("Dungeon_Files/$filename.dng").appendText("\n\t\"$answer\"")
+                            File("$filename.dng").appendText("\n\t\"$answer\"")
                         } else {
-                            File("Dungeon_Files/$filename.dng").appendText("\n\t\"$answer\"")
+                            File("$filename.dng").appendText("\n\t\"$answer\"")
                         }
                     }
-                    File("Dungeon_Files/$filename.dng").appendText("],\n\tcorrect_answer_index: [")
+                    File("$filename.dng").appendText("],\n\tcorrect_answer_index: [")
                     question.correctAnswerIndices.forEachIndexed { index, correctAnswer ->
                         if (index == 0) {
-                            File("Dungeon_Files/$filename.dng").appendText("$correctAnswer")
+                            File("$filename.dng").appendText("$correctAnswer")
                         } else {
-                            File("Dungeon_Files/$filename.dng").appendText(", $correctAnswer")
+                            File("$filename.dng").appendText(", $correctAnswer")
                         }
                     }
-                    File("Dungeon_Files/$filename.dng").appendText("] \n}\n")
+                    File("$filename.dng").appendText("] \n}\n")
                 }
 
                 is AssignQuestion -> {
-                    File("Dungeon_Files/$filename.dng").appendText(
+                    File("$filename.dng").appendText(
                         "\nassign_task ${question.id} {" +
                                 "\n\tdescription: \"${question.description}\"," +
                                 "\n\texplanation: \"${question.explanation}\"," +
@@ -97,27 +98,27 @@ object TaskFileWriter {
                     question.assignments.forEachIndexed { index, assignment ->
                         if (index == 0) {
                             if (assignment.termA == "_") {
-                                File("Dungeon_Files/$filename.dng").appendText("\n\t\t[_, \"${assignment.termB}\"]")
+                                File("$filename.dng").appendText("\n\t\t[_, \"${assignment.termB}\"]")
                             } else {
                                 if (assignment.termB == "_") {
-                                    File("Dungeon_Files/$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", _]")
+                                    File("$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", _]")
                                 } else {
-                                    File("Dungeon_Files/$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
+                                    File("$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
                                 }
                             }
                         } else {
                             if (assignment.termA == "_") {
-                                File("Dungeon_Files/$filename.dng").appendText(",\n\t\t[_, \"${assignment.termB}\"]")
+                                File("$filename.dng").appendText(",\n\t\t[_, \"${assignment.termB}\"]")
                             } else {
                                 if (assignment.termB == "_") {
-                                    File("Dungeon_Files/$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", _]")
+                                    File("$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", _]")
                                 } else {
-                                    File("Dungeon_Files/$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
+                                    File("$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
                                 }
                             }
                         }
                     }
-                    File("Dungeon_Files/$filename.dng").appendText("\n\t>\n}\n")
+                    File("$filename.dng").appendText("\n\t>\n}\n")
                 }
             }
         } catch (e: Exception) {
@@ -127,33 +128,33 @@ object TaskFileWriter {
     }
 
     private fun writeGraph(dependencies: List<db.Dependency>, filename: String) {
-        File("Dungeon_Files/$filename.dng").appendText("\ngraph ${dependencies[0].projectID}_graph {")
+        File("$filename.dng").appendText("\ngraph ${dependencies[0].projectID}_graph {")
 
         dependencies.forEach { dependency ->
-            File("Dungeon_Files/$filename.dng").appendText("\n\t${dependency.questionAID} -> ${dependency.questionBID}")
+            File("$filename.dng").appendText("\n\t${dependency.questionAID} -> ${dependency.questionBID}")
             when (dependency.dependency) {
                 "Sequenz" -> {
-                    File("Dungeon_Files/$filename.dng").appendText(" [type=seq];")
+                    File("$filename.dng").appendText(" [type=seq];")
                 }
 
                 "Pflicht Unteraufgabe" -> {
-                    File("Dungeon_Files/$filename.dng").appendText(" [type=st_m];")
+                    File("$filename.dng").appendText(" [type=st_m];")
                 }
 
                 "Optionale Unteraufgabe" -> {
-                    File("Dungeon_Files/$filename.dng").appendText(" [type=st_o];")
+                    File("$filename.dng").appendText(" [type=st_o];")
                 }
 
                 "Bei falscher Antwort" -> {
-                    File("Dungeon_Files/$filename.dng").appendText(" [type=c_f];")
+                    File("$filename.dng").appendText(" [type=c_f];")
                 }
 
                 "Bei richtiger Antwort" -> {
-                    File("Dungeon_Files/$filename.dng").appendText(" [type=c_c];")
+                    File("$filename.dng").appendText(" [type=c_c];")
                 }
             }
         }
-        File("Dungeon_Files/$filename.dng").appendText(
+        File("$filename.dng").appendText(
             "\n}\n\ndungeon_config ${dependencies[0].projectID} {" +
                     "\n\t\tdependency_graph:  ${dependencies[0].projectID}_graph" +
                     "\n}\n\n"
@@ -161,8 +162,8 @@ object TaskFileWriter {
     }
 
     private fun writeSzenarioDefinitions(filename: String){
-        File("src/main/resources/szenario_definitions").forEachLine {line ->
-            File("Dungeon_Files/$filename.dng").appendText( line +"\n")
+        File("szenario_definitions").forEachLine { line ->
+            File("$filename.dng").appendText( line +"\n")
         }
     }
 }
