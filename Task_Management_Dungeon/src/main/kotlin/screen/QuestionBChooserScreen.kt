@@ -225,12 +225,21 @@ class QuestionBChooserScreen(var dependency: Dependency) : Screen {
                                 colors = ButtonDefaults.buttonColors(),
                                 onClick = {
                                     if(chosenQuestion != null){
-                                        if (dependency.questionA !=null){
-                                            dependency.questionB = chosenQuestion
-                                            navigator.push(CreateDependencyScreen(dependency = dependency))
+                                        if (dependency.questionA == chosenQuestion){
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "Frage 1 kann nicht gleich Frage 2 sein!",
+                                                    withDismissAction = true
+                                                )
+                                            }
                                         }else{
-                                            dependency.questionA = chosenQuestion
-                                            navigator.push(QuestionChooserScreen(dependency = dependency))
+                                            if (dependency.questionA !=null) {
+                                                dependency.questionB = chosenQuestion
+                                                navigator.push(CreateDependencyScreen(dependency = dependency))
+                                            }else{
+                                                dependency.questionA = chosenQuestion
+                                                navigator.push(QuestionChooserScreen(dependency = dependency))
+                                            }
                                         }
                                     }else{
                                         scope.launch {

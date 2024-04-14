@@ -33,7 +33,7 @@ object TaskFileWriter {
         questions.forEach {
             writeQuestion(it, filename)
         }
-        writeGraph(dependencies!!, filename)
+        writeGraph(dependencies!!, filename, project!!.name)
         writeSzenarioDefinitions(filename)
     }
 
@@ -51,9 +51,9 @@ object TaskFileWriter {
                     )
                     question.answers.forEachIndexed { index, answer ->
                         if (index == 0) {
-                            File("$filename.dng").appendText("\n\t\"$answer\"")
+                            File("$filename.dng").appendText("\n\t\"${answer.trim()}\"")
                         } else {
-                            File("$filename.dng").appendText(",\n\t\"$answer\"")
+                            File("$filename.dng").appendText(",\n\t\"${answer.trim()}\"")
                         }
                     }
                     File("$filename.dng").appendText("],\n\tcorrect_answer_index: ${question.correctAnswerIndex}\n}\n")
@@ -70,9 +70,9 @@ object TaskFileWriter {
                     )
                     question.answers.forEachIndexed { index, answer ->
                         if (index == 0) {
-                            File("$filename.dng").appendText("\n\t\"$answer\"")
+                            File("$filename.dng").appendText("\n\t\"${answer.trim()}\"")
                         } else {
-                            File("$filename.dng").appendText("\n\t\"$answer\"")
+                            File("$filename.dng").appendText("\n\t\"${answer.trim()}\"")
                         }
                     }
                     File("$filename.dng").appendText("],\n\tcorrect_answer_index: [")
@@ -98,22 +98,22 @@ object TaskFileWriter {
                     question.assignments.forEachIndexed { index, assignment ->
                         if (index == 0) {
                             if (assignment.termA == "_") {
-                                File("$filename.dng").appendText("\n\t\t[_, \"${assignment.termB}\"]")
+                                File("$filename.dng").appendText("\n\t\t[_, \"${assignment.termB.trim()}\"]")
                             } else {
                                 if (assignment.termB == "_") {
-                                    File("$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", _]")
+                                    File("$filename.dng").appendText("\n\t\t[\"${assignment.termA.trim()}\", _]")
                                 } else {
-                                    File("$filename.dng").appendText("\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
+                                    File("$filename.dng").appendText("\n\t\t[\"${assignment.termA.trim()}\", \"${assignment.termB.trim()}\"]")
                                 }
                             }
                         } else {
                             if (assignment.termA == "_") {
-                                File("$filename.dng").appendText(",\n\t\t[_, \"${assignment.termB}\"]")
+                                File("$filename.dng").appendText(",\n\t\t[_, \"${assignment.termB.trim()}\"]")
                             } else {
                                 if (assignment.termB == "_") {
-                                    File("$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", _]")
+                                    File("$filename.dng").appendText(",\n\t\t[\"${assignment.termA.trim()}\", _]")
                                 } else {
-                                    File("$filename.dng").appendText(",\n\t\t[\"${assignment.termA}\", \"${assignment.termB}\"]")
+                                    File("$filename.dng").appendText(",\n\t\t[\"${assignment.termA.trim()}\", \"${assignment.termB.trim()}\"]")
                                 }
                             }
                         }
@@ -127,7 +127,7 @@ object TaskFileWriter {
 
     }
 
-    private fun writeGraph(dependencies: List<db.Dependency>, filename: String) {
+    private fun writeGraph(dependencies: List<db.Dependency>, filename: String, projectName :String) {
         File("$filename.dng").appendText("\ngraph p${dependencies[0].projectID}_graph {")
 
         dependencies.forEach { dependency ->
@@ -155,7 +155,7 @@ object TaskFileWriter {
             }
         }
         File("$filename.dng").appendText(
-            "\n}\n\ndungeon_config ${dependencies[0].projectID} {" +
+            "\n}\n\ndungeon_config $projectName {" +
                     "\n\t\tdependency_graph:  p${dependencies[0].projectID}_graph" +
                     "\n}\n\n"
         )
