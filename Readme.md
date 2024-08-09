@@ -8,3 +8,5 @@ Folgende externe Bibliotheken wurden verwendet.
 [SQL Delight(c)](https://cashapp.github.io/sqldelight/2.0.2/)
 
 [Material 3](https://m3.material.io/)
+
+[Material Symbols for Jetpack Compose](https://www.composables.com/icons)
